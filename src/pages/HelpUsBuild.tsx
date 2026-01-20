@@ -42,6 +42,33 @@ export function HelpUsBuild() {
               <span className="text-[#0066FF]">Grade Nerd</span>
             </h1>
 
+            <EducationalPanel className="mb-8 bg-yellow-50/50 border-2 border-yellow-200">
+              <h2 className="text-2xl font-bold mb-6">How You Can Help</h2>
+
+              <div className="space-y-4 text-lg leading-relaxed">
+                <div className="flex items-start gap-3">
+                  <span className="font-bold text-[#0066FF] whitespace-nowrap">For teachers:</span>
+                  <span>Circulate the questionnaire to math students at your school.</span>
+                </div>
+                <div className="flex items-start gap-3">
+                  <span className="font-bold text-[#0066FF] whitespace-nowrap">For students:</span>
+                  <span>Take the questionnaire and give us valuable info about what math students really want.</span>
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <a
+                  href="https://docs.google.com/forms/d/e/1FAIpQLSeOmQUdVSDRhHfydcLRpOfej7gAghBvacjX_HgjJpl2Mrqu2Q/viewform"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#0066FF] text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+                >
+                  Take the Questionnaire
+                  <ExternalLink className="w-5 h-5" />
+                </a>
+              </div>
+            </EducationalPanel>
+
             <EducationalPanel className="mb-8">
               <h2 className="text-2xl font-bold mb-6">About This Project</h2>
 
@@ -100,26 +127,6 @@ export function HelpUsBuild() {
                 </a>{' '}
                 about math and understanding math concepts.
               </p>
-            </EducationalPanel>
-
-            <EducationalPanel className="bg-yellow-50/50 border-2 border-yellow-200">
-              <h2 className="text-2xl font-bold mb-4">How You Can Help</h2>
-
-              <p className="text-lg leading-relaxed">
-                Would you mind looking at this questionnaire and circulating it to math students at your school?
-              </p>
-
-              <div className="mt-6">
-                <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSeOmQUdVSDRhHfydcLRpOfej7gAghBvacjX_HgjJpl2Mrqu2Q/viewform"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 bg-[#0066FF] text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
-                >
-                  Take the Questionnaire
-                  <ExternalLink className="w-5 h-5" />
-                </a>
-              </div>
             </EducationalPanel>
           </motion.div>
         </div>

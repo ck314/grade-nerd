@@ -93,11 +93,15 @@ function HomePage() {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <Link to="/helpwithdata">
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSeOmQUdVSDRhHfydcLRpOfej7gAghBvacjX_HgjJpl2Mrqu2Q/viewform"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Button size="lg" className="shadow-educational hover:shadow-educational-hover">
-                  Help Us Build <ArrowRight className="ml-2 w-5 h-5" />
+                  Take the Questionnaire <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
-              </Link>
+              </a>
             </div>
 
             <div className="mt-12 flex items-center gap-4 text-sm text-gray-500 font-medium">
