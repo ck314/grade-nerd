@@ -1,0 +1,52 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --educational-blue: #0066FF;
+  --educational-black: #111111;
+  --paper-white: #FFFFFF;
+  --grid-color: #E5E7EB;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: var(--paper-white);
+  color: var(--educational-black);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Graph Paper Pattern */
+.bg-graph-paper {
+  background-color: var(--paper-white);
+  background-image: 
+    linear-gradient(var(--grid-color) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Handwriting font for annotations if needed, but keeping main text clean per instructions */
+.font-hand {
+  font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif; 
+}
+
+/* Utilities */
+.text-balance {
+  text-wrap: balance;
+}
+
+.border-educational {
+  border: 2px solid var(--educational-black);
+}
+
+.shadow-educational {
+  box-shadow: 4px 4px 0px 0px rgba(0,0,0,0.1);
+}
+
+.shadow-educational-hover:hover {
+  transform: translateY(-2px);
+  box-shadow: 6px 6px 0px 0px rgba(0,0,0,0.15);
+}
