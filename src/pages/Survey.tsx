@@ -352,25 +352,32 @@ export function Survey() {
               </EducationalPanel>
 
               {/* Question 5 - Email */}
-              <EducationalPanel className="mb-6 bg-blue-50/50">
-                <label className="block">
-                  <span className="flex items-center gap-2 text-lg font-bold mb-3">
-                    <span className="w-7 h-7 bg-gray-400 text-white rounded-full flex items-center justify-center text-sm">
-                      5
-                    </span>
-                    Your email
-                    <span className="text-gray-400 text-sm font-normal ml-2">(Optional)</span>
-                  </span>
-                  <p className="text-gray-500 text-sm mb-3 ml-9">So we can reach you if you want to help shape Grade Nerd</p>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
-                    placeholder="you@example.com"
-                    className="w-full px-4 py-3 border-2 border-black rounded-lg focus:outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-blue-100 transition-all bg-white"
-                  />
-                </label>
-              </EducationalPanel>
+              {formData.helpShape.length > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <EducationalPanel className="mb-6 bg-blue-50/50">
+                    <label className="block">
+                      <span className="flex items-center gap-2 text-lg font-bold mb-3">
+                        <span className="w-7 h-7 bg-[#0066FF] text-white rounded-full flex items-center justify-center text-sm">
+                          5
+                        </span>
+                        Your email
+                        <span className="text-gray-400 text-sm font-normal ml-2">(so we can reach you)</span>
+                      </span>
+                      <input
+                        type="email"
+                        value={formData.email}
+                        onChange={e => setFormData(prev => ({ ...prev, email: e.target.value }))}
+                        placeholder="you@example.com"
+                        className="w-full px-4 py-3 border-2 border-black rounded-lg focus:outline-none focus:border-[#0066FF] focus:ring-2 focus:ring-blue-100 transition-all bg-white"
+                      />
+                    </label>
+                  </EducationalPanel>
+                </motion.div>
+              )}
 
               {/* Submit Button */}
               <div className="flex justify-center mt-8">
