@@ -6,6 +6,7 @@ import { Button } from './components/ui/Button';
 import { EducationalPanel } from './components/ui/EducationalPanel';
 import { StickFigure } from './components/graphics/StickFigures';
 import { HelpUsBuild } from './pages/HelpUsBuild';
+import { Survey } from './pages/Survey';
 
 function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -93,15 +94,11 @@ function HomePage() {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSeOmQUdVSDRhHfydcLRpOfej7gAghBvacjX_HgjJpl2Mrqu2Q/viewform"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <Link to="/survey">
                 <Button size="lg" className="shadow-educational hover:shadow-educational-hover">
                   Take the Questionnaire <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
-              </a>
+              </Link>
             </div>
 
             <div className="mt-12 flex items-center gap-4 text-sm text-gray-500 font-medium">
@@ -535,6 +532,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/helpwithdata" element={<HelpUsBuild />} />
+        <Route path="/survey" element={<Survey />} />
       </Routes>
     </BrowserRouter>
   );

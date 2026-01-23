@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, ExternalLink, Users, Brain, Code, Rocket, Lightbulb, ClipboardList, Sparkles, GraduationCap } from 'lucide-react';
+import { ArrowLeft, ExternalLink, Users, Brain, Code, Rocket, Lightbulb, ClipboardList, Sparkles, GraduationCap, ArrowRight } from 'lucide-react';
 import { EducationalPanel } from '../components/ui/EducationalPanel';
 import { StickFigure } from '../components/graphics/StickFigures';
 
@@ -58,15 +58,13 @@ export function HelpUsBuild() {
               </div>
 
               <div className="mt-6">
-                <a
-                  href="https://docs.google.com/forms/d/e/1FAIpQLSeOmQUdVSDRhHfydcLRpOfej7gAghBvacjX_HgjJpl2Mrqu2Q/viewform"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/survey"
                   className="inline-flex items-center gap-2 bg-[#0066FF] text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                 >
                   Take the Questionnaire
-                  <ExternalLink className="w-5 h-5" />
-                </a>
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
               </div>
             </EducationalPanel>
 
@@ -178,15 +176,12 @@ export function HelpUsBuild() {
                       <h3 className="text-xl font-bold mb-2">Gather Student Insights</h3>
                       <p className="text-gray-600 mb-3">
                         Get the{' '}
-                        <a
-                          href="https://docs.google.com/forms/d/e/1FAIpQLSeOmQUdVSDRhHfydcLRpOfej7gAghBvacjX_HgjJpl2Mrqu2Q/viewform"
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="text-[#0066FF] hover:underline font-semibold inline-flex items-center gap-1"
+                        <Link
+                          to="/survey"
+                          className="text-[#0066FF] hover:underline font-semibold"
                         >
                           Grade Nerd User Questionnaire
-                          <ExternalLink className="w-4 h-4" />
-                        </a>{' '}
+                        </Link>{' '}
                         about math and understanding math concepts out to <strong>1,000 students</strong>.
                       </p>
                       <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 flex items-center gap-3">
