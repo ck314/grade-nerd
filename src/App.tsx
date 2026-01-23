@@ -107,7 +107,7 @@ function HomePage() {
                     {String.fromCharCode(64 + i)}
                   </div>)}
               </div>
-              <p>Trusted by 10,000+ students</p>
+              <p>Soon to be trusted by 10,000+ students</p>
             </div>
           </motion.div>
 
