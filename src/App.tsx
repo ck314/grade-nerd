@@ -7,6 +7,7 @@ import { EducationalPanel } from './components/ui/EducationalPanel';
 import { StickFigure } from './components/graphics/StickFigures';
 import { HelpUsBuild } from './pages/HelpUsBuild';
 import { Survey } from './pages/Survey';
+import { Demo, TopicView, InterestView, ContentView } from './pages/demo';
 
 function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -94,9 +95,9 @@ function HomePage() {
             </p>
 
             <div className="flex flex-wrap gap-4">
-              <Link to="/survey">
+              <Link to="/demo">
                 <Button size="lg" className="shadow-educational hover:shadow-educational-hover">
-                  Take the Questionnaire <ArrowRight className="ml-2 w-5 h-5" />
+                  Try The Demo <ArrowRight className="ml-2 w-5 h-5" />
                 </Button>
               </Link>
             </div>
@@ -533,6 +534,10 @@ export function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/helpwithdata" element={<HelpUsBuild />} />
         <Route path="/survey" element={<Survey />} />
+        <Route path="/demo" element={<Demo />} />
+        <Route path="/demo/topic/:topicId" element={<TopicView />} />
+        <Route path="/demo/topic/:topicId/:interestId" element={<ContentView />} />
+        <Route path="/demo/interest/:interestId" element={<InterestView />} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, Send, CheckCircle, Sparkles } from 'lucide-react';
 import { EducationalPanel } from '../components/ui/EducationalPanel';
 import { Button } from '../components/ui/Button';
 import { StickFigure } from '../components/graphics/StickFigures';
+import { useUserPassion } from '../hooks/useUserPassion';
 
 const GOOGLE_FORM_ACTION_URL = 'https://docs.google.com/forms/d/e/1FAIpQLSdcNPnA9X0IgEaT82busPBwkMYI0FKzaA2OiFk9QbTlV3MBag/formResponse';
 
@@ -12,6 +13,8 @@ const ENTRY_IDS = {
   interest: 'entry.179715797',
   wouldTryApp: 'entry.442779230',
   learningHelp: 'entry.245487262',
+  smallFeedback: 'entry.1260108024',
+  bigFeedback: 'entry.840604072',
   helpShape: 'entry.309128170',
   email: 'entry.242598101',
 };
@@ -41,13 +44,23 @@ const HELP_SHAPE_OPTIONS = [
 export function Survey() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const { passion: savedPassion } = useUserPassion();
   const [formData, setFormData] = useState({
     interest: '',
     wouldTryApp: '',
     learningHelp: [] as string[],
+    smallFeedback: '',
+    bigFeedback: '',
     helpShape: [] as string[],
     email: '',
   });
+
+  // Pre-fill passion from localStorage if available
+  useEffect(() => {
+    if (savedPassion && !formData.interest) {
+      setFormData(prev => ({ ...prev, interest: savedPassion }));
+    }
+  }, [savedPassion]);
 
   const fadeIn = {
     initial: { opacity: 0, y: 20 },
@@ -79,6 +92,12 @@ export function Survey() {
     formData.learningHelp.forEach(value => {
       formBody.append(ENTRY_IDS.learningHelp, value);
     });
+    if (formData.smallFeedback) {
+      formBody.append(ENTRY_IDS.smallFeedback, formData.smallFeedback);
+    }
+    if (formData.bigFeedback) {
+      formBody.append(ENTRY_IDS.bigFeedback, formData.bigFeedback);
+    }
     formData.helpShape.forEach(value => {
       formBody.append(ENTRY_IDS.helpShape, value);
     });
@@ -316,12 +335,54 @@ export function Survey() {
                 </fieldset>
               </EducationalPanel>
 
-              {/* Question 4 */}
+              {/* Question 4 - Small Feedback */}
+              <EducationalPanel className="mb-6 bg-green-50/50">
+                <label className="block">
+                  <span className="flex items-center gap-2 text-lg font-bold mb-3">
+                    <span className="w-7 h-7 bg-green-500 text-white rounded-full flex items-center justify-center text-sm">
+                      4
+                    </span>
+                    SMALL things that would make Grade Nerd better?
+                    <span className="text-gray-400 text-sm font-normal ml-2">(Optional)</span>
+                  </span>
+                  <p className="text-gray-500 text-sm mb-3 ml-9">A quick fix, minor improvement, or small detail you noticed</p>
+                  <textarea
+                    value={formData.smallFeedback}
+                    onChange={e => setFormData(prev => ({ ...prev, smallFeedback: e.target.value }))}
+                    placeholder="e.g., 'The font is a bit hard to read' or 'Would be nice to have a dark mode'"
+                    rows={3}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-green-500 focus:ring-2 focus:ring-green-100 transition-all bg-white resize-none"
+                  />
+                </label>
+              </EducationalPanel>
+
+              {/* Question 5 - Big Feedback */}
+              <EducationalPanel className="mb-6 bg-purple-50/50">
+                <label className="block">
+                  <span className="flex items-center gap-2 text-lg font-bold mb-3">
+                    <span className="w-7 h-7 bg-purple-500 text-white rounded-full flex items-center justify-center text-sm">
+                      5
+                    </span>
+                    BIG things that would make Grade Nerd better?
+                    <span className="text-gray-400 text-sm font-normal ml-2">(Optional)</span>
+                  </span>
+                  <p className="text-gray-500 text-sm mb-3 ml-9">A major feature, different approach, or game-changing idea</p>
+                  <textarea
+                    value={formData.bigFeedback}
+                    onChange={e => setFormData(prev => ({ ...prev, bigFeedback: e.target.value }))}
+                    placeholder="e.g., 'I wish it could generate practice problems' or 'Add a way to track my progress over time'"
+                    rows={3}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:ring-2 focus:ring-purple-100 transition-all bg-white resize-none"
+                  />
+                </label>
+              </EducationalPanel>
+
+              {/* Question 6 */}
               <EducationalPanel className="mb-6 bg-yellow-50/50">
                 <fieldset>
                   <legend className="flex items-center gap-2 text-lg font-bold mb-2">
                     <span className="w-7 h-7 bg-gray-400 text-white rounded-full flex items-center justify-center text-sm">
-                      4
+                      6
                     </span>
                     Want to help shape Grade Nerd?
                     <span className="text-gray-400 text-sm font-normal ml-2">(Optional)</span>
@@ -351,7 +412,7 @@ export function Survey() {
                 </fieldset>
               </EducationalPanel>
 
-              {/* Question 5 - Email */}
+              {/* Question 7 - Email */}
               {formData.helpShape.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0, height: 0 }}
@@ -362,7 +423,7 @@ export function Survey() {
                     <label className="block">
                       <span className="flex items-center gap-2 text-lg font-bold mb-3">
                         <span className="w-7 h-7 bg-[#0066FF] text-white rounded-full flex items-center justify-center text-sm">
-                          5
+                          7
                         </span>
                         Your email
                         <span className="text-gray-400 text-sm font-normal ml-2">(so we can reach you)</span>

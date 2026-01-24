@@ -49,20 +49,20 @@ export function HelpUsBuild() {
               <div className="space-y-4 text-lg leading-relaxed">
                 <div className="flex items-start gap-3">
                   <span className="font-bold text-[#0066FF] whitespace-nowrap">For teachers:</span>
-                  <span>Circulate the questionnaire to math students at your school.</span>
+                  <span>Circulate the demo and questionnaire to math students at your school.</span>
                 </div>
                 <div className="flex items-start gap-3">
                   <span className="font-bold text-[#0066FF] whitespace-nowrap">For students:</span>
-                  <span>Take the questionnaire and give us valuable info about what math students really want.</span>
+                  <span>Try the demo, then give us valuable feedback about what you love (or don't love).</span>
                 </div>
               </div>
 
               <div className="mt-6">
                 <Link
-                  to="/survey"
+                  to="/demo"
                   className="inline-flex items-center gap-2 bg-[#0066FF] text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
                 >
-                  Take the Questionnaire
+                  Try The Demo
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </div>
@@ -135,7 +135,10 @@ export function HelpUsBuild() {
                         extra credit assignment
                         <ExternalLink className="w-4 h-4" />
                       </a>
-                      , Caradoc had an idea: <strong>What if there was personalized math learning software that connects concepts to what students actually care about?</strong>
+                      , Caradoc had an idea:
+                    </p>
+                    <p className="text-lg leading-relaxed mt-3">
+                      <strong>What if there was personalized math learning software that connects concepts to what students actually care about?</strong>
                     </p>
                     <p className="text-lg leading-relaxed mt-3">
                       That idea became <span className="font-bold text-[#0066FF]">Grade Nerd</span>.
