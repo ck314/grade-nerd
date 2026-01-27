@@ -8,6 +8,7 @@ import { StickFigure } from './components/graphics/StickFigures';
 import { HelpUsBuild } from './pages/HelpUsBuild';
 import { Survey } from './pages/Survey';
 import { Demo, TopicView, InterestView, ContentView } from './pages/demo';
+import { Game, TopicLearn, TopicQuiz, TopicComplete, FormulaSheet, GameLayout } from './pages/game';
 
 function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -538,6 +539,13 @@ export function App() {
         <Route path="/demo/topic/:topicId" element={<TopicView />} />
         <Route path="/demo/topic/:topicId/:interestId" element={<ContentView />} />
         <Route path="/demo/interest/:interestId" element={<InterestView />} />
+        <Route path="/game" element={<GameLayout />}>
+          <Route index element={<Game />} />
+          <Route path="topic/:topicId" element={<TopicLearn />} />
+          <Route path="topic/:topicId/quiz" element={<TopicQuiz />} />
+          <Route path="topic/:topicId/complete" element={<TopicComplete />} />
+          <Route path="formula-sheet" element={<FormulaSheet />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
