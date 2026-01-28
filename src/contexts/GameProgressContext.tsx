@@ -1,7 +1,8 @@
 import React, { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { GameProgress, TopicProgress, TopicStatus } from '../data/game/gameTypes';
+import { GameProgress, TopicProgress, TopicStatus, QuizCompletionResult } from '../data/game/gameTypes';
 import { gameTopics } from '../data/game/gameTopics';
 import { gameUnits } from '../data/game/gameUnits';
+import { getItemById, getUnpurchasedItemsCost, avatarItems } from '../data/game/avatarItems';
 
 const STORAGE_KEY = 'gradenerd-formula-forge';
 const PASS_THRESHOLD = 1.0; // 100% to pass
@@ -23,6 +24,33 @@ function createInitialProgress(): GameProgress {
     topics,
     startedAt: new Date().toISOString(),
     lastPlayedAt: new Date().toISOString(),
+    points: {
+      totalEarned: 0,
+      spent: 0,
+    },
+    avatar: {
+      purchasedItems: [],
+      equippedItems: [],
+      level: 1,
+      pointsClaimedTopics: [],
+    },
+  };
+}
+
+// Migrate old progress data to include points and avatar
+function migrateProgress(stored: Partial<GameProgress>): GameProgress {
+  const initial = createInitialProgress();
+  const avatar = stored.avatar || initial.avatar;
+  return {
+    ...initial,
+    ...stored,
+    points: stored.points || initial.points,
+    avatar: {
+      ...initial.avatar,
+      ...avatar,
+      level: avatar.level || 1,
+      pointsClaimedTopics: avatar.pointsClaimedTopics || [],
+    },
   };
 }
 
@@ -31,7 +59,7 @@ interface GameProgressContextType {
   getTopicProgress: (topicId: string) => TopicProgress | undefined;
   startTopic: (topicId: string) => void;
   startQuiz: (topicId: string) => void;
-  completeQuiz: (topicId: string, score: number, total: number) => boolean;
+  completeQuiz: (topicId: string, score: number, total: number) => QuizCompletionResult;
   getOverallProgress: () => {
     totalTopics: number;
     formulasUnlocked: number;
@@ -48,6 +76,18 @@ interface GameProgressContextType {
   getUnlockedFormulas: () => string[];
   getUnlockedExamples: () => string[];
   resetProgress: () => void;
+  // Points and avatar functions
+  getAvailablePoints: () => number;
+  purchaseItem: (itemId: string) => boolean;
+  equipItem: (itemId: string) => void;
+  unequipItem: (itemId: string) => void;
+  isItemPurchased: (itemId: string) => boolean;
+  isItemEquipped: (itemId: string) => boolean;
+  // Level up functions
+  canLevelUp: () => boolean;
+  levelUp: () => void;
+  canEarnPointsForTopic: (topicId: string) => boolean;
+  getLevel: () => number;
 }
 
 const GameProgressContext = createContext<GameProgressContextType | null>(null);
@@ -60,8 +100,10 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored) as GameProgress;
-        const updated = { ...parsed };
+        const parsed = JSON.parse(stored) as Partial<GameProgress>;
+        // Migrate to ensure points and avatar exist
+        const updated = migrateProgress(parsed);
+        // Also ensure all topics exist
         gameTopics.forEach((topic, index) => {
           if (!updated.topics[topic.id]) {
             updated.topics[topic.id] = {
@@ -135,8 +177,18 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const completeQuiz = useCallback((topicId: string, score: number, total: number) => {
+  const completeQuiz = useCallback((topicId: string, score: number, total: number): QuizCompletionResult => {
     const passed = score / total >= PASS_THRESHOLD;
+
+    // Check if points can be earned for this topic
+    // After level 1, can only earn points once per topic per run
+    const canEarnPoints = progress.avatar.level === 1 ||
+      !progress.avatar.pointsClaimedTopics.includes(topicId);
+
+    // Calculate points: 1 per correct answer + 2 bonus for 100%
+    const correctAnswers = score;
+    const bonusPoints = passed ? 2 : 0;
+    const pointsEarned = canEarnPoints ? (correctAnswers + bonusPoints) : 0;
 
     setProgress(prev => {
       const topicProgress = prev.topics[topicId];
@@ -162,16 +214,34 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
         };
       }
 
+      // Track that points were claimed for this topic (if earned)
+      const newPointsClaimedTopics = canEarnPoints && pointsEarned > 0
+        ? [...prev.avatar.pointsClaimedTopics, topicId]
+        : prev.avatar.pointsClaimedTopics;
+
       return {
         ...prev,
         currentTopicId: passed ? null : topicId,
         lastPlayedAt: new Date().toISOString(),
         topics: newTopics,
+        points: {
+          ...prev.points,
+          totalEarned: prev.points.totalEarned + pointsEarned,
+        },
+        avatar: {
+          ...prev.avatar,
+          pointsClaimedTopics: newPointsClaimedTopics,
+        },
       };
     });
 
-    return passed;
-  }, []);
+    return {
+      passed,
+      pointsEarned,
+      correctAnswers,
+      bonusPoints,
+    };
+  }, [progress.avatar.level, progress.avatar.pointsClaimedTopics]);
 
   const getOverallProgress = useCallback(() => {
     const totalTopics = gameTopics.length;
@@ -235,6 +305,128 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
   }, []);
 
+  // Points functions
+  const getAvailablePoints = useCallback((): number => {
+    return progress.points.totalEarned - progress.points.spent;
+  }, [progress.points]);
+
+  // Avatar functions
+  const purchaseItem = useCallback((itemId: string): boolean => {
+    const item = getItemById(itemId);
+    if (!item) return false;
+
+    const available = progress.points.totalEarned - progress.points.spent;
+    if (available < item.price) return false;
+    if (progress.avatar.purchasedItems.includes(itemId)) return false;
+
+    setProgress(prev => ({
+      ...prev,
+      points: {
+        ...prev.points,
+        spent: prev.points.spent + item.price,
+      },
+      avatar: {
+        ...prev.avatar,
+        purchasedItems: [...prev.avatar.purchasedItems, itemId],
+      },
+    }));
+
+    return true;
+  }, [progress.points, progress.avatar.purchasedItems]);
+
+  const equipItem = useCallback((itemId: string): void => {
+    if (!progress.avatar.purchasedItems.includes(itemId)) return;
+    if (progress.avatar.equippedItems.includes(itemId)) return;
+
+    setProgress(prev => ({
+      ...prev,
+      avatar: {
+        ...prev.avatar,
+        equippedItems: [...prev.avatar.equippedItems, itemId],
+      },
+    }));
+  }, [progress.avatar.purchasedItems, progress.avatar.equippedItems]);
+
+  const unequipItem = useCallback((itemId: string): void => {
+    setProgress(prev => ({
+      ...prev,
+      avatar: {
+        ...prev.avatar,
+        equippedItems: prev.avatar.equippedItems.filter(id => id !== itemId),
+      },
+    }));
+  }, []);
+
+  const isItemPurchased = useCallback((itemId: string): boolean => {
+    return progress.avatar.purchasedItems.includes(itemId);
+  }, [progress.avatar.purchasedItems]);
+
+  const isItemEquipped = useCallback((itemId: string): boolean => {
+    return progress.avatar.equippedItems.includes(itemId);
+  }, [progress.avatar.equippedItems]);
+
+  // Level up functions
+  const canLevelUp = useCallback((): boolean => {
+    // Can level up when you have enough points to buy all remaining items
+    const availablePoints = progress.points.totalEarned - progress.points.spent;
+    const unpurchasedCost = getUnpurchasedItemsCost(progress.avatar.purchasedItems);
+    // Can level up if all items are purchased OR if you have enough points to buy them all
+    return unpurchasedCost === 0 || availablePoints >= unpurchasedCost;
+  }, [progress.points, progress.avatar.purchasedItems]);
+
+  const levelUp = useCallback((): void => {
+    if (!canLevelUp()) return;
+
+    setProgress(prev => {
+      // Reset all topic progress BUT keep formulas and examples unlocked
+      const newTopics: { [topicId: string]: TopicProgress } = {};
+      gameTopics.forEach((topic, index) => {
+        const oldProgress = prev.topics[topic.id];
+        newTopics[topic.id] = {
+          status: index === 0 ? 'available' : 'locked',
+          // Keep formulas and examples unlocked (the formula sheet)
+          formulaUnlocked: oldProgress?.formulaUnlocked || false,
+          exampleUnlocked: oldProgress?.exampleUnlocked || false,
+          quizAttempts: 0,
+          // Reset quiz score
+          quizScore: undefined,
+        };
+      });
+
+      return {
+        ...prev,
+        currentTopicId: null,
+        lastPlayedAt: new Date().toISOString(),
+        topics: newTopics,
+        // Reset points to zero
+        points: {
+          totalEarned: 0,
+          spent: 0,
+        },
+        avatar: {
+          // Reset purchased and equipped items
+          purchasedItems: [],
+          equippedItems: [],
+          // Increment level
+          level: prev.avatar.level + 1,
+          // Reset points claimed for new run
+          pointsClaimedTopics: [],
+        },
+      };
+    });
+  }, [canLevelUp]);
+
+  const canEarnPointsForTopic = useCallback((topicId: string): boolean => {
+    // Level 1: always can earn points
+    if (progress.avatar.level === 1) return true;
+    // Level 2+: only if not already claimed this run
+    return !progress.avatar.pointsClaimedTopics.includes(topicId);
+  }, [progress.avatar.level, progress.avatar.pointsClaimedTopics]);
+
+  const getLevel = useCallback((): number => {
+    return progress.avatar.level;
+  }, [progress.avatar.level]);
+
   return (
     <GameProgressContext.Provider
       value={{
@@ -249,6 +441,16 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
         getUnlockedFormulas,
         getUnlockedExamples,
         resetProgress,
+        getAvailablePoints,
+        purchaseItem,
+        equipItem,
+        unequipItem,
+        isItemPurchased,
+        isItemEquipped,
+        canLevelUp,
+        levelUp,
+        canEarnPointsForTopic,
+        getLevel,
       }}
     >
       {children}

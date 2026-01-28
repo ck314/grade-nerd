@@ -5,3 +5,7 @@ export { FormulaSheetSidebar } from './FormulaSheetSidebar';
 export { TopicProgressCard } from './TopicProgressCard';
 export { GameNav } from './GameNav';
 export { UnlockAnimation } from './UnlockAnimation';
+export { PointsDisplay } from './PointsDisplay';
+export { StoreItemCard } from './StoreItemCard';
+export { AvatarStore } from './AvatarStore';
+export { PointsToast } from './PointsToast';

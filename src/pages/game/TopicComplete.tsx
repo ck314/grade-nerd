@@ -6,22 +6,24 @@ import { getTopicById, getNextTopic } from '../../data/game/gameTopics';
 import { getUnitByTopicId } from '../../data/game/gameUnits';
 import { getFormulasByTopicId } from '../../data/game/formulas';
 import { getExamplesByTopicId } from '../../data/game/examples';
-import { GameNav, FormulaCard, ExampleCard, UnlockAnimation } from './components';
+import { GameNav, FormulaCard, ExampleCard, UnlockAnimation, PointsDisplay, AvatarStore } from './components';
+import { CustomizableAvatar } from '../../components/avatar';
 import { Button } from '../../components/ui/Button';
-import { ArrowRight, Trophy, FileText, Home } from 'lucide-react';
+import { ArrowRight, Trophy, FileText, Home, Coins, Sparkles } from 'lucide-react';
 
 export function TopicComplete() {
   const { topicId } = useParams<{ topicId: string }>();
   const navigate = useNavigate();
-  const { getTopicProgress, isTopicAccessible } = useGameProgress();
+  const { getTopicProgress, isTopicAccessible, getAvailablePoints, progress: gameProgress } = useGameProgress();
 
   const [showUnlock, setShowUnlock] = useState(true);
+  const [storeOpen, setStoreOpen] = useState(false);
 
   const topic = topicId ? getTopicById(topicId) : undefined;
   const unit = topicId ? getUnitByTopicId(topicId) : undefined;
   const formulas = topicId ? getFormulasByTopicId(topicId) : [];
   const examples = topicId ? getExamplesByTopicId(topicId) : [];
-  const progress = topicId ? getTopicProgress(topicId) : undefined;
+  const topicProgress = topicId ? getTopicProgress(topicId) : undefined;
   const nextTopic = topicId ? getNextTopic(topicId) : undefined;
 
   // Redirect if topic not found, locked, or not completed
@@ -31,11 +33,11 @@ export function TopicComplete() {
       return;
     }
 
-    if (!isTopicAccessible(topicId) || progress?.status !== 'completed') {
+    if (!isTopicAccessible(topicId) || topicProgress?.status !== 'completed') {
       navigate(`/game/topic/${topicId}`);
       return;
     }
-  }, [topicId, topic, progress?.status]);
+  }, [topicId, topic, topicProgress?.status]);
 
   if (!topic || !unit) {
     return null;
@@ -110,29 +112,58 @@ export function TopicComplete() {
             </div>
           </motion.section>
 
-          {/* Score Summary */}
-          {progress?.quizScore !== undefined && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="mb-8"
-            >
-              <div className="bg-purple-50 border-2 border-purple-200 rounded-xl p-4 flex items-center justify-between">
-                <div>
-                  <div className="text-sm font-bold text-purple-600 mb-1">Quiz Score</div>
-                  <div className="text-2xl font-bold text-purple-700">
-                    {progress.quizScore} points
+          {/* Points Earned Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 }}
+            className="mb-8"
+          >
+            <div className="bg-gradient-to-r from-amber-50 to-yellow-50 border-2 border-amber-300 rounded-xl p-5">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-amber-400 rounded-full flex items-center justify-center">
+                    <Coins size={24} className="text-amber-800" />
+                  </div>
+                  <div>
+                    <div className="text-sm font-medium text-amber-600">Points Balance</div>
+                    <div className="text-2xl font-bold text-amber-700">
+                      {getAvailablePoints()} pts
+                    </div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-sm text-purple-600">
-                    Attempts: {progress.quizAttempts}
-                  </div>
+                  <PointsDisplay points={getAvailablePoints()} size="lg" />
                 </div>
               </div>
-            </motion.div>
-          )}
+
+              {/* Avatar preview with store link */}
+              <div className="flex items-center justify-between bg-white/50 rounded-lg p-3">
+                <div className="flex items-center gap-3">
+                  <CustomizableAvatar
+                    equippedItems={gameProgress.avatar.equippedItems}
+                    size="md"
+                    onClick={() => setStoreOpen(true)}
+                  />
+                  <div>
+                    <div className="font-medium text-amber-800">Customize Your Avatar</div>
+                    <div className="text-sm text-amber-600">
+                      Spend points on accessories!
+                    </div>
+                  </div>
+                </div>
+                <Button
+                  variant="secondary"
+                  size="sm"
+                  onClick={() => setStoreOpen(true)}
+                  className="bg-amber-100 border-amber-300 text-amber-700 hover:bg-amber-200"
+                >
+                  <Sparkles size={16} className="mr-1" />
+                  Open Store
+                </Button>
+              </div>
+            </div>
+          </motion.div>
 
           {/* Next Steps */}
           <motion.div
@@ -204,6 +235,9 @@ export function TopicComplete() {
           />
         )}
       </AnimatePresence>
+
+      {/* Avatar Store Modal */}
+      <AvatarStore isOpen={storeOpen} onClose={() => setStoreOpen(false)} />
     </div>
   );
 }

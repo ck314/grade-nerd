@@ -2,6 +2,20 @@
 
 export type TopicStatus = 'locked' | 'available' | 'learning' | 'quiz' | 'completed';
 
+// Points system
+export interface PointsState {
+  totalEarned: number;
+  spent: number;
+}
+
+// Avatar customization
+export interface AvatarState {
+  purchasedItems: string[];  // item IDs that have been purchased
+  equippedItems: string[];   // item IDs currently equipped (displayed on avatar)
+  level: number;             // current level (starts at 1)
+  pointsClaimedTopics: string[];  // topics that have given points this run (resets on level up)
+}
+
 export interface TopicProgress {
   status: TopicStatus;
   formulaUnlocked: boolean;
@@ -17,6 +31,16 @@ export interface GameProgress {
   };
   startedAt: string;
   lastPlayedAt: string;
+  points: PointsState;
+  avatar: AvatarState;
+}
+
+// Result from completing a quiz, including points earned
+export interface QuizCompletionResult {
+  passed: boolean;
+  pointsEarned: number;
+  correctAnswers: number;
+  bonusPoints: number;
 }
 
 export interface GameUnit {

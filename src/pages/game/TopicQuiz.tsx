@@ -6,19 +6,22 @@ import { useGameProgress } from '../../hooks/useGameProgress';
 import { getTopicById } from '../../data/game/gameTopics';
 import { getUnitByTopicId } from '../../data/game/gameUnits';
 import { getQuestionsByTopicId } from '../../data/game/questions';
-import { GameNav, QuestionCard } from './components';
+import { GameNav, QuestionCard, PointsToast } from './components';
 import { Button } from '../../components/ui/Button';
-import { ArrowRight, RotateCcw } from 'lucide-react';
+import { ArrowRight, RotateCcw, Coins, AlertCircle } from 'lucide-react';
+import { QuizCompletionResult } from '../../data/game/gameTypes';
 
 export function TopicQuiz() {
   const { topicId } = useParams<{ topicId: string }>();
   const navigate = useNavigate();
-  const { startQuiz, completeQuiz, isTopicAccessible } = useGameProgress();
+  const { startQuiz, completeQuiz, isTopicAccessible, canEarnPointsForTopic, getLevel } = useGameProgress();
 
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [answers, setAnswers] = useState<{ questionId: string; correct: boolean }[]>([]);
   const [quizComplete, setQuizComplete] = useState(false);
   const [passed, setPassed] = useState(false);
+  const [quizResult, setQuizResult] = useState<QuizCompletionResult | null>(null);
+  const [showPointsToast, setShowPointsToast] = useState(false);
 
   const topic = topicId ? getTopicById(topicId) : undefined;
   const unit = topicId ? getUnitByTopicId(topicId) : undefined;
@@ -44,6 +47,9 @@ export function TopicQuiz() {
     return null;
   }
 
+  const canEarnPoints = topicId ? canEarnPointsForTopic(topicId) : true;
+  const currentLevel = getLevel();
+
   const handleAnswer = (answer: string | number, isCorrect: boolean) => {
     const newAnswers = [
       ...answers,
@@ -58,9 +64,14 @@ export function TopicQuiz() {
       } else {
         // Quiz complete
         const score = newAnswers.filter((a) => a.correct).length;
-        const didPass = completeQuiz(topicId!, score, questions.length);
-        setPassed(didPass);
+        const result = completeQuiz(topicId!, score, questions.length);
+        setPassed(result.passed);
+        setQuizResult(result);
         setQuizComplete(true);
+        // Show points toast
+        if (result.pointsEarned > 0) {
+          setShowPointsToast(true);
+        }
       }
     }, 1500);
   };
@@ -70,6 +81,8 @@ export function TopicQuiz() {
     setAnswers([]);
     setQuizComplete(false);
     setPassed(false);
+    setQuizResult(null);
+    setShowPointsToast(false);
     startQuiz(topicId!);
   };
 
@@ -118,6 +131,21 @@ export function TopicQuiz() {
             )}
           </motion.div>
 
+          {/* No points warning for level 2+ */}
+          {currentLevel > 1 && !canEarnPoints && !quizComplete && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mb-4 p-3 bg-amber-50 border border-amber-200 rounded-lg flex items-center gap-3"
+            >
+              <AlertCircle size={20} className="text-amber-500 flex-shrink-0" />
+              <div className="text-sm">
+                <span className="font-medium text-amber-700">No more avatar points available for this topic.</span>
+                <span className="text-amber-600"> You've already earned points here this run. Try another topic for more points!</span>
+              </div>
+            </motion.div>
+          )}
+
           {/* Quiz Content */}
           {!quizComplete ? (
             <motion.div
@@ -158,7 +186,7 @@ export function TopicQuiz() {
                 </h2>
 
                 <p className={cn(
-                  'mb-6',
+                  'mb-4',
                   passed ? 'text-green-600' : 'text-red-600'
                 )}>
                   You got {score} out of {questions.length} questions correct.
@@ -166,6 +194,21 @@ export function TopicQuiz() {
                     ? ' You\'ve unlocked the worked example!'
                     : ' You need 100% to pass. Try again!'}
                 </p>
+
+                {/* Points earned display */}
+                {quizResult && quizResult.pointsEarned > 0 && (
+                  <div className="flex items-center justify-center gap-2 mb-6 p-3 bg-amber-50 rounded-lg border border-amber-200">
+                    <Coins size={20} className="text-amber-500" />
+                    <span className="font-bold text-amber-700">
+                      +{quizResult.correctAnswers} point{quizResult.correctAnswers !== 1 ? 's' : ''}
+                    </span>
+                    {quizResult.bonusPoints > 0 && (
+                      <span className="text-amber-600">
+                        + {quizResult.bonusPoints} bonus!
+                      </span>
+                    )}
+                  </div>
+                )}
 
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
                   {passed ? (
@@ -241,6 +284,14 @@ export function TopicQuiz() {
           )}
         </div>
       </main>
+
+      {/* Points Toast */}
+      <PointsToast
+        points={quizResult?.correctAnswers || 0}
+        bonus={quizResult?.bonusPoints || 0}
+        isVisible={showPointsToast}
+        onComplete={() => setShowPointsToast(false)}
+      />
     </div>
   );
 }
