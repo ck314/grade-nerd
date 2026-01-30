@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect, useCallback, Rea
 import { GameProgress, TopicProgress, TopicStatus, QuizCompletionResult } from '../data/game/gameTypes';
 import { gameTopics } from '../data/game/gameTopics';
 import { gameUnits } from '../data/game/gameUnits';
-import { getItemById, getUnpurchasedItemsCost, avatarItems } from '../data/game/avatarItems';
+import { getItemById } from '../data/game/avatarItems';
 
 const STORAGE_KEY = 'gradenerd-formula-forge';
 const PASS_THRESHOLD = 1.0; // 100% to pass
@@ -367,12 +367,12 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
 
   // Level up functions
   const canLevelUp = useCallback((): boolean => {
-    // Can level up when you have enough points to buy all remaining items
-    const availablePoints = progress.points.totalEarned - progress.points.spent;
-    const unpurchasedCost = getUnpurchasedItemsCost(progress.avatar.purchasedItems);
-    // Can level up if all items are purchased OR if you have enough points to buy them all
-    return unpurchasedCost === 0 || availablePoints >= unpurchasedCost;
-  }, [progress.points, progress.avatar.purchasedItems]);
+    // Can level up when all topics are completed
+    const allTopicsCompleted = gameTopics.every(
+      topic => progress.topics[topic.id]?.status === 'completed'
+    );
+    return allTopicsCompleted;
+  }, [progress.topics]);
 
   const levelUp = useCallback((): void => {
     if (!canLevelUp()) return;

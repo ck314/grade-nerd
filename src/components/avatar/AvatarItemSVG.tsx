@@ -196,12 +196,18 @@ export function AvatarItemSVG({ itemId }: AvatarItemSVGProps) {
     case 'sparkle-trail':
       return (
         <g className="avatar-item sparkle-trail">
-          <circle cx="25" cy="140" r="2" fill="#FFD700" opacity="0.8" />
-          <circle cx="30" cy="155" r="1.5" fill="#FFD700" opacity="0.6" />
-          <circle cx="22" cy="165" r="1" fill="#FFD700" opacity="0.4" />
-          <circle cx="75" cy="140" r="2" fill="#FFD700" opacity="0.8" />
-          <circle cx="70" cy="155" r="1.5" fill="#FFD700" opacity="0.6" />
-          <circle cx="78" cy="165" r="1" fill="#FFD700" opacity="0.4" />
+          {/* Left trail - rainbow colors */}
+          <circle cx="25" cy="140" r="2" fill="#FF6B6B" opacity="0.9" />
+          <circle cx="30" cy="150" r="1.8" fill="#FFD93D" opacity="0.8" />
+          <circle cx="22" cy="160" r="1.5" fill="#6BCB77" opacity="0.7" />
+          <circle cx="28" cy="170" r="1.2" fill="#4D96FF" opacity="0.6" />
+          <circle cx="20" cy="178" r="1" fill="#9B59B6" opacity="0.5" />
+          {/* Right trail - rainbow colors */}
+          <circle cx="75" cy="140" r="2" fill="#FF6B6B" opacity="0.9" />
+          <circle cx="70" cy="150" r="1.8" fill="#FFD93D" opacity="0.8" />
+          <circle cx="78" cy="160" r="1.5" fill="#6BCB77" opacity="0.7" />
+          <circle cx="72" cy="170" r="1.2" fill="#4D96FF" opacity="0.6" />
+          <circle cx="80" cy="178" r="1" fill="#9B59B6" opacity="0.5" />
         </g>
       );
 

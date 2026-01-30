@@ -236,7 +236,7 @@ export function Game() {
               </div>
               <h2 className="text-2xl font-bold mb-2">Level Up to Level {getLevel() + 1}?</h2>
               <p className="text-gray-600 mb-4">
-                Congratulations! You've earned enough points to buy all avatar items.
+                Congratulations! You've completed all topics. Ready for another run?
               </p>
               <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mb-6 text-left">
                 <h3 className="font-bold text-amber-800 mb-2">What happens:</h3>
