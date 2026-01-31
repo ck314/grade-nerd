@@ -4,6 +4,66 @@ import { gameTopics } from '../data/game/gameTopics';
 import { gameUnits } from '../data/game/gameUnits';
 import { getItemById } from '../data/game/avatarItems';
 
+// Equipment restriction rules
+const HEAD_ITEMS = ['pencil-ear', 'headband', 'graduation-cap', 'einstein-hair', 'propeller-beanie', 'wizard-hat'];
+const FACE_EXCLUSIVE = ['round-glasses', 'thick-glasses', 'safety-goggles', 'monocle']; // rosy-cheeks is always available
+const BODY_HELD_ITEMS = ['pencil-held', 'ruler-held', 'calculator-held'];
+const BODY_NECK_ITEMS = ['bow-tie', 'medal'];
+const BODY_OUTER_ITEMS = ['lab-coat', 'superhero-cape'];
+const BODY_BACK_ITEMS = ['backpack', 'pi-shirt'];
+// suspenders is always available
+const EFFECT_ITEMS = ['tiny-stars', 'sparkle-trail', 'floating-formulas', 'genius-aura'];
+const MAX_EFFECTS = 2;
+
+// Get items that conflict with the given item (should be unequipped when equipping this item)
+function getConflictingItems(itemId: string, currentlyEquipped: string[]): string[] {
+  const item = getItemById(itemId);
+  if (!item) return [];
+
+  const conflicts: string[] = [];
+
+  // Head: only one at a time
+  if (HEAD_ITEMS.includes(itemId)) {
+    conflicts.push(...currentlyEquipped.filter(id => HEAD_ITEMS.includes(id) && id !== itemId));
+  }
+
+  // Face: rosy-cheeks is always available, others are mutually exclusive
+  if (FACE_EXCLUSIVE.includes(itemId)) {
+    conflicts.push(...currentlyEquipped.filter(id => FACE_EXCLUSIVE.includes(id) && id !== itemId));
+  }
+
+  // Body held items: only one
+  if (BODY_HELD_ITEMS.includes(itemId)) {
+    conflicts.push(...currentlyEquipped.filter(id => BODY_HELD_ITEMS.includes(id) && id !== itemId));
+  }
+
+  // Body neck items: only one
+  if (BODY_NECK_ITEMS.includes(itemId)) {
+    conflicts.push(...currentlyEquipped.filter(id => BODY_NECK_ITEMS.includes(id) && id !== itemId));
+  }
+
+  // Body outer items: only one
+  if (BODY_OUTER_ITEMS.includes(itemId)) {
+    conflicts.push(...currentlyEquipped.filter(id => BODY_OUTER_ITEMS.includes(id) && id !== itemId));
+  }
+
+  // Body back items: only one
+  if (BODY_BACK_ITEMS.includes(itemId)) {
+    conflicts.push(...currentlyEquipped.filter(id => BODY_BACK_ITEMS.includes(id) && id !== itemId));
+  }
+
+  // Effects: max 2 at a time
+  if (EFFECT_ITEMS.includes(itemId)) {
+    const equippedEffects = currentlyEquipped.filter(id => EFFECT_ITEMS.includes(id));
+    if (equippedEffects.length >= MAX_EFFECTS) {
+      // Remove the oldest effect (first one in the list)
+      conflicts.push(equippedEffects[0]);
+    }
+  }
+
+  return conflicts;
+}
+
 const STORAGE_KEY = 'gradenerd-formula-forge';
 const PASS_THRESHOLD = 1.0; // 100% to pass
 
@@ -338,13 +398,23 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
     if (!progress.avatar.purchasedItems.includes(itemId)) return;
     if (progress.avatar.equippedItems.includes(itemId)) return;
 
-    setProgress(prev => ({
-      ...prev,
-      avatar: {
-        ...prev.avatar,
-        equippedItems: [...prev.avatar.equippedItems, itemId],
-      },
-    }));
+    setProgress(prev => {
+      // Find conflicting items that need to be unequipped
+      const conflicts = getConflictingItems(itemId, prev.avatar.equippedItems);
+
+      // Remove conflicts and add new item
+      const newEquipped = prev.avatar.equippedItems
+        .filter(id => !conflicts.includes(id))
+        .concat(itemId);
+
+      return {
+        ...prev,
+        avatar: {
+          ...prev.avatar,
+          equippedItems: newEquipped,
+        },
+      };
+    });
   }, [progress.avatar.purchasedItems, progress.avatar.equippedItems]);
 
   const unequipItem = useCallback((itemId: string): void => {

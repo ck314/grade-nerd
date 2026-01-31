@@ -141,7 +141,7 @@ export function FormulaSheet() {
                               {/* Examples */}
                               {examples.map((example) => (
                                 <div key={example.id} className="print:mb-2">
-                                  <ExampleCard example={example} compact className="print:p-2 print:text-sm" />
+                                  <ExampleCard example={example} compact expandable className="print:p-2 print:text-sm" />
                                 </div>
                               ))}
                             </div>

@@ -6,9 +6,10 @@ import { useGameProgress } from '../../hooks/useGameProgress';
 import { getTopicById } from '../../data/game/gameTopics';
 import { getUnitByTopicId } from '../../data/game/gameUnits';
 import { getFormulasByTopicId } from '../../data/game/formulas';
-import { GameNav, FormulaCard, UnlockAnimation } from './components';
+import { getExamplesByTopicId } from '../../data/game/examples';
+import { GameNav, FormulaCard, ExampleCard, UnlockAnimation } from './components';
 import { Button } from '../../components/ui/Button';
-import { ArrowRight, BookOpen } from 'lucide-react';
+import { ArrowRight, BookOpen, CheckCircle, Lightbulb } from 'lucide-react';
 
 export function TopicLearn() {
   const { topicId } = useParams<{ topicId: string }>();
@@ -21,6 +22,7 @@ export function TopicLearn() {
   const topic = topicId ? getTopicById(topicId) : undefined;
   const unit = topicId ? getUnitByTopicId(topicId) : undefined;
   const formulas = topicId ? getFormulasByTopicId(topicId) : [];
+  const examples = topicId ? getExamplesByTopicId(topicId) : [];
   const progress = topicId ? getTopicProgress(topicId) : undefined;
 
   // Redirect if topic not found or locked
@@ -106,11 +108,43 @@ export function TopicLearn() {
             </div>
           </motion.section>
 
+          {/* Worked Example Section - Only show if unlocked */}
+          {progress?.exampleUnlocked && examples.length > 0 && (
+            <motion.section
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="mb-8"
+            >
+              <div className="flex items-center gap-2 mb-4">
+                <Lightbulb className="text-green-500" size={20} />
+                <h2 className="font-bold text-lg">Worked Example</h2>
+                <span className="ml-auto flex items-center gap-1 text-sm text-green-600">
+                  <CheckCircle size={16} />
+                  Unlocked
+                </span>
+              </div>
+
+              <div className="space-y-4">
+                {examples.map((example, index) => (
+                  <motion.div
+                    key={example.id}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + index * 0.1 }}
+                  >
+                    <ExampleCard example={example} />
+                  </motion.div>
+                ))}
+              </div>
+            </motion.section>
+          )}
+
           {/* Learning Content Placeholder */}
           <motion.section
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            transition={{ delay: progress?.exampleUnlocked ? 0.4 : 0.3 }}
             className="mb-8"
           >
             <div className="bg-white border-2 border-black rounded-xl p-6">
@@ -140,24 +174,45 @@ export function TopicLearn() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
+            transition={{ delay: progress?.exampleUnlocked ? 0.5 : 0.4 }}
             className="text-center"
           >
-            <div className="bg-gradient-to-r from-[#0066FF] to-blue-400 rounded-xl p-6 text-white">
-              <h3 className="font-bold text-xl mb-2">Ready to Test Your Knowledge?</h3>
-              <p className="text-blue-100 mb-4">
-                Get 100% to unlock the worked example!
-              </p>
-              <Link to={`/game/topic/${topicId}/quiz`}>
-                <Button
-                  variant="secondary"
-                  size="lg"
-                  className="bg-white text-[#0066FF] border-white hover:bg-blue-50"
-                >
-                  Start Quiz <ArrowRight className="ml-2" size={20} />
-                </Button>
-              </Link>
-            </div>
+            {progress?.status === 'completed' ? (
+              <div className="bg-gradient-to-r from-green-500 to-emerald-400 rounded-xl p-6 text-white">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <CheckCircle size={24} />
+                  <h3 className="font-bold text-xl">Topic Complete!</h3>
+                </div>
+                <p className="text-green-100 mb-4">
+                  You've mastered this topic. Take the quiz again for more practice.
+                </p>
+                <Link to={`/game/topic/${topicId}/quiz`}>
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    className="bg-white text-green-600 border-white hover:bg-green-50"
+                  >
+                    Practice Again <ArrowRight className="ml-2" size={20} />
+                  </Button>
+                </Link>
+              </div>
+            ) : (
+              <div className="bg-gradient-to-r from-[#0066FF] to-blue-400 rounded-xl p-6 text-white">
+                <h3 className="font-bold text-xl mb-2">Ready to Test Your Knowledge?</h3>
+                <p className="text-blue-100 mb-4">
+                  Get 100% to unlock the worked example!
+                </p>
+                <Link to={`/game/topic/${topicId}/quiz`}>
+                  <Button
+                    variant="secondary"
+                    size="lg"
+                    className="bg-white text-[#0066FF] border-white hover:bg-blue-50"
+                  >
+                    Start Quiz <ArrowRight className="ml-2" size={20} />
+                  </Button>
+                </Link>
+              </div>
+            )}
           </motion.div>
         </div>
       </main>
