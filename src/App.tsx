@@ -7,6 +7,7 @@ import { EducationalPanel } from './components/ui/EducationalPanel';
 import { StickFigure } from './components/graphics/StickFigures';
 import { HelpUsBuild } from './pages/HelpUsBuild';
 import { Survey } from './pages/Survey';
+import { Study } from './pages/Study';
 import { Demo, TopicView, InterestView, ContentView } from './pages/demo';
 import { Game, TopicLearn, TopicQuiz, TopicComplete, FormulaSheet, GameLayout } from './pages/game';
 
@@ -535,6 +536,7 @@ export function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/helpwithdata" element={<HelpUsBuild />} />
         <Route path="/survey" element={<Survey />} />
+        <Route path="/study" element={<Study />} />
         <Route path="/demo" element={<Demo />} />
         <Route path="/demo/topic/:topicId" element={<TopicView />} />
         <Route path="/demo/topic/:topicId/:interestId" element={<ContentView />} />
