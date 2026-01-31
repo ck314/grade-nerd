@@ -1,5 +1,11 @@
 // Exam Review Questions with Concept Explanations (no solutions)
 
+export interface WorkedExample {
+  problem: string;
+  steps: string[];
+  answer: string;
+}
+
 export interface StudyQuestion {
   id: string;
   partId: string;
@@ -8,6 +14,7 @@ export interface StudyQuestion {
   questionText: string;
   conceptExplanation: string[];
   keyFormulas?: string[];
+  workedExample?: WorkedExample;
   tips?: string[];
 }
 
@@ -71,6 +78,15 @@ export const studyQuestions: StudyQuestion[] = [
       'To identify the slope and y-intercept, simply compare the given equation to y = mx + b and identify which number is in each position.',
     ],
     keyFormulas: ['y = mx + b', 'm = slope', 'b = y-intercept'],
+    workedExample: {
+      problem: 'The line y = 3/4 x - 5 has a slope ___ and a y-intercept ___.',
+      steps: [
+        'Compare the equation y = 3/4 x - 5 to the form y = mx + b',
+        'The coefficient of x is m (the slope): m = 3/4',
+        'The constant term is b (the y-intercept): b = -5',
+      ],
+      answer: 'Slope = 3/4, y-intercept = -5',
+    },
     tips: [
       'The coefficient of x is always the slope',
       'The constant term (number by itself) is the y-intercept',
@@ -91,6 +107,16 @@ export const studyQuestions: StudyQuestion[] = [
       'To create parallel lines, choose any slope value, then use that same slope with two different y-intercept values.',
     ],
     keyFormulas: ['Parallel lines: m₁ = m₂ (same slope)', 'No solution: same slope, different y-intercepts'],
+    workedExample: {
+      problem: 'Create a linear system with no solution.',
+      steps: [
+        'Choose a slope, for example m = 3',
+        'Write the first equation: y = 3x + 2',
+        'Write the second equation with SAME slope but DIFFERENT y-intercept: y = 3x - 4',
+        'These lines are parallel (both have slope 3) so they never intersect',
+      ],
+      answer: 'y = 3x + 2 and y = 3x - 4 (no solution - parallel lines)',
+    },
     tips: [
       'Example: y = 2x + 3 and y = 2x - 1 are parallel (both have slope 2)',
       'The lines will never meet because they rise at the same rate',
@@ -110,6 +136,15 @@ export const studyQuestions: StudyQuestion[] = [
       'This is called "checking" or "verifying" a solution - an important skill for confirming your answers.',
     ],
     keyFormulas: ['Substitute (x, y) into each equation', 'Check: Left Side = Right Side for both equations'],
+    workedExample: {
+      problem: 'Is the point (2, 1) a solution to the system y = 2x - 3 and x + y = 3?',
+      steps: [
+        'Check equation 1: y = 2x - 3. Substitute (2, 1): LS = 1, RS = 2(2) - 3 = 4 - 3 = 1. LS = RS ✓',
+        'Check equation 2: x + y = 3. Substitute (2, 1): LS = 2 + 1 = 3, RS = 3. LS = RS ✓',
+        'Both equations are satisfied when x = 2 and y = 1',
+      ],
+      answer: 'Yes, (2, 1) IS a solution because it satisfies both equations.',
+    },
     tips: [
       'Always substitute into BOTH equations',
       'Show your work clearly: write LS = ___ and RS = ___',
@@ -133,6 +168,18 @@ export const studyQuestions: StudyQuestion[] = [
       'Substitution: Isolate one variable, substitute into other equation',
       'Elimination: Make coefficients opposite, add equations',
     ],
+    workedExample: {
+      problem: 'Solve the system: x + 2y = 7 and 3x - 2y = 5',
+      steps: [
+        'Using ELIMINATION: Notice the y terms are +2y and -2y (opposites!)',
+        'Add the equations: (x + 2y) + (3x - 2y) = 7 + 5',
+        'Simplify: 4x = 12, so x = 3',
+        'Substitute x = 3 into equation 1: 3 + 2y = 7',
+        'Solve for y: 2y = 4, so y = 2',
+        'Check in equation 2: 3(3) - 2(2) = 9 - 4 = 5 ✓',
+      ],
+      answer: 'x = 3, y = 2 or (3, 2)',
+    },
     tips: [
       'Choose substitution when one variable is easy to isolate (coefficient of 1)',
       'Choose elimination when coefficients are already close to matching',
@@ -156,6 +203,17 @@ export const studyQuestions: StudyQuestion[] = [
       'Convert to y = mx + b for easier graphing',
       'Or use x-intercept (set y=0) and y-intercept (set x=0)',
     ],
+    workedExample: {
+      problem: 'Solve by graphing: x + y = 4 and y = 2x + 1',
+      steps: [
+        'Line 1: x + y = 4. Rewrite as y = -x + 4. Slope = -1, y-intercept = 4',
+        'Line 2: y = 2x + 1 is already in slope-intercept form. Slope = 2, y-intercept = 1',
+        'Graph both lines and find intersection point at (1, 3)',
+        'Check in equation 1: 1 + 3 = 4 ✓',
+        'Check in equation 2: 2(1) + 1 = 3 ✓',
+      ],
+      answer: 'The solution is (1, 3)',
+    },
     tips: [
       'Use a ruler for accurate lines',
       'Plot at least 2-3 points per line for accuracy',
@@ -180,6 +238,16 @@ export const studyQuestions: StudyQuestion[] = [
       'No solution: m₁ = m₂, b₁ ≠ b₂',
       'Infinite solutions: m₁ = m₂, b₁ = b₂',
     ],
+    workedExample: {
+      problem: 'How many solutions does the system y = 3x + 2 and 6x - 2y + 4 = 0 have?',
+      steps: [
+        'Line 1: y = 3x + 2 (already in slope-intercept form). Slope = 3, y-int = 2',
+        'Line 2: 6x - 2y + 4 = 0. Solve for y: -2y = -6x - 4, so y = 3x + 2',
+        'Both lines have slope = 3 and y-intercept = 2',
+        'Same slope AND same y-intercept means the lines are identical',
+      ],
+      answer: 'Infinite solutions (the lines are the same line)',
+    },
     tips: [
       'Always convert to y = mx + b form first',
       'Compare the slopes first, then the y-intercepts if needed',
@@ -203,6 +271,15 @@ export const studyQuestions: StudyQuestion[] = [
       'Total items: x + y = total count',
       'Total value: (price₁)(x) + (price₂)(y) = total value',
     ],
+    workedExample: {
+      problem: 'A movie theatre sold 200 tickets. Adult tickets cost $12 and child tickets cost $8. Total revenue was $2000. Set up (do not solve) the system of equations.',
+      steps: [
+        'Define variables: Let a = number of adult tickets, c = number of child tickets',
+        'Equation 1 (total tickets): a + c = 200',
+        'Equation 2 (total revenue): 12a + 8c = 2000',
+      ],
+      answer: 'System: a + c = 200 and 12a + 8c = 2000',
+    },
     tips: [
       'Read the problem twice before writing anything',
       'Define variables with units (e.g., x = number of chicken dinners)',
@@ -227,6 +304,19 @@ export const studyQuestions: StudyQuestion[] = [
       'Value: 1x + 2y = total dollars (for loonies and toonies)',
       'Fees: initiation + (months)(monthly fee) = total paid',
     ],
+    workedExample: {
+      problem: 'A piggy bank has 25 coins, all quarters and dimes. The total value is $4.60. How many of each coin?',
+      steps: [
+        'Let q = number of quarters, d = number of dimes',
+        'Equation 1 (total coins): q + d = 25',
+        'Equation 2 (total value in cents): 25q + 10d = 460',
+        'From equation 1: d = 25 - q. Substitute into equation 2:',
+        '25q + 10(25 - q) = 460 → 25q + 250 - 10q = 460 → 15q = 210 → q = 14',
+        'Substitute back: d = 25 - 14 = 11',
+        'Check: 14 quarters = $3.50, 11 dimes = $1.10, total = $4.60 ✓',
+      ],
+      answer: '14 quarters and 11 dimes',
+    },
     tips: [
       'Define variables first, then set up equations',
       'Use substitution or elimination to solve',
@@ -252,6 +342,16 @@ export const studyQuestions: StudyQuestion[] = [
       'Circle at origin: x² + y² = r²',
       'Circle at (h,k): (x-h)² + (y-k)² = r²',
     ],
+    workedExample: {
+      problem: 'The circle x² + y² = 25 has centre ___ and radius ___.',
+      steps: [
+        'Compare x² + y² = 25 to the standard form x² + y² = r²',
+        'The equation has no (x-h) or (y-k) terms, so h = 0 and k = 0',
+        'The centre is at (0, 0)',
+        'r² = 25, so r = √25 = 5',
+      ],
+      answer: 'Centre = (0, 0), Radius = 5',
+    },
     tips: [
       'The radius is √(right side), not the right side itself',
       'For x² + y² = 4, the radius is √4 = 2, not 4',
@@ -275,6 +375,17 @@ export const studyQuestions: StudyQuestion[] = [
       'Slope: m = (y₂-y₁)/(x₂-x₁)',
       'Perpendicular slope: m_perp = -1/m',
     ],
+    workedExample: {
+      problem: 'Find the perpendicular bisector of the line segment from A(2, 4) to B(6, 8).',
+      steps: [
+        'Step 1 - Find midpoint: M = ((2+6)/2, (4+8)/2) = (4, 6)',
+        'Step 2 - Find slope of AB: m = (8-4)/(6-2) = 4/4 = 1',
+        'Step 3 - Find perpendicular slope: m_perp = -1/1 = -1',
+        'Step 4 - Write equation using point-slope form with M(4, 6):',
+        'y - 6 = -1(x - 4) → y = -x + 10',
+      ],
+      answer: 'y = -x + 10',
+    },
     tips: [
       'Bisector means "cuts in half" → midpoint',
       'Perpendicular means "90° angle" → negative reciprocal slope',
@@ -293,6 +404,15 @@ export const studyQuestions: StudyQuestion[] = [
       'The y-intercepts can be different (and usually are for distinct parallel lines).',
     ],
     keyFormulas: ['Parallel lines: m₁ = m₂'],
+    workedExample: {
+      problem: 'Line A has slope 2/3. What is the slope of any line parallel to Line A?',
+      steps: [
+        'Parallel lines have the SAME slope',
+        'If Line A has slope m₁ = 2/3',
+        'Then any parallel line has slope m₂ = 2/3',
+      ],
+      answer: 'Slope = 2/3',
+    },
     tips: ['Same slope = same steepness = same direction = never meet'],
   },
   {
@@ -312,6 +432,17 @@ export const studyQuestions: StudyQuestion[] = [
       'Perpendicular slopes: m₁ × m₂ = -1',
       'Or: m₂ = -1/m₁',
     ],
+    workedExample: {
+      problem: 'Line A has slope 4/5. What is the slope of any line perpendicular to Line A?',
+      steps: [
+        'Perpendicular lines have slopes that are negative reciprocals',
+        'If Line A has slope m₁ = 4/5',
+        'Flip the fraction: 5/4',
+        'Change the sign: -5/4',
+        'Check: (4/5) × (-5/4) = -20/20 = -1 ✓',
+      ],
+      answer: 'Slope = -5/4',
+    },
     tips: [
       'Example: if m = 2/3, then perpendicular slope = -3/2',
       'Flip and negate!',
@@ -337,6 +468,15 @@ export const studyQuestions: StudyQuestion[] = [
       'Distance: d = √[(x₂-x₁)² + (y₂-y₁)²]',
       'Point-slope: y - y₁ = m(x - x₁)',
     ],
+    workedExample: {
+      problem: 'For points P(1, 2) and Q(7, 10), find: (a) slope (b) midpoint (c) length',
+      steps: [
+        '(a) Slope: m = (10-2)/(7-1) = 8/6 = 4/3',
+        '(b) Midpoint: M = ((1+7)/2, (2+10)/2) = (8/2, 12/2) = (4, 6)',
+        '(c) Length: d = √[(7-1)² + (10-2)²] = √[36 + 64] = √100 = 10',
+      ],
+      answer: '(a) Slope = 4/3, (b) Midpoint = (4, 6), (c) Length = 10 units',
+    },
     tips: [
       'Be careful with negative signs when subtracting coordinates',
       'For the equation, you can use either point A or point B',
@@ -359,6 +499,18 @@ export const studyQuestions: StudyQuestion[] = [
       'Median: connects vertex to midpoint of opposite side',
       'Altitude: connects vertex perpendicular to opposite side',
     ],
+    workedExample: {
+      problem: 'In triangle ABC with A(0,0), B(6,0), C(3,6), describe the median and altitude from C.',
+      steps: [
+        'MEDIAN from C: Goes to the midpoint of AB',
+        'Midpoint of AB = ((0+6)/2, (0+0)/2) = (3, 0)',
+        'Median connects C(3,6) to (3,0) - this is a vertical line x = 3',
+        'ALTITUDE from C: Goes perpendicular to AB',
+        'AB is horizontal (slope = 0), so altitude is vertical',
+        'Altitude from C is also x = 3 (same line in this special case!)',
+      ],
+      answer: 'Median: from C(3,6) to midpoint (3,0). Altitude: from C perpendicular to AB. In this isosceles triangle, they are the same line: x = 3',
+    },
     tips: [
       'Draw both on the triangle to see the difference',
       'Median uses midpoint formula; Altitude uses perpendicular slope',
@@ -382,6 +534,19 @@ export const studyQuestions: StudyQuestion[] = [
       'Perpendicular test: m₁ × m₂ = -1',
       'Pythagorean: a² + b² = c²',
     ],
+    workedExample: {
+      problem: 'Prove triangle with vertices A(0,0), B(4,0), C(0,4) is a right-angled isosceles triangle.',
+      steps: [
+        'Find side lengths using distance formula:',
+        'AB = √[(4-0)² + (0-0)²] = √16 = 4',
+        'AC = √[(0-0)² + (4-0)²] = √16 = 4',
+        'BC = √[(0-4)² + (4-0)²] = √32 = 4√2',
+        'ISOSCELES: AB = AC = 4 ✓ (two equal sides)',
+        'RIGHT ANGLE: Check slopes. Slope of AB = 0, Slope of AC = undefined (vertical)',
+        'Horizontal and vertical lines are perpendicular (90°) ✓',
+      ],
+      answer: 'Triangle ABC is right-angled isosceles because AB = AC = 4 (isosceles) and AB ⊥ AC at A (right angle)',
+    },
     tips: [
       'Calculate all three side lengths first',
       'Check which two sides are equal (isosceles)',
@@ -405,6 +570,20 @@ export const studyQuestions: StudyQuestion[] = [
       'Midpoint: M = ((x₁+x₂)/2, (y₁+y₂)/2)',
       'Slope: m = (y₂-y₁)/(x₂-x₁)',
     ],
+    workedExample: {
+      problem: 'Triangle PQR has P(0,4), Q(6,0), R(0,0). (a) Show it is right-angled. (b) Find equation of median from P.',
+      steps: [
+        '(a) Check for right angle at R:',
+        'Slope of RP = (4-0)/(0-0) = undefined (vertical)',
+        'Slope of RQ = (0-0)/(6-0) = 0 (horizontal)',
+        'Vertical ⊥ horizontal, so angle R = 90° ✓',
+        '(b) Median from P goes to midpoint of QR:',
+        'Midpoint of QR = ((6+0)/2, (0+0)/2) = (3, 0)',
+        'Slope from P(0,4) to (3,0): m = (0-4)/(3-0) = -4/3',
+        'Equation: y - 4 = -4/3(x - 0) → y = -4/3 x + 4',
+      ],
+      answer: '(a) Right angle at R (vertical meets horizontal). (b) Median equation: y = -4/3 x + 4',
+    },
     tips: [
       'Label which sides you are calculating (AB, BC, AC)',
       'For the median, clearly identify the midpoint first',
@@ -427,6 +606,17 @@ export const studyQuestions: StudyQuestion[] = [
       'Point-to-line distance: d = |Ax₀ + By₀ + C| / √(A² + B²)',
       'Where line is Ax + By + C = 0 and point is (x₀, y₀)',
     ],
+    workedExample: {
+      problem: 'Find the distance from point (1, 3) to the line y = 2x + 1.',
+      steps: [
+        'Convert to standard form: 2x - y + 1 = 0, so A = 2, B = -1, C = 1',
+        'Point is (x₀, y₀) = (1, 3)',
+        'Use formula: d = |Ax₀ + By₀ + C| / √(A² + B²)',
+        'd = |2(1) + (-1)(3) + 1| / √(2² + (-1)²)',
+        'd = |2 - 3 + 1| / √(4 + 1) = |0| / √5 = 0',
+      ],
+      answer: 'd = 0 (the point lies ON the line!)',
+    },
     tips: [
       'Convert y = 3x - 2 to standard form: 3x - y - 2 = 0',
       'Then A=3, B=-1, C=-2 for the formula',
@@ -454,6 +644,18 @@ export const studyQuestions: StudyQuestion[] = [
       'Axis of symmetry: x = h',
       'Zeros form: y = a(x-r)(x-s)',
     ],
+    workedExample: {
+      problem: 'For y = 2(x+1)² - 8, find vertex, axis of symmetry, and zeros.',
+      steps: [
+        'Compare to y = a(x-h)² + k: a = 2, h = -1, k = -8',
+        'Vertex: (h, k) = (-1, -8)',
+        'Axis of symmetry: x = h = x = -1',
+        'For zeros, set y = 0: 0 = 2(x+1)² - 8',
+        '8 = 2(x+1)² → 4 = (x+1)² → x+1 = ±2',
+        'x = -1 + 2 = 1 or x = -1 - 2 = -3',
+      ],
+      answer: 'Vertex: (-1, -8), Axis: x = -1, Zeros: x = 1 and x = -3',
+    },
     tips: [
       'From y = -1/2(x-3)² + 8: vertex is (3, 8)',
       'a = -1/2 < 0, so parabola opens down (maximum)',
@@ -477,6 +679,17 @@ export const studyQuestions: StudyQuestion[] = [
       'y = ax² + k has vertex (0, k)',
       'y = a(x-h)² + k has vertex (h, k)',
     ],
+    workedExample: {
+      problem: 'State the vertex and direction of opening for: y = -3(x-2)² + 5',
+      steps: [
+        'Compare to y = a(x-h)² + k',
+        'a = -3, h = 2, k = 5',
+        'Vertex: (h, k) = (2, 5)',
+        'Since a = -3 < 0, the parabola opens DOWNWARD',
+        'This vertex is a MAXIMUM',
+      ],
+      answer: 'Vertex: (2, 5), opens downward (maximum)',
+    },
     tips: [
       'The number inside (x-h) gives horizontal shift (opposite sign!)',
       'The number outside gives vertical shift (same sign)',
@@ -504,6 +717,16 @@ export const studyQuestions: StudyQuestion[] = [
       '+k: shift up k units',
       '-k: shift down k units',
     ],
+    workedExample: {
+      problem: 'List the transformations that make y = x² into y = -2(x-3)² + 1.',
+      steps: [
+        'Identify the parameters: a = -2, h = 3, k = 1',
+        'a = -2: negative means reflection in x-axis, |a| = 2 > 1 means vertical stretch by factor of 2',
+        'h = 3: (x-3) means shift RIGHT 3 units',
+        'k = 1: +1 means shift UP 1 unit',
+      ],
+      answer: 'Reflection in x-axis, vertical stretch by factor 2, shift right 3, shift up 1',
+    },
     tips: [
       'Horizontal shifts are OPPOSITE the sign you see',
       'List transformations in order: stretches/compressions, then shifts',
@@ -529,6 +752,17 @@ export const studyQuestions: StudyQuestion[] = [
       'Difference of squares: a²-b² = (a+b)(a-b)',
       'Perfect square: a²+2ab+b² = (a+b)²',
     ],
+    workedExample: {
+      problem: 'Factor: (a) 6x² - 9x (b) x² - 49 (c) x² + 7x + 12',
+      steps: [
+        '(a) 6x² - 9x: GCF is 3x. Factor out: 3x(2x - 3)',
+        '(b) x² - 49: Difference of squares. 49 = 7². Factor: (x+7)(x-7)',
+        '(c) x² + 7x + 12: Find two numbers that multiply to 12 and add to 7.',
+        'Numbers are 3 and 4. Factor: (x+3)(x+4)',
+        'Check (c): (x+3)(x+4) = x² + 4x + 3x + 12 = x² + 7x + 12 ✓',
+      ],
+      answer: '(a) 3x(2x-3) (b) (x+7)(x-7) (c) (x+3)(x+4)',
+    },
     tips: [
       'Always look for a common factor FIRST',
       'Check your factoring by expanding (FOIL)',
@@ -552,6 +786,16 @@ export const studyQuestions: StudyQuestion[] = [
       '(a-b)² = a² - 2ab + b²',
       '(a+b)² = a² + 2ab + b²',
     ],
+    workedExample: {
+      problem: 'Expand and simplify: (x+2)(x-5) + (x+1)²',
+      steps: [
+        'Expand (x+2)(x-5) using FOIL: x² - 5x + 2x - 10 = x² - 3x - 10',
+        'Expand (x+1)² using perfect square: x² + 2x + 1',
+        'Add the results: (x² - 3x - 10) + (x² + 2x + 1)',
+        'Combine like terms: 2x² - x - 9',
+      ],
+      answer: '2x² - x - 9',
+    },
     tips: [
       'Expand each part separately first',
       'Then combine like terms',
@@ -576,6 +820,17 @@ export const studyQuestions: StudyQuestion[] = [
       'a⁻ⁿ = 1/aⁿ',
       '(a/b)ⁿ = aⁿ/bⁿ',
     ],
+    workedExample: {
+      problem: 'Evaluate (no decimals): 5⁰ + 2⁻² - (1/2)³',
+      steps: [
+        '5⁰ = 1 (any non-zero number to power 0 is 1)',
+        '2⁻² = 1/2² = 1/4',
+        '(1/2)³ = 1³/2³ = 1/8',
+        'Combine: 1 + 1/4 - 1/8',
+        'Common denominator is 8: 8/8 + 2/8 - 1/8 = 9/8',
+      ],
+      answer: '9/8 or 1 1/8',
+    },
     tips: [
       '7⁰ = 1',
       '3⁻¹ = 1/3',
@@ -601,6 +856,17 @@ export const studyQuestions: StudyQuestion[] = [
       'Quadratic formula: x = (-b ± √(b²-4ac))/(2a)',
       'a > 0: minimum, a < 0: maximum',
     ],
+    workedExample: {
+      problem: 'For y = x² - 6x - 7, find zeros, axis of symmetry, and vertex.',
+      steps: [
+        'ZEROS: Set y = 0: x² - 6x - 7 = 0. Factor: (x-7)(x+1) = 0',
+        'x = 7 or x = -1. Zeros are x = 7 and x = -1',
+        'AXIS OF SYMMETRY: x = -b/(2a) = -(-6)/(2×1) = 6/2 = 3',
+        'VERTEX: Substitute x = 3: y = (3)² - 6(3) - 7 = 9 - 18 - 7 = -16',
+        'Vertex is (3, -16). Since a = 1 > 0, this is a MINIMUM.',
+      ],
+      answer: 'Zeros: x = -1 and x = 7, Axis: x = 3, Vertex: (3, -16) minimum',
+    },
     tips: [
       'For y = x² - 8x - 9: a=1, b=-8, c=-9',
       'Try factoring first: find two numbers that multiply to -9 and add to -8',
@@ -625,6 +891,18 @@ export const studyQuestions: StudyQuestion[] = [
       'Vertex: y = a(x-h)² + k',
       'Add (b/2a)² inside, subtract a(b/2a)² outside',
     ],
+    workedExample: {
+      problem: 'Change y = 2x² + 8x + 3 to vertex form.',
+      steps: [
+        'Factor out 2 from first two terms: y = 2(x² + 4x) + 3',
+        'Complete the square: half of 4 is 2, squared is 4',
+        'Add and subtract 4 inside: y = 2(x² + 4x + 4 - 4) + 3',
+        'Factor and simplify: y = 2[(x+2)² - 4] + 3',
+        'Distribute: y = 2(x+2)² - 8 + 3',
+        'Simplify: y = 2(x+2)² - 5',
+      ],
+      answer: 'y = 2(x+2)² - 5, vertex at (-2, -5)',
+    },
     tips: [
       'Factor out the 5 first: y = 5(x² - 6x) + 18',
       'Half of -6 is -3, squared is 9',
@@ -649,6 +927,18 @@ export const studyQuestions: StudyQuestion[] = [
       'Zeros: solve h = 0',
       'Maximum: vertex at t = -b/(2a)',
     ],
+    workedExample: {
+      problem: 'Ball thrown: h = -5t² + 20t + 2. (a) Initial height? (b) When does it land? (c) Max height?',
+      steps: [
+        '(a) Initial height: h(0) = -5(0)² + 20(0) + 2 = 2 metres',
+        '(b) Lands when h = 0: -5t² + 20t + 2 = 0',
+        'Use quadratic formula: t = (-20 ± √(400+40))/(-10) = (-20 ± √440)/(-10)',
+        't ≈ 4.1 seconds (take positive value)',
+        '(c) Maximum at t = -b/(2a) = -20/(2×-5) = -20/-10 = 2 seconds',
+        'h(2) = -5(4) + 20(2) + 2 = -20 + 40 + 2 = 22 metres',
+      ],
+      answer: '(a) 2m initial height (b) ≈4.1s to land (c) 22m max height at t=2s',
+    },
     tips: [
       'Time must be positive (ignore negative solutions)',
       'Factor or use quadratic formula to find zeros',
@@ -673,6 +963,17 @@ export const studyQuestions: StudyQuestion[] = [
       'Set up with vertex at (0, 10)',
       'Zeros at x = ±9',
     ],
+    workedExample: {
+      problem: 'Tunnel arch: 12m wide, 6m high at center. (a) Write equation (b) Height at 2m from center?',
+      steps: [
+        '(a) Place vertex at (0, 6). Arch touches ground at x = ±6 (half of 12m width)',
+        'Use y = a(x-0)² + 6 = ax² + 6',
+        'At x = 6, y = 0: 0 = a(36) + 6 → a = -6/36 = -1/6',
+        'Equation: y = -1/6 x² + 6',
+        '(b) At x = 2: y = -1/6(4) + 6 = -2/3 + 6 = 16/3 ≈ 5.33m',
+      ],
+      answer: '(a) y = -1/6 x² + 6 (b) Height at 2m from center ≈ 5.33m',
+    },
     tips: [
       'Draw a diagram with origin at center of arch',
       'Since arch is symmetric, zeros are at ±(width/2)',
@@ -700,6 +1001,17 @@ export const studyQuestions: StudyQuestion[] = [
       'cos θ = adjacent/hypotenuse',
       'tan θ = opposite/adjacent',
     ],
+    workedExample: {
+      problem: 'In a right triangle with sides 5, 12, 13 and reference angle A opposite the side of length 5, find sin A, cos A, tan A.',
+      steps: [
+        'Identify the sides relative to angle A:',
+        'Opposite to A = 5, Adjacent to A = 12, Hypotenuse = 13',
+        'sin A = opposite/hypotenuse = 5/13',
+        'cos A = adjacent/hypotenuse = 12/13',
+        'tan A = opposite/adjacent = 5/12',
+      ],
+      answer: 'sin A = 5/13, cos A = 12/13, tan A = 5/12',
+    },
     tips: [
       'Identify which side is opposite to angle C',
       'Identify which side is adjacent to angle C (not the hypotenuse)',
@@ -724,6 +1036,16 @@ export const studyQuestions: StudyQuestion[] = [
       'If cos θ = x, then θ = cos⁻¹(x)',
       'If tan θ = x, then θ = tan⁻¹(x)',
     ],
+    workedExample: {
+      problem: 'If sin B = 0.6, find the measure of angle B to the nearest degree.',
+      steps: [
+        'We know sin B = 0.6 and need to find angle B',
+        'Use inverse sine: B = sin⁻¹(0.6)',
+        'On calculator (in degree mode): sin⁻¹(0.6) = 36.87°',
+        'Round to nearest degree: B ≈ 37°',
+      ],
+      answer: 'B ≈ 37°',
+    },
     tips: [
       'Check calculator is in degree mode',
       'tan⁻¹(7/25) gives the angle in degrees',
@@ -746,6 +1068,18 @@ export const studyQuestions: StudyQuestion[] = [
       'If sin θ = a/b, then a = b × sin θ',
       'If cos θ = a/b, then b = a/cos θ',
     ],
+    workedExample: {
+      problem: 'Calculate x: (a) tan 40° = x/10 (b) sin 55° = 8/x',
+      steps: [
+        '(a) tan 40° = x/10',
+        'Multiply both sides by 10: x = 10 × tan 40°',
+        'x = 10 × 0.839 = 8.39 ≈ 8.4',
+        '(b) sin 55° = 8/x',
+        'x × sin 55° = 8',
+        'x = 8/sin 55° = 8/0.819 = 9.77 ≈ 9.8',
+      ],
+      answer: '(a) x ≈ 8.4 (b) x ≈ 9.8',
+    },
     tips: [
       'Isolate the variable first',
       'Make sure calculator is in degree mode',
@@ -769,6 +1103,17 @@ export const studyQuestions: StudyQuestion[] = [
       'Sine Law: a/sin A = b/sin B = c/sin C',
       'Cosine Law: c² = a² + b² - 2ab cos C',
     ],
+    workedExample: {
+      problem: 'In triangle ABC (not right-angled), A = 40°, B = 60°, a = 10. Find side b.',
+      steps: [
+        'This is NOT a right triangle, so we cannot use SOH-CAH-TOA directly',
+        'We have two angles and one side (AAS case) - use SINE LAW',
+        'Sine Law: a/sin A = b/sin B',
+        '10/sin 40° = b/sin 60°',
+        'b = 10 × sin 60°/sin 40° = 10 × 0.866/0.643 = 13.47',
+      ],
+      answer: 'b ≈ 13.5 (using Sine Law because triangle is not right-angled)',
+    },
     tips: [
       'Right triangle → use SOH-CAH-TOA',
       'Non-right triangle → use Sine Law or Cosine Law',
@@ -791,6 +1136,18 @@ export const studyQuestions: StudyQuestion[] = [
       'Similar triangles: corresponding sides are proportional',
       'height₁/distance₁ = height₂/distance₂',
     ],
+    workedExample: {
+      problem: 'Sarah (1.5m tall) stands 2m from a mirror. The mirror is 15m from a flagpole. Find the flagpole height.',
+      steps: [
+        'Mirror creates similar triangles (angle of incidence = angle of reflection)',
+        'Small triangle: Sarah\'s height / distance to mirror = 1.5/2',
+        'Large triangle: Flagpole height / distance to mirror = h/15',
+        'Set up proportion: 1.5/2 = h/15',
+        'Cross multiply: 2h = 1.5 × 15 = 22.5',
+        'h = 22.5/2 = 11.25m',
+      ],
+      answer: 'The flagpole is 11.25 metres tall',
+    },
     tips: [
       'Draw a diagram showing both triangles',
       'Label all known measurements',
@@ -814,6 +1171,17 @@ export const studyQuestions: StudyQuestion[] = [
       'tan θ = opposite/adjacent',
       'θ = tan⁻¹(opposite/adjacent)',
     ],
+    workedExample: {
+      problem: 'A ladder is 2m from the wall base and reaches 6m up the wall. Is it safe? (Safe: 70°-80°)',
+      steps: [
+        'Draw the right triangle: wall (6m), ground (2m), ladder (hypotenuse)',
+        'We want the angle θ between ladder and ground',
+        'tan θ = opposite/adjacent = 6/2 = 3',
+        'θ = tan⁻¹(3) = 71.6°',
+        'Compare to safe range: 70° ≤ 71.6° ≤ 80° ✓',
+      ],
+      answer: 'θ ≈ 72°, which is within 70°-80°. YES, the ladder is safe.',
+    },
     tips: [
       'tan θ = 8.4/3.5',
       'Find θ using inverse tan',
@@ -839,6 +1207,17 @@ export const studyQuestions: StudyQuestion[] = [
       'Cosine Law: c² = a² + b² - 2ab cos C',
       'Angles in triangle: A + B + C = 180°',
     ],
+    workedExample: {
+      problem: 'Triangle with A = 35°, B = 65°, c = 12. Find angle C and side a.',
+      steps: [
+        'Find angle C: C = 180° - 35° - 65° = 80°',
+        'Use Sine Law to find side a: a/sin A = c/sin C',
+        'a/sin 35° = 12/sin 80°',
+        'a = 12 × sin 35°/sin 80°',
+        'a = 12 × 0.574/0.985 = 6.99',
+      ],
+      answer: 'C = 80°, a ≈ 7.0',
+    },
     tips: [
       'Draw the triangle and label all known values',
       'Identify if it is a right triangle first',
@@ -862,6 +1241,17 @@ export const studyQuestions: StudyQuestion[] = [
       'Corresponding sides: a₁/a₂ = b₁/b₂ = c₁/c₂',
       'Scale factor k: each side of larger = k × corresponding side of smaller',
     ],
+    workedExample: {
+      problem: 'Similar triangles have sides 4, 6, 8 and x, 9, y. Find x and y.',
+      steps: [
+        'Find scale factor using corresponding sides: 9/6 = 1.5',
+        'The larger triangle is 1.5 times the smaller',
+        'Find x (corresponds to 4): x = 4 × 1.5 = 6',
+        'Find y (corresponds to 8): y = 8 × 1.5 = 12',
+        'Check: 6/4 = 9/6 = 12/8 = 1.5 ✓',
+      ],
+      answer: 'x = 6, y = 12',
+    },
     tips: [
       'Match corresponding sides carefully',
       'Find the scale factor first if possible',
@@ -885,6 +1275,18 @@ export const studyQuestions: StudyQuestion[] = [
       'Cosine Law: c² = a² + b² - 2ab cos C',
       'c = √(a² + b² - 2ab cos C)',
     ],
+    workedExample: {
+      problem: 'From point P, distances to two trees are 30m and 40m, angle between is 60°. Find distance between trees.',
+      steps: [
+        'Use Cosine Law: c² = a² + b² - 2ab cos C',
+        'Let a = 30m, b = 40m, C = 60°',
+        'c² = 30² + 40² - 2(30)(40)cos(60°)',
+        'c² = 900 + 1600 - 2400 × 0.5',
+        'c² = 2500 - 1200 = 1300',
+        'c = √1300 ≈ 36.06m',
+      ],
+      answer: 'The distance between the trees is approximately 36.1 metres',
+    },
     tips: [
       'Draw the triangle with point A at the vertex of the 55° angle',
       'The pond width is opposite to the 55° angle',

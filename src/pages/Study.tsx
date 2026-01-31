@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '../lib/utils';
 import { studyParts, studyQuestions, getQuestionsByPart, StudyQuestion, StudyPart } from '../data/studyQuestions';
-import { ChevronLeft, ChevronDown, ChevronRight, BookOpen, Lightbulb, Calculator, Info } from 'lucide-react';
+import { ChevronLeft, ChevronDown, ChevronRight, BookOpen, Lightbulb, Calculator, Info, Check, GraduationCap } from 'lucide-react';
 
 export function Study() {
   const [expandedPart, setExpandedPart] = useState<string | null>('part1');
@@ -241,6 +241,49 @@ function QuestionDetail({ question }: { question: StudyQuestion }) {
                 {formula}
               </div>
             ))}
+          </div>
+        </div>
+      )}
+
+      {/* Worked Example */}
+      {question.workedExample && (
+        <div className="bg-white border-2 border-black rounded-xl overflow-hidden">
+          <div className="p-4 bg-orange-50 border-b border-orange-200">
+            <h3 className="font-bold text-sm text-orange-600 flex items-center gap-2">
+              <GraduationCap size={16} />
+              WORKED EXAMPLE
+            </h3>
+          </div>
+          <div className="p-6">
+            {/* Problem */}
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+              <h4 className="font-bold text-sm text-blue-700 mb-2">Problem:</h4>
+              <p className="text-blue-900">{question.workedExample.problem}</p>
+            </div>
+
+            {/* Solution Steps */}
+            <div className="space-y-3 mb-6">
+              <h4 className="font-bold text-sm text-gray-500">SOLUTION STEPS</h4>
+              {question.workedExample.steps.map((step, i) => (
+                <div key={i} className="flex gap-3">
+                  <div className="w-6 h-6 rounded-full bg-black text-white flex items-center justify-center text-xs font-bold flex-shrink-0 mt-0.5">
+                    {i + 1}
+                  </div>
+                  <p className="text-gray-700">{step}</p>
+                </div>
+              ))}
+            </div>
+
+            {/* Answer */}
+            <div className="bg-green-50 border border-green-200 rounded-lg p-4 flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center flex-shrink-0">
+                <Check size={18} />
+              </div>
+              <div>
+                <h4 className="font-bold text-sm text-green-700 mb-1">Answer:</h4>
+                <p className="font-mono font-bold text-green-900">{question.workedExample.answer}</p>
+              </div>
+            </div>
           </div>
         </div>
       )}
