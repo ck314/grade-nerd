@@ -1,14 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
-
-const STORAGE_KEY = 'gradenerd-user-passion';
+import { useUser } from '../contexts/UserContext';
+import { getUserKey } from '../lib/userStorage';
 
 export function useUserPassion() {
+  const { activeUser } = useUser();
+  const storageKey = getUserKey(activeUser!, 'user-passion');
+
   const [passion, setPassionState] = useState<string>('');
 
   // Load from localStorage on mount
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = localStorage.getItem(storageKey);
       if (stored) {
         setPassionState(stored);
       }
@@ -20,16 +23,16 @@ export function useUserPassion() {
   const setPassion = useCallback((value: string) => {
     setPassionState(value);
     if (value) {
-      localStorage.setItem(STORAGE_KEY, value);
+      localStorage.setItem(storageKey, value);
     } else {
-      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(storageKey);
     }
-  }, []);
+  }, [storageKey]);
 
   const clearPassion = useCallback(() => {
     setPassionState('');
-    localStorage.removeItem(STORAGE_KEY);
-  }, []);
+    localStorage.removeItem(storageKey);
+  }, [storageKey]);
 
   return {
     passion,
