@@ -40,56 +40,22 @@ function generateRandomItems(): string[] {
   });
 }
 
-interface SafeZone {
-  xMin: number;
-  xMax: number;
-  yMin: number;
-  yMax: number;
-}
+function computePosition(vw: number, fw: number, lessonNumber: number, isTraversing: boolean): { x: number; y: number } {
+  // 20 steps per 10-lesson cycle: 2 per lesson (traversing + completed)
+  // Lesson 1 traversing = step 0, lesson 1 completed = step 1,
+  // lesson 2 traversing = step 2, etc.
+  const lessonInCycle = ((lessonNumber - 1) % 10);
+  const step = lessonInCycle * 2 + (isTraversing ? 0 : 1);
 
-function computePosition(vw: number, vh: number, fw: number, fh: number, avoidCenter: boolean): { x: number; y: number } {
-  const zones: SafeZone[] = [];
+  // 5% margin on each side
+  const margin = vw * 0.05;
+  const xMin = margin;
+  const xMax = vw - margin - fw;
+  const t = xMax > xMin ? step / 19 : 0;
+  const x = xMin + t * (xMax - xMin);
 
-  // Left zone — avoid ProgressCounter (~120x65 at bottom-left)
-  const leftXMax = Math.max(16, vw * 0.15) - fw;
-  const leftYMax = vh - 96 - fh;
-  if (leftXMax > 16 && leftYMax > 64) {
-    zones.push({ xMin: 16, xMax: leftXMax, yMin: 64, yMax: leftYMax });
-  }
-
-  // Right zone — clear of hamburger (top-right 40x40)
-  const rightXMin = Math.min(vw * 0.85, vw - 16 - fw);
-  const rightXMax = vw - 16 - fw;
-  const rightYMax = vh - 88 - fh;
-  if (rightXMax >= rightXMin && rightYMax > 64) {
-    zones.push({ xMin: rightXMin, xMax: rightXMax, yMin: 64, yMax: rightYMax });
-  }
-
-  // Top zone
-  const topXMax = vw - 64 - fw;
-  const topYMax = Math.max(64, vh * 0.2) - fh;
-  if (topXMax > 64 && topYMax > 64) {
-    zones.push({ xMin: 64, xMax: topXMax, yMin: 64, yMax: topYMax });
-  }
-
-  // Bottom zone — avoid LessonNav (~104x48 at bottom-right)
-  // When Next Lesson button is visible, push 30px further down to avoid overlap
-  const bottomXMax = vw - 120 - fw;
-  const bottomYMin = Math.min(vh * 0.8, vh - 88 - fh) + (avoidCenter ? 30 : 0);
-  const bottomYMax = vh - 88 - fh;
-  if (bottomXMax > 64 && bottomYMax >= bottomYMin) {
-    zones.push({ xMin: 64, xMax: bottomXMax, yMin: bottomYMin, yMax: bottomYMax });
-  }
-
-  if (zones.length === 0) {
-    return { x: 16, y: 64 };
-  }
-
-  const zone = zones[randomInt(zones.length)];
-  return {
-    x: zone.xMin + Math.random() * (zone.xMax - zone.xMin),
-    y: zone.yMin + Math.random() * (zone.yMax - zone.yMin),
-  };
+  const y = 72;
+  return { x, y };
 }
 
 class AvatarErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
@@ -100,17 +66,18 @@ class AvatarErrorBoundary extends Component<{ children: ReactNode }, { hasError:
 
 interface DecorativeAvatarProps {
   avoidCenter?: boolean;
+  lessonNumber?: number;
+  isTraversing?: boolean;
 }
 
-export function DecorativeAvatar({ avoidCenter = false }: DecorativeAvatarProps) {
+export function DecorativeAvatar({ lessonNumber = 1, isTraversing = true }: DecorativeAvatarProps) {
   const [config] = useState(() => {
     const vw = window.innerWidth;
-    const vh = window.innerHeight;
     const size = getResponsiveSize(vw);
-    const { width: fw, height: fh } = SIZE_CONFIG[size];
+    const { width: fw } = SIZE_CONFIG[size];
     const variant = VARIANTS[randomInt(VARIANTS.length)];
     const items = generateRandomItems();
-    const pos = computePosition(vw, vh, fw, fh, avoidCenter);
+    const pos = computePosition(vw, fw, lessonNumber, isTraversing);
     return { variant, items, pos, size };
   });
 
