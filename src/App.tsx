@@ -13,6 +13,7 @@ import { Game, TopicLearn, TopicQuiz, TopicComplete, FormulaSheet, GameLayout } 
 import { ReadingPage } from './pages/reading';
 import { useUser } from './contexts/UserContext';
 import { UserSelect } from './pages/UserSelect';
+import { UserMenu } from './components/UserMenu';
 
 function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -541,8 +542,8 @@ export function App() {
 
   return (
     <div key={`${activeUser.toLowerCase()}-${resetCounter}`}>
+      <UserMenu />
       <BrowserRouter basename="/grade-nerd">
-        {/* UserMenu will be added here in Unit 8 */}
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/helpwithdata" element={<HelpUsBuild />} />
