@@ -45,7 +45,7 @@ interface ReadingProgressContextType {
   progress: ReadingProgress;
   setCurrentLesson: (n: number) => void;
   completeLesson: (lessonNumber: number, wordsRead: string[]) => void;
-  getMaxReadWord: () => { count: number; word: string };
+  getMasteryStats: () => { masteredCount: number; nextWord: string; nextCount: number };
   getCurrentMilestone: () => { level: number; threshold: number };
 }
 
@@ -84,31 +84,34 @@ export function ReadingProgressProvider({ children }: { children: ReactNode }) {
     });
   }, []);
 
-  const getMaxReadWord = useCallback((): { count: number; word: string } => {
-    let maxCount = 0;
-    let maxWord = '';
+  const getMasteryStats = useCallback((): { masteredCount: number; nextWord: string; nextCount: number } => {
+    let masteredCount = 0;
+    let nextWord = '';
+    let nextCount = 0;
     for (const [word, count] of Object.entries(progress.wordCounts)) {
-      if (count > maxCount) {
-        maxCount = count;
-        maxWord = word;
+      if (count >= 10) {
+        masteredCount++;
+      } else if (count > nextCount) {
+        nextCount = count;
+        nextWord = word;
       }
     }
-    return { count: maxCount, word: maxWord };
+    return { masteredCount, nextWord, nextCount };
   }, [progress.wordCounts]);
 
   const getCurrentMilestone = useCallback((): { level: number; threshold: number } => {
-    const { count } = getMaxReadWord();
-    const level = Math.floor((-1 + Math.sqrt(1 + 8 * count)) / 2);
+    const { masteredCount } = getMasteryStats();
+    const level = Math.floor((-1 + Math.sqrt(1 + 8 * masteredCount)) / 2);
     const threshold = (level * (level + 1)) / 2;
     return { level, threshold };
-  }, [getMaxReadWord]);
+  }, [getMasteryStats]);
 
   return (
     <ReadingProgressContext.Provider value={{
       progress,
       setCurrentLesson,
       completeLesson,
-      getMaxReadWord,
+      getMasteryStats,
       getCurrentMilestone,
     }}>
       {children}
