@@ -1,15 +1,18 @@
 import { createContext, useContext, useState, useCallback, ReactNode } from 'react';
 import { REGISTRY_KEY, SESSION_KEY, removeAllUserKeys } from '../lib/userStorage';
+import { hasLegacyData } from '../lib/migrateLegacyData';
 
 interface UserContextType {
   users: string[];
   activeUser: string | null;
   resetCounter: number;
+  migrationNeeded: boolean;
   createUser: (username: string) => { ok: boolean; error?: string };
   deleteUser: (username: string) => void;
   setActiveUser: (username: string) => void;
   clearActiveUser: () => void;
   resetActiveUserProgress: () => void;
+  setMigrationNeeded: (needed: boolean) => void;
 }
 
 const UserContext = createContext<UserContextType | null>(null);
@@ -44,6 +47,14 @@ export function UserProvider({ children }: { children: ReactNode }) {
   const [users, setUsers] = useState<string[]>(loadRegistry);
   const [activeUser, setActiveUserState] = useState<string | null>(() => loadActiveUser(loadRegistry()));
   const [resetCounter, setResetCounter] = useState(0);
+  const [migrationNeeded, setMigrationNeeded] = useState<boolean>(() => {
+    // If gradenerd-users registry does not exist, check for legacy unscoped data
+    const registryExists = localStorage.getItem(REGISTRY_KEY) !== null;
+    if (!registryExists) {
+      return hasLegacyData();
+    }
+    return false;
+  });
 
   const createUser = useCallback((username: string): { ok: boolean; error?: string } => {
     const trimmed = username.trim();
@@ -103,11 +114,13 @@ export function UserProvider({ children }: { children: ReactNode }) {
       users,
       activeUser,
       resetCounter,
+      migrationNeeded,
       createUser,
       deleteUser,
       setActiveUser,
       clearActiveUser,
       resetActiveUserProgress,
+      setMigrationNeeded,
     }}>
       {children}
     </UserContext.Provider>

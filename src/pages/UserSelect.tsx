@@ -3,9 +3,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Trash2, UserPlus } from 'lucide-react';
 import { useUser } from '../contexts/UserContext';
 import { Button } from '../components/ui/Button';
+import { migrateLegacyData } from '../lib/migrateLegacyData';
 
 export function UserSelect() {
-  const { users, createUser, deleteUser, setActiveUser } = useUser();
+  const { users, createUser, deleteUser, setActiveUser, migrationNeeded, setMigrationNeeded } = useUser();
   const [newName, setNewName] = useState('');
   const [error, setError] = useState('');
   const [deletingUser, setDeletingUser] = useState<string | null>(null);
@@ -15,9 +16,14 @@ export function UserSelect() {
   );
 
   const handleCreate = () => {
-    const result = createUser(newName);
+    const trimmed = newName.trim();
+    const result = createUser(trimmed);
     if (result.ok) {
-      setActiveUser(newName.trim());
+      if (migrationNeeded) {
+        migrateLegacyData(trimmed);
+        setMigrationNeeded(false);
+      }
+      setActiveUser(trimmed);
       setNewName('');
       setError('');
     } else {
@@ -50,84 +56,17 @@ export function UserSelect() {
             <span className="font-bold text-lg">gn</span>
           </div>
           <h1 className="text-2xl font-bold text-black">Grade Nerd</h1>
-          <p className="text-gray-500 text-sm mt-1">Who&apos;s learning today?</p>
+          <p className="text-gray-500 text-sm mt-1">
+            {migrationNeeded ? 'Welcome back!' : 'Who\u0027s learning today?'}
+          </p>
         </div>
 
-        {/* User list */}
-        {sortedUsers.length > 0 && (
-          <div className="bg-white border-2 border-black rounded-xl p-4 mb-4">
-            <div className="space-y-2">
-              {sortedUsers.map(username => (
-                <div key={username.toLowerCase()} className="relative">
-                  <AnimatePresence mode="wait">
-                    {deletingUser === username ? (
-                      <motion.div
-                        key="confirm"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="bg-red-50 border-2 border-red-200 rounded-lg p-3"
-                      >
-                        <p className="text-red-700 text-sm font-medium mb-2">
-                          Delete {username} and all their progress?
-                        </p>
-                        <div className="flex gap-2">
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            onClick={() => setDeletingUser(null)}
-                          >
-                            Cancel
-                          </Button>
-                          <button
-                            onClick={() => handleDelete(username)}
-                            className="px-3 py-1.5 bg-red-500 text-white rounded-lg font-bold text-sm hover:bg-red-600"
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </motion.div>
-                    ) : (
-                      <motion.div
-                        key="row"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        className="flex items-center gap-2"
-                      >
-                        <button
-                          onClick={() => setActiveUser(username)}
-                          className="flex-1 text-left px-4 py-3 rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
-                        >
-                          {username}
-                        </button>
-                        <button
-                          onClick={() => setDeletingUser(username)}
-                          className="p-2 text-gray-300 hover:text-red-500 transition-colors"
-                          aria-label={`Delete ${username}`}
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Create user */}
-        {users.length >= 100 ? (
-          <div className="bg-white border-2 border-black rounded-xl p-4 text-center">
-            <p className="text-gray-500 text-sm">Maximum 100 users reached</p>
-          </div>
-        ) : (
+        {/* Migration prompt — non-dismissable */}
+        {migrationNeeded ? (
           <div className="bg-white border-2 border-black rounded-xl p-4">
-            <div className="flex items-center gap-2 mb-3">
-              <UserPlus size={18} className="text-gray-400" />
-              <span className="font-medium text-sm text-gray-600">New user</span>
-            </div>
+            <p className="text-sm text-gray-700 mb-3">
+              Name your profile to keep your progress.
+            </p>
             <div className="flex gap-2">
               <input
                 type="text"
@@ -140,7 +79,7 @@ export function UserSelect() {
                 placeholder="Enter name"
                 maxLength={20}
                 className="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:border-black transition-colors"
-                autoFocus={sortedUsers.length === 0}
+                autoFocus
               />
               <Button
                 size="sm"
@@ -154,6 +93,111 @@ export function UserSelect() {
               <p className="text-red-500 text-xs mt-2">{error}</p>
             )}
           </div>
+        ) : (
+          <>
+            {/* User list */}
+            {sortedUsers.length > 0 && (
+              <div className="bg-white border-2 border-black rounded-xl p-4 mb-4">
+                <div className="space-y-2">
+                  {sortedUsers.map(username => (
+                    <div key={username.toLowerCase()} className="relative">
+                      <AnimatePresence mode="wait">
+                        {deletingUser === username ? (
+                          <motion.div
+                            key="confirm"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="bg-red-50 border-2 border-red-200 rounded-lg p-3"
+                          >
+                            <p className="text-red-700 text-sm font-medium mb-2">
+                              Delete {username} and all their progress?
+                            </p>
+                            <div className="flex gap-2">
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => setDeletingUser(null)}
+                              >
+                                Cancel
+                              </Button>
+                              <button
+                                onClick={() => handleDelete(username)}
+                                className="px-3 py-1.5 bg-red-500 text-white rounded-lg font-bold text-sm hover:bg-red-600"
+                              >
+                                Delete
+                              </button>
+                            </div>
+                          </motion.div>
+                        ) : (
+                          <motion.div
+                            key="row"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="flex items-center gap-2"
+                          >
+                            <button
+                              onClick={() => setActiveUser(username)}
+                              className="flex-1 text-left px-4 py-3 rounded-lg font-medium text-black hover:bg-gray-50 transition-colors"
+                            >
+                              {username}
+                            </button>
+                            <button
+                              onClick={() => setDeletingUser(username)}
+                              className="p-2 text-gray-300 hover:text-red-500 transition-colors"
+                              aria-label={`Delete ${username}`}
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Create user */}
+            {users.length >= 100 ? (
+              <div className="bg-white border-2 border-black rounded-xl p-4 text-center">
+                <p className="text-gray-500 text-sm">Maximum 100 users reached</p>
+              </div>
+            ) : (
+              <div className="bg-white border-2 border-black rounded-xl p-4">
+                <div className="flex items-center gap-2 mb-3">
+                  <UserPlus size={18} className="text-gray-400" />
+                  <span className="font-medium text-sm text-gray-600">New user</span>
+                </div>
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={newName}
+                    onChange={e => {
+                      setNewName(e.target.value);
+                      setError('');
+                    }}
+                    onKeyDown={handleKeyDown}
+                    placeholder="Enter name"
+                    maxLength={20}
+                    className="flex-1 px-3 py-2 border-2 border-gray-200 rounded-lg text-sm focus:outline-none focus:border-black transition-colors"
+                    autoFocus={sortedUsers.length === 0}
+                  />
+                  <Button
+                    size="sm"
+                    onClick={handleCreate}
+                    disabled={!newName.trim()}
+                  >
+                    Go
+                  </Button>
+                </div>
+                {error && (
+                  <p className="text-red-500 text-xs mt-2">{error}</p>
+                )}
+              </div>
+            )}
+          </>
         )}
       </motion.div>
     </div>
