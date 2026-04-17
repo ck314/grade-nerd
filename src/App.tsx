@@ -10,6 +10,7 @@ import { Survey } from './pages/Survey';
 import { Study } from './pages/Study';
 import { Demo, TopicView, InterestView, ContentView } from './pages/demo';
 import { Game, TopicLearn, TopicQuiz, TopicComplete, FormulaSheet, GameLayout } from './pages/game';
+import { ReadingPage } from './pages/reading';
 
 function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -541,6 +542,7 @@ export function App() {
         <Route path="/demo/topic/:topicId" element={<TopicView />} />
         <Route path="/demo/topic/:topicId/:interestId" element={<ContentView />} />
         <Route path="/demo/interest/:interestId" element={<InterestView />} />
+        <Route path="/reading" element={<ReadingPage />} />
         <Route path="/game" element={<GameLayout />}>
           <Route index element={<Game />} />
           <Route path="topic/:topicId" element={<TopicLearn />} />
