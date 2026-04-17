@@ -8,6 +8,8 @@ import { topics } from '../../data/topics';
 import { interests } from '../../data/interests';
 import { useProgress } from '../../hooks/useProgress';
 import { useUserPassion } from '../../hooks/useUserPassion';
+import { useUser } from '../../contexts/UserContext';
+import { getUserKey } from '../../lib/userStorage';
 import { FeedbackButton } from './components/FeedbackButton';
 import { MyPassionModal } from './components/MyPassionModal';
 import { TopicCard } from './components/TopicCard';
@@ -22,12 +24,14 @@ const interestIcons: Record<string, React.ReactNode> = {
 
 export function Demo() {
   const navigate = useNavigate();
+  const { activeUser } = useUser();
+  const seenIntroKey = getUserKey(activeUser!, 'seen-intro');
   const [showPassionModal, setShowPassionModal] = useState(false);
   const [selectedView, setSelectedView] = useState<'topics' | 'interests'>('topics');
   const [selectedTopicId, setSelectedTopicId] = useState<string>(topics[0]?.id || '');
   const [showIntro, setShowIntro] = useState(() => {
     // Check if user has seen the intro before
-    return localStorage.getItem('gradenerd-seen-intro') !== 'true';
+    return localStorage.getItem(seenIntroKey) !== 'true';
   });
   const { getTotalProgress, getTopicProgress } = useProgress();
   const { passion, setPassion, hasPassion } = useUserPassion();
@@ -51,7 +55,7 @@ export function Demo() {
   };
 
   const handleStartDemo = () => {
-    localStorage.setItem('gradenerd-seen-intro', 'true');
+    localStorage.setItem(seenIntroKey, 'true');
     setShowIntro(false);
   };
 

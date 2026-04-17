@@ -113,7 +113,7 @@ function ReadingContent() {
           transition={{ duration: 0.15 }}
           className="min-h-screen"
         >
-          <DecorativeAvatar key={`avatar-${isTraversing}`} avoidCenter={!isTraversing} />
+          <DecorativeAvatar key={`avatar-${isTraversing}`} avoidCenter={!isTraversing} lessonNumber={progress.currentLesson} isTraversing={isTraversing} />
           {lesson && (
             <LessonDisplay
               lessonNumber={progress.currentLesson}

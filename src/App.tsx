@@ -11,6 +11,9 @@ import { Study } from './pages/Study';
 import { Demo, TopicView, InterestView, ContentView } from './pages/demo';
 import { Game, TopicLearn, TopicQuiz, TopicComplete, FormulaSheet, GameLayout } from './pages/game';
 import { ReadingPage } from './pages/reading';
+import { useUser } from './contexts/UserContext';
+import { UserSelect } from './pages/UserSelect';
+import { UserMenu } from './components/UserMenu';
 
 function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -531,26 +534,35 @@ function HomePage() {
 }
 
 export function App() {
+  const { activeUser, resetCounter } = useUser();
+
+  if (!activeUser) {
+    return <UserSelect />;
+  }
+
   return (
-    <BrowserRouter basename="/grade-nerd">
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/helpwithdata" element={<HelpUsBuild />} />
-        <Route path="/survey" element={<Survey />} />
-        <Route path="/study" element={<Study />} />
-        <Route path="/demo" element={<Demo />} />
-        <Route path="/demo/topic/:topicId" element={<TopicView />} />
-        <Route path="/demo/topic/:topicId/:interestId" element={<ContentView />} />
-        <Route path="/demo/interest/:interestId" element={<InterestView />} />
-        <Route path="/reading" element={<ReadingPage />} />
-        <Route path="/game" element={<GameLayout />}>
-          <Route index element={<Game />} />
-          <Route path="topic/:topicId" element={<TopicLearn />} />
-          <Route path="topic/:topicId/quiz" element={<TopicQuiz />} />
-          <Route path="topic/:topicId/complete" element={<TopicComplete />} />
-          <Route path="formula-sheet" element={<FormulaSheet />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+    <div key={`${activeUser.toLowerCase()}-${resetCounter}`}>
+      <UserMenu />
+      <BrowserRouter basename="/grade-nerd">
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/helpwithdata" element={<HelpUsBuild />} />
+          <Route path="/survey" element={<Survey />} />
+          <Route path="/study" element={<Study />} />
+          <Route path="/demo" element={<Demo />} />
+          <Route path="/demo/topic/:topicId" element={<TopicView />} />
+          <Route path="/demo/topic/:topicId/:interestId" element={<ContentView />} />
+          <Route path="/demo/interest/:interestId" element={<InterestView />} />
+          <Route path="/reading" element={<ReadingPage />} />
+          <Route path="/game" element={<GameLayout />}>
+            <Route index element={<Game />} />
+            <Route path="topic/:topicId" element={<TopicLearn />} />
+            <Route path="topic/:topicId/quiz" element={<TopicQuiz />} />
+            <Route path="topic/:topicId/complete" element={<TopicComplete />} />
+            <Route path="formula-sheet" element={<FormulaSheet />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }

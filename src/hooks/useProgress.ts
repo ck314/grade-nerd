@@ -1,15 +1,18 @@
 import { useState, useEffect, useCallback } from 'react';
 import { ViewedTopic } from '../data/types';
-
-const STORAGE_KEY = 'gradenerd-viewed-topics';
+import { useUser } from '../contexts/UserContext';
+import { getUserKey } from '../lib/userStorage';
 
 export function useProgress() {
+  const { activeUser } = useUser();
+  const storageKey = getUserKey(activeUser!, 'viewed-topics');
+
   const [viewedTopics, setViewedTopics] = useState<ViewedTopic[]>([]);
 
   // Load from localStorage on mount
   useEffect(() => {
     try {
-      const stored = localStorage.getItem(STORAGE_KEY);
+      const stored = localStorage.getItem(storageKey);
       if (stored) {
         setViewedTopics(JSON.parse(stored));
       }
@@ -21,7 +24,7 @@ export function useProgress() {
 
   // Save to localStorage whenever viewedTopics changes
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(viewedTopics));
+    localStorage.setItem(storageKey, JSON.stringify(viewedTopics));
   }, [viewedTopics]);
 
   const markAsViewed = useCallback((topicId: string, interestId: string) => {
@@ -52,8 +55,8 @@ export function useProgress() {
 
   const clearProgress = useCallback(() => {
     setViewedTopics([]);
-    localStorage.removeItem(STORAGE_KEY);
-  }, []);
+    localStorage.removeItem(storageKey);
+  }, [storageKey]);
 
   return {
     viewedTopics,

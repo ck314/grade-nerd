@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
 import { getLesson } from '../data/reading';
-
-const STORAGE_KEY = 'gradenerd-reading';
+import { useUser } from '../contexts/UserContext';
+import { getUserKey } from '../lib/userStorage';
 
 interface ReadingProgress {
   currentLesson: number;
@@ -19,9 +19,9 @@ function createInitialProgress(): ReadingProgress {
   };
 }
 
-function loadFromLocalStorage(): ReadingProgress {
+function loadFromLocalStorage(key: string): ReadingProgress {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(key);
     if (stored) {
       const parsed = JSON.parse(stored);
       if (
@@ -47,16 +47,20 @@ interface ReadingProgressContextType {
   completeLesson: (lessonNumber: number, wordsRead: string[]) => void;
   getMasteryStats: () => { masteredCount: number; nextWord: string; nextCount: number };
   getCurrentMilestone: () => { level: number; threshold: number };
+  resetProgress: () => void;
 }
 
 const ReadingProgressContext = createContext<ReadingProgressContextType | null>(null);
 
 export function ReadingProgressProvider({ children }: { children: ReactNode }) {
-  const [progress, setProgress] = useState<ReadingProgress>(loadFromLocalStorage);
+  const { activeUser } = useUser();
+  const storageKey = getUserKey(activeUser!, 'reading');
+
+  const [progress, setProgress] = useState<ReadingProgress>(() => loadFromLocalStorage(storageKey));
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-  }, [progress]);
+    localStorage.setItem(storageKey, JSON.stringify(progress));
+  }, [progress, storageKey]);
 
   const setCurrentLesson = useCallback((n: number) => {
     setProgress(prev => ({
@@ -106,6 +110,12 @@ export function ReadingProgressProvider({ children }: { children: ReactNode }) {
     return { level, threshold };
   }, [getMasteryStats]);
 
+  const resetProgress = useCallback(() => {
+    const initial = createInitialProgress();
+    setProgress(initial);
+    localStorage.setItem(storageKey, JSON.stringify(initial));
+  }, [storageKey]);
+
   return (
     <ReadingProgressContext.Provider value={{
       progress,
@@ -113,6 +123,7 @@ export function ReadingProgressProvider({ children }: { children: ReactNode }) {
       completeLesson,
       getMasteryStats,
       getCurrentMilestone,
+      resetProgress,
     }}>
       {children}
     </ReadingProgressContext.Provider>
