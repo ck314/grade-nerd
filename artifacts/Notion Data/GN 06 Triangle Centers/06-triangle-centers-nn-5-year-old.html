@@ -1,0 +1,713 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Geometric Feature Extraction - for a 5 year old</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2df76de1-f653-800b-be86-ef5be22cb42b" class="page sans"><header><h1 class="page-title" dir="auto">Geometric Feature Extraction - for a 5 year old</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h2 id="2df76de1-f653-80d7-a7b7-eaafbec563a3" class="">🧠 What is it? (WHAT)</h2></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-80bc-aaba-de17452164de" class="">Imagine you draw a <strong>triangle</strong> with <strong>three dots</strong> 🔺.</p></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-80c2-8ee8-ca35ed5decf1" class="">Inside that triangle, there is a <strong>special secret spot</strong>.</p></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8086-be81-c12be816fd1b" class="">If you draw three straight lines that make perfect corners with the triangle sides</p></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-80d2-b013-c0d75d50e624" class="">and all the lines meet at <strong>one magic point</strong> ✨</p></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8042-a91c-ced60baf77d9" class="">That magic meeting spot is called the <strong>orthocenter</strong>.</p></div><div style="display:contents" dir="auto"><hr id="2df76de1-f653-8024-bea1-e04d5eedcf1c"/></div><div style="display:contents" dir="auto"><h2 id="2df76de1-f653-8099-aa7f-d0fbc4324201" class="">🤔 Why does the computer care? (WHY)</h2></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8029-8ddb-d24f83eab6d8" class="">When a computer looks at a picture:</p></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-80da-856f-ea6dba3e4079" class="bulleted-list"><li style="list-style-type:disc">It finds <strong>important dots</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-8090-b832-f66626a94077" class="bulleted-list"><li style="list-style-type:disc">It connects them into shapes</li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-8008-a6b0-fd6c45fa62d9" class="bulleted-list"><li style="list-style-type:disc">It asks:</li></ul></div><div style="display:contents" dir="auto"><blockquote id="2df76de1-f653-8055-9768-fc5c2fce0584" class="">“What kind of shape is this?”</blockquote></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-80a3-88b8-fc500125dddf" class="">The <strong>magic center point</strong> helps the computer understand:</p></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-8069-aae1-ff32b6f20253" class="bulleted-list"><li style="list-style-type:disc">How pointy the triangle is</li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-80c1-8384-ca44dc2f8c43" class="bulleted-list"><li style="list-style-type:disc">Whether it’s tall, wide, or slanted</li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-806e-8e14-d6aa8d61f0a6" class="bulleted-list"><li style="list-style-type:disc">What kind of triangle it might be</li></ul></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8052-9670-d8d07a75e789" class="">That makes the computer <strong>better at recognizing things</strong> 👀🧠</p></div><div style="display:contents" dir="auto"><hr id="2df76de1-f653-80cb-9010-d421d024a6e1"/></div><div style="display:contents" dir="auto"><h2 id="2df76de1-f653-8020-9692-ea256b84c188" class="">🔧 How does it work? (HOW)</h2></div><div style="display:contents" dir="auto"><h3 id="2df76de1-f653-808b-b0e4-f7314e5d4bca" class="">🧩 Drawing Special Lines</h3></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8076-a805-f16a18dc7dd3" class="">From each corner of the triangle, the computer draws a <strong>special straight line</strong>:</p></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-8047-bfe5-f3b3ca6aa03c" class="bulleted-list"><li style="list-style-type:disc">The line goes <strong>straight down</strong> to the opposite side</li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-80c8-907d-d03e49858812" class="bulleted-list"><li style="list-style-type:disc">Like dropping a stick straight to the ground 🌱</li></ul></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8005-b4a4-c04772825ccd" class="">These special lines are called <strong>altitudes</strong>.</p></div><div style="display:contents" dir="auto"><hr id="2df76de1-f653-80dd-9183-e399e990b4c4"/></div><div style="display:contents" dir="auto"><h2 id="2df76de1-f653-8094-b73d-f127c5a2a30b" class="">📍 Finding the Magic Spot</h2></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8083-9dea-fb7d7284e0b1" class="">The computer:</p></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8088-b5b9-c70b82784ae5" class="">1️⃣ Draws one special line</p></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8046-b873-c3cf95d62318" class="">2️⃣ Draws another special line</p></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8002-a78e-c963f2f3bb46" class="">3️⃣ Looks for where they <strong>cross</strong></p></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8069-b469-dabd830b8897" class="">🎯 Where they cross is the <strong>orthocenter</strong>.</p></div><div style="display:contents" dir="auto"><hr id="2df76de1-f653-8062-ba16-e77a8c7b1f80"/></div><div style="display:contents" dir="auto"><h2 id="2df76de1-f653-8090-a26b-c6fb34e9ca14" class="">🧸 The Story Example</h2></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8011-8032-ec969861768f" class="">The computer sees three dots on an object:</p></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-8075-8b89-f14ba39dbc8c" class="bulleted-list"><li style="list-style-type:disc">Dot A</li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-808d-9ae8-cc64befec85c" class="bulleted-list"><li style="list-style-type:disc">Dot B</li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-8012-a03f-d7f2e73fe476" class="bulleted-list"><li style="list-style-type:disc">Dot C</li></ul></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-805b-b530-c8a93c7d6458" class="">It draws the special lines from the dots.</p></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-80f2-8d19-ece9c28c59a4" class="">All the lines meet at <strong>one spot inside the shape</strong>.</p></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-80a4-adff-c44415324d36" class="">The computer saves that spot like a note:</p></div><div style="display:contents" dir="auto"><blockquote id="2df76de1-f653-8071-93e4-eae046ce84de" class="">“This tells me something important about this shape!”</blockquote></div><div style="display:contents" dir="auto"><hr id="2df76de1-f653-8099-b2dd-ca60a86d8662"/></div><div style="display:contents" dir="auto"><h2 id="2df76de1-f653-8062-b734-ca4d2c367c37" class="">✅ Final Result</h2></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-80b5-83f4-e01577dc0aef" class="">The computer finds:</p></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-8067-aaef-e8ba10e182db" class="bulleted-list"><li style="list-style-type:disc">A <strong>new special point</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-80a0-a051-e7f0f3b1332b" class="bulleted-list"><li style="list-style-type:disc">A <strong>shape helper clue</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-80ea-9318-fe933ddf793a" class="bulleted-list"><li style="list-style-type:disc">A way to tell triangles apart</li></ul></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-80aa-9ad6-e42e473c96c7" class="">This special point becomes part of the computer’s <strong>memory</strong>.</p></div><div style="display:contents" dir="auto"><hr id="2df76de1-f653-803d-992a-c83115a001b5"/></div><div style="display:contents" dir="auto"><h2 id="2df76de1-f653-8008-9c7b-e7eecde768d6" class="">🧠 Big Idea (Kid Version)</h2></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-8068-9df3-dcd9191b8614" class="bulleted-list"><li style="list-style-type:disc">Computers turn pictures into <strong>dots and lines</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-80a9-98de-f489d684cffa" class="bulleted-list"><li style="list-style-type:disc">They find <strong>special spots</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-8056-af21-c3ece623aaff" class="bulleted-list"><li style="list-style-type:disc">Those spots help them <strong>understand shapes</strong></li></ul></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-80ab-b85c-ebb8c7ec68de" class="">So the computer is really saying:</p></div><div style="display:contents" dir="auto"><blockquote id="2df76de1-f653-8080-b08d-d85dc7040638" class="">“Let me find the magic point inside this shape so I know what it is.”</blockquote></div><div style="display:contents" dir="auto"><p id="2df76de1-f653-8068-8f50-da8f252bf918" class="">That’s how computers learn to:</p></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-808a-b3ea-cd9bba076bed" class="bulleted-list"><li style="list-style-type:disc">Recognize objects</li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-80dc-9ee2-f1cf1edf50f1" class="bulleted-list"><li style="list-style-type:disc">Tell shapes apart</li></ul></div><div style="display:contents" dir="auto"><ul id="2df76de1-f653-800a-bf8f-fa8ad34d9a5f" class="bulleted-list"><li style="list-style-type:disc">See the world like we do 🌍✨</li></ul></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

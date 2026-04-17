@@ -1,0 +1,713 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Gradient of Tanh Function - for a 5 year old</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2e076de1-f653-80d3-99b5-fa99afe65233" class="page sans"><header><h1 class="page-title" dir="auto">Gradient of Tanh Function - for a 5 year old</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h2 id="2e076de1-f653-8056-8255-d7aa347ee476" class="">🧠 What is it? (WHAT)</h2></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-80de-8765-ee8c82d27ca1" class="">Imagine a tiny computer helper that:</p></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-805e-a5f7-c2de2142f9c2" class="bulleted-list"><li style="list-style-type:disc">Takes a number in</li></ul></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-809b-885d-c1147ececfd3" class="bulleted-list"><li style="list-style-type:disc">Squishes it so it stays <strong>between –1 and 1</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-8055-a618-f18ae08a05b2" class="bulleted-list"><li style="list-style-type:disc">And gives a new number out</li></ul></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-8068-ab65-f4bf016e492b" class="">This squishing rule is called <strong>tanh</strong>.</p></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-804f-81b6-e9be8bdc0b44" class="">Now the computer wants to know:</p></div><div style="display:contents" dir="auto"><blockquote id="2e076de1-f653-80e1-847f-d75fdb5df93b" class="">“If I change the input just a little… how much does the output change?”</blockquote></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-800b-a7e4-df5cb9c278c6" class="">That “how much it changes” is called the <strong>slope</strong>.</p></div><div style="display:contents" dir="auto"><hr id="2e076de1-f653-80ea-9eec-eddaf8daf13a"/></div><div style="display:contents" dir="auto"><h2 id="2e076de1-f653-8080-9bdc-c768cc9dd924" class="">🤔 Why does the computer care about the slope? (WHY)</h2></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-80b8-9fe5-ed8de58b0b1f" class="">When the computer is learning, it asks:</p></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-80e5-8a24-cb4eb749cd96" class="bulleted-list"><li style="list-style-type:disc">“Should I change <strong>a lot</strong>?”</li></ul></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-806a-a3f9-cc08e0a1860b" class="bulleted-list"><li style="list-style-type:disc">Or “Should I change <strong>just a little</strong>?”</li></ul></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-80b0-a741-e09b48050b03" class="">The slope tells the computer:</p></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-803c-bc7d-ee0fb5365de3" class="bulleted-list"><li style="list-style-type:disc"><strong>Big slope</strong> → make a bigger change</li></ul></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-8048-9f73-cb592eb19853" class="bulleted-list"><li style="list-style-type:disc"><strong>Small slope</strong> → make a tiny change</li></ul></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-80a4-aeb2-ef7b353b3771" class="">This helps the computer learn <strong>smoothly</strong>, not wildly 😌</p></div><div style="display:contents" dir="auto"><hr id="2e076de1-f653-808e-9f4a-df46ec9ccb56"/></div><div style="display:contents" dir="auto"><h2 id="2e076de1-f653-80b0-8b2d-dea239c59c91" class="">🔧 How does it work? (HOW)</h2></div><div style="display:contents" dir="auto"><h3 id="2e076de1-f653-80b7-9f31-f438734c185a" class="">🎢 A Smooth Hill</h3></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-80af-9809-ec54cc756738" class="">Imagine a <strong>soft hill</strong> 🏞️</p></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-8052-87e9-f8cccae0e751" class="bulleted-list"><li style="list-style-type:disc">In the middle, it’s a bit steep</li></ul></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-80e4-8bf5-f40cca985b51" class="bulleted-list"><li style="list-style-type:disc">Near the top and bottom, it’s flat</li></ul></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-80c1-b5e6-f1778658491b" class="">The computer wants to know:</p></div><div style="display:contents" dir="auto"><blockquote id="2e076de1-f653-8045-ac64-d6fd3879fa32" class="">“How steep is the hill right here?”</blockquote></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-8073-8126-f73816a50711" class="">Instead of doing hard math, it uses a <strong>shortcut</strong> ✨</p></div><div style="display:contents" dir="auto"><hr id="2e076de1-f653-8034-b04d-c19d5bebe8d5"/></div><div style="display:contents" dir="auto"><h2 id="2e076de1-f653-807f-9745-c97d81929123" class="">🧸 The Story Example</h2></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-80b9-b88d-ea47dc28ce82" class="">The neuron gives an answer:</p></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-80a9-aa71-c06d24a497ff" class="bulleted-list"><li style="list-style-type:disc"><strong>0.6</strong></li></ul></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-80f0-9ca4-c6f68e3b23bf" class="">The computer says:</p></div><div style="display:contents" dir="auto"><blockquote id="2e076de1-f653-80e1-a21a-ff5fddf4ea2d" class="">“Great! I don’t need to look back at the hill.<div style="display:contents" dir="auto"><p id="2e076de1-f653-8014-938d-fcc63bf8ee1c" class="">I can use this number directly.”</p></div></blockquote></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-805f-886c-f481c05047e6" class="">It does something very simple:</p></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-8047-b0cf-c29c01677a07" class="bulleted-list"><li style="list-style-type:disc">Takes <strong>1 minus the square</strong> of the answer</li></ul></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-80fa-b96d-c69e16ff6128" class="">Or, even easier:</p></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-8061-a567-f571e07aaac9" class="bulleted-list"><li style="list-style-type:disc">One small piece</li></ul></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-80eb-98ec-efba4d7114c8" class="bulleted-list"><li style="list-style-type:disc">Times one big piece</li></ul></div><div style="display:contents" dir="auto"><hr id="2e076de1-f653-80c0-8c65-d48e8739ae2c"/></div><div style="display:contents" dir="auto"><h2 id="2e076de1-f653-800f-989b-f13bc643b92a" class="">✨ The Easy Pieces</h2></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-80e9-82e2-fddce7e3b8d9" class="">The computer calculates:</p></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-801d-82c2-ca740b9e10c9" class="bulleted-list"><li style="list-style-type:disc"><strong>1 – 0.6 = 0.4</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-804a-9239-fdd2a7124d20" class="bulleted-list"><li style="list-style-type:disc"><strong>1 + 0.6 = 1.6</strong></li></ul></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-808b-8945-c15cc5c63908" class="">Then it multiplies:</p></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-8026-a787-d3c6b2a9c7b6" class="bulleted-list"><li style="list-style-type:disc"><strong>0.4 × 1.6 = 0.64</strong></li></ul></div><div style="display:contents" dir="auto"><hr id="2e076de1-f653-8022-89dd-c23e88567c62"/></div><div style="display:contents" dir="auto"><h2 id="2e076de1-f653-8057-87bb-dc9f6266e226" class="">✅ Final Answer</h2></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-8001-bbc4-ed45ff8d9272" class="">🎉 The slope is <strong>0.64</strong></p></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-8089-9ca0-ecbbd6e9d1dc" class="">That tells the computer:</p></div><div style="display:contents" dir="auto"><blockquote id="2e076de1-f653-8020-8246-dff17d52d143" class="">“Change a little… but not too much.”</blockquote></div><div style="display:contents" dir="auto"><hr id="2e076de1-f653-80e2-9e8d-e9ec5d3e25a8"/></div><div style="display:contents" dir="auto"><h2 id="2e076de1-f653-8090-8731-f74303130916" class="">🧠 Big Idea (Kid Version)</h2></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-80e6-b1ea-f79ef8def2ce" class="bulleted-list"><li style="list-style-type:disc">Computers learn by making <strong>tiny adjustments</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-80c1-a00d-c050ccd07580" class="bulleted-list"><li style="list-style-type:disc">They need to know <strong>how steep things are</strong></li></ul></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-80c9-8d20-c75b4a2f5952" class="bulleted-list"><li style="list-style-type:disc">Smart shortcuts help them go <strong>fast</strong></li></ul></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-8037-82ae-ed6623f555e9" class="">So the computer is really saying:</p></div><div style="display:contents" dir="auto"><blockquote id="2e076de1-f653-8033-8614-e10d43392dde" class="">“How careful should I be right now?”</blockquote></div><div style="display:contents" dir="auto"><p id="2e076de1-f653-80c6-b6b6-cff7caea8630" class="">That’s how computers:</p></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-8045-9f3b-fcbf3baf95b6" class="bulleted-list"><li style="list-style-type:disc">Learn quickly</li></ul></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-807a-acdc-d4fc70341066" class="bulleted-list"><li style="list-style-type:disc">Stay stable</li></ul></div><div style="display:contents" dir="auto"><ul id="2e076de1-f653-8038-9899-f2aae14afb79" class="bulleted-list"><li style="list-style-type:disc">Get smarter every step 🧠✨</li></ul></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

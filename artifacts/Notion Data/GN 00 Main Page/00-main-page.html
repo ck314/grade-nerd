@@ -1,0 +1,792 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8"/><title>Grade 10 Extra Credit Assignment</title><style>
+/* cspell:disable-file */
+/* webkit printing magic: print all background colors */
+html {
+	-webkit-print-color-adjust: exact;
+}
+* {
+	box-sizing: border-box;
+	-webkit-print-color-adjust: exact;
+}
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+@media only screen {
+	body {
+		margin: 2em auto;
+		max-width: 900px;
+		color: rgb(55, 53, 47);
+	}
+}
+
+body {
+	line-height: 1.5;
+	white-space: pre-wrap;
+}
+
+a,
+a.visited {
+	color: inherit;
+	text-decoration: underline;
+}
+
+.pdf-relative-link-path {
+	font-size: 80%;
+	color: #444;
+}
+
+h1,
+h2,
+h3 {
+	letter-spacing: -0.01em;
+	line-height: 1.2;
+	font-weight: 600;
+	margin-bottom: 0;
+}
+
+/* Override strong tags inside headings to maintain consistent weight */
+h1 strong,
+h2 strong,
+h3 strong {
+	font-weight: 600;
+}
+
+.page-title {
+	font-size: 2.5rem;
+	font-weight: 700;
+	margin-top: 0;
+	margin-bottom: 0.75em;
+}
+
+h1 {
+	font-size: 1.875rem;
+	margin-top: 1.875rem;
+}
+
+h2 {
+	font-size: 1.5rem;
+	margin-top: 1.5rem;
+}
+
+h3 {
+	font-size: 1.25rem;
+	margin-top: 1.25rem;
+}
+
+.source {
+	border: 1px solid #ddd;
+	border-radius: 3px;
+	padding: 1.5em;
+	word-break: break-all;
+}
+
+.callout {
+	border-radius: 10px;
+	padding: 1rem;
+}
+
+figure {
+	margin: 1.25em 0;
+	page-break-inside: avoid;
+}
+
+figcaption {
+	opacity: 0.5;
+	font-size: 85%;
+	margin-top: 0.5em;
+}
+
+mark {
+	background-color: transparent;
+}
+
+.indented {
+	padding-left: 1.5em;
+}
+
+hr {
+	background: transparent;
+	display: block;
+	width: 100%;
+	height: 1px;
+	visibility: visible;
+	border: none;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.09);
+}
+
+img {
+	max-width: 100%;
+}
+
+@media only print {
+	img {
+		max-height: 100vh;
+		object-fit: contain;
+	}
+}
+
+@page {
+	margin: 1in;
+}
+
+.collection-content {
+	font-size: 0.875rem;
+}
+
+.collection-content td {
+	white-space: pre-wrap;
+	word-break: break-word;
+}
+
+.column-list {
+	display: flex;
+	justify-content: space-between;
+}
+
+.column {
+	padding: 0 1em;
+}
+
+.column:first-child {
+	padding-left: 0;
+}
+
+.column:last-child {
+	padding-right: 0;
+}
+
+.table_of_contents-item {
+	display: block;
+	font-size: 0.875rem;
+	line-height: 1.3;
+	padding: 0.125rem;
+}
+
+.table_of_contents-indent-1 {
+	margin-left: 1.5rem;
+}
+
+.table_of_contents-indent-2 {
+	margin-left: 3rem;
+}
+
+.table_of_contents-indent-3 {
+	margin-left: 4.5rem;
+}
+
+.table_of_contents-link {
+	text-decoration: none;
+	opacity: 0.7;
+	border-bottom: 1px solid rgba(55, 53, 47, 0.18);
+}
+
+table,
+th,
+td {
+	border: 1px solid rgba(55, 53, 47, 0.09);
+	border-collapse: collapse;
+}
+
+table {
+	border-left: none;
+	border-right: none;
+}
+
+th,
+td {
+	font-weight: normal;
+	padding: 0.25em 0.5em;
+	line-height: 1.5;
+	min-height: 1.5em;
+	text-align: left;
+}
+
+th {
+	color: rgba(55, 53, 47, 0.6);
+}
+
+ol,
+ul {
+	margin: 0;
+	margin-block-start: 0.6em;
+	margin-block-end: 0.6em;
+}
+
+li > ol:first-child,
+li > ul:first-child {
+	margin-block-start: 0.6em;
+}
+
+ul > li {
+	list-style: disc;
+}
+
+ul.to-do-list {
+	padding-inline-start: 0;
+}
+
+ul.to-do-list > li {
+	list-style: none;
+}
+
+.to-do-children-checked {
+	text-decoration: line-through;
+	opacity: 0.375;
+}
+
+ul.toggle > li {
+	list-style: none;
+}
+
+ul {
+	padding-inline-start: 1.7em;
+}
+
+ul > li {
+	padding-left: 0.1em;
+}
+
+ol {
+	padding-inline-start: 1.6em;
+}
+
+ol > li {
+	padding-left: 0.2em;
+}
+
+.mono ol {
+	padding-inline-start: 2em;
+}
+
+.mono ol > li {
+	text-indent: -0.4em;
+}
+
+.toggle {
+	padding-inline-start: 0em;
+	list-style-type: none;
+}
+
+/* Indent toggle children */
+.toggle > li > details {
+	padding-left: 1.7em;
+}
+
+.toggle > li > details > summary {
+	margin-left: -1.1em;
+}
+
+.selected-value {
+	display: inline-block;
+	padding: 0 0.5em;
+	background: rgba(206, 205, 202, 0.5);
+	border-radius: 3px;
+	margin-right: 0.5em;
+	margin-top: 0.3em;
+	margin-bottom: 0.3em;
+	white-space: nowrap;
+}
+
+.collection-title {
+	display: inline-block;
+	margin-right: 1em;
+}
+
+.page-description {
+	margin-bottom: 2em;
+}
+
+.simple-table {
+	margin-top: 1em;
+	font-size: 0.875rem;
+	empty-cells: show;
+}
+.simple-table td {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table th {
+	height: 29px;
+	min-width: 120px;
+}
+
+.simple-table-header-color {
+	background: rgb(247, 246, 243);
+	color: black;
+}
+.simple-table-header {
+	font-weight: 500;
+}
+
+time {
+	opacity: 0.5;
+}
+
+.icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	max-width: 1.2em;
+	max-height: 1.2em;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	margin-right: 0.5em;
+}
+
+img.icon {
+	border-radius: 3px;
+}
+
+.callout img.notion-static-icon {
+	width: 1em;
+	height: 1em;
+}
+
+.callout p {
+	margin: 0;
+}
+
+.callout h1,
+.callout h2,
+.callout h3 {
+	margin: 0 0 0.6rem;
+}
+
+.user-icon {
+	width: 1.5em;
+	height: 1.5em;
+	border-radius: 100%;
+	margin-right: 0.5rem;
+}
+
+.user-icon-inner {
+	font-size: 0.8em;
+}
+
+.text-icon {
+	border: 1px solid #000;
+	text-align: center;
+}
+
+.page-cover-image {
+	display: block;
+	object-fit: cover;
+	width: 100%;
+	max-height: 30vh;
+}
+
+.page-header-icon {
+	font-size: 3rem;
+	margin-bottom: 1rem;
+}
+
+.page-header-icon-with-cover {
+	margin-top: -0.72em;
+	margin-left: 0.07em;
+}
+
+.page-header-icon img {
+	border-radius: 3px;
+}
+
+.link-to-page {
+	margin: 1em 0;
+	padding: 0;
+	border: none;
+	font-weight: 500;
+}
+
+p > .user {
+	opacity: 0.5;
+}
+
+td > .user,
+td > time {
+	white-space: nowrap;
+}
+
+input[type="checkbox"] {
+	transform: scale(1.5);
+	margin-right: 0.6em;
+	vertical-align: middle;
+}
+
+p {
+	margin-top: 0.5em;
+	margin-bottom: 0.5em;
+}
+
+.image {
+	border: none;
+	margin: 1.5em 0;
+	padding: 0;
+	border-radius: 0;
+	text-align: center;
+}
+
+.code,
+code {
+	background: rgba(135, 131, 120, 0.15);
+	border-radius: 3px;
+	padding: 0.2em 0.4em;
+	border-radius: 3px;
+	font-size: 85%;
+	tab-size: 2;
+}
+
+code {
+	color: #eb5757;
+}
+
+.code {
+	padding: 1.5em 1em;
+}
+
+.code-wrap {
+	white-space: pre-wrap;
+	word-break: break-all;
+}
+
+.code > code {
+	background: none;
+	padding: 0;
+	font-size: 100%;
+	color: inherit;
+}
+
+blockquote {
+	font-size: 1em;
+	margin: 1em 0;
+	padding-left: 1em;
+	border-left: 3px solid rgb(55, 53, 47);
+}
+
+blockquote.quote-large {
+	font-size: 1.25em;
+}
+
+.bookmark {
+	text-decoration: none;
+	max-height: 8em;
+	padding: 0;
+	display: flex;
+	width: 100%;
+	align-items: stretch;
+}
+
+.bookmark-title {
+	font-size: 0.85em;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	height: 1.75em;
+	white-space: nowrap;
+}
+
+.bookmark-text {
+	display: flex;
+	flex-direction: column;
+}
+
+.bookmark-info {
+	flex: 4 1 180px;
+	padding: 12px 14px 14px;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+}
+
+.bookmark-image {
+	width: 33%;
+	flex: 1 1 180px;
+	display: block;
+	position: relative;
+	object-fit: cover;
+	border-radius: 1px;
+}
+
+.bookmark-description {
+	color: rgba(55, 53, 47, 0.6);
+	font-size: 0.75em;
+	overflow: hidden;
+	max-height: 4.5em;
+	word-break: break-word;
+}
+
+.bookmark-href {
+	font-size: 0.75em;
+	margin-top: 0.25em;
+}
+
+.sans { font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"; }
+.code { font-family: "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace; }
+.serif { font-family: Lyon-Text, Georgia, ui-serif, serif; }
+.mono { font-family: iawriter-mono, Nitti, Menlo, Courier, monospace; }
+.pdf .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK JP'; }
+.pdf:lang(zh-CN) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK SC'; }
+.pdf:lang(zh-TW) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK TC'; }
+.pdf:lang(ko-KR) .sans { font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", Helvetica, "Apple Color Emoji", "Noto Sans Arabic", "Noto Sans Hebrew", Arial, sans-serif, "Segoe UI Emoji", "Segoe UI Symbol", 'Twemoji', 'Noto Color Emoji', 'Noto Sans CJK KR'; }
+.pdf .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .code { font-family: Source Code Pro, "SFMono-Regular", Menlo, Consolas, "PT Mono", "Liberation Mono", Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.pdf .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK JP'; }
+.pdf:lang(zh-CN) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK SC'; }
+.pdf:lang(zh-TW) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK TC'; }
+.pdf:lang(ko-KR) .serif { font-family: PT Serif, Lyon-Text, Georgia, ui-serif, serif, 'Twemoji', 'Noto Color Emoji', 'Noto Serif CJK KR'; }
+.pdf .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK JP'; }
+.pdf:lang(zh-CN) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK SC'; }
+.pdf:lang(zh-TW) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK TC'; }
+.pdf:lang(ko-KR) .mono { font-family: PT Mono, iawriter-mono, Nitti, Menlo, Courier, monospace, 'Twemoji', 'Noto Color Emoji', 'Noto Sans Mono CJK KR'; }
+.highlight-default {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.highlight-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.highlight-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.highlight-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.highlight-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.highlight-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.highlight-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.highlight-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.highlight-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.highlight-default_background {
+	color: rgba(44, 44, 43, 1);
+}
+.highlight-gray_background {
+	background: rgba(42, 28, 0, 0.07);
+}
+.highlight-brown_background {
+	background: rgba(139, 46, 0, 0.086);
+}
+.highlight-orange_background {
+	background: rgba(224, 101, 1, 0.129);
+}
+.highlight-yellow_background {
+	background: rgba(211, 168, 0, 0.137);
+}
+.highlight-teal_background {
+	background: rgba(0, 100, 45, 0.09);
+}
+.highlight-blue_background {
+	background: rgba(0, 124, 215, 0.094);
+}
+.highlight-purple_background {
+	background: rgba(102, 0, 178, 0.078);
+}
+.highlight-pink_background {
+	background: rgba(197, 0, 93, 0.086);
+}
+.highlight-red_background {
+	background: rgba(223, 22, 0, 0.094);
+}
+.block-color-default {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray {
+	color: rgba(125, 122, 117, 1);
+	fill: rgba(125, 122, 117, 1);
+}
+.block-color-brown {
+	color: rgba(159, 118, 90, 1);
+	fill: rgba(159, 118, 90, 1);
+}
+.block-color-orange {
+	color: rgba(210, 123, 45, 1);
+	fill: rgba(210, 123, 45, 1);
+}
+.block-color-yellow {
+	color: rgba(203, 148, 52, 1);
+	fill: rgba(203, 148, 52, 1);
+}
+.block-color-teal {
+	color: rgba(80, 148, 110, 1);
+	fill: rgba(80, 148, 110, 1);
+}
+.block-color-blue {
+	color: rgba(56, 125, 201, 1);
+	fill: rgba(56, 125, 201, 1);
+}
+.block-color-purple {
+	color: rgba(154, 107, 180, 1);
+	fill: rgba(154, 107, 180, 1);
+}
+.block-color-pink {
+	color: rgba(193, 76, 138, 1);
+	fill: rgba(193, 76, 138, 1);
+}
+.block-color-red {
+	color: rgba(207, 81, 72, 1);
+	fill: rgba(207, 81, 72, 1);
+}
+.block-color-default_background {
+	color: inherit;
+	fill: inherit;
+}
+.block-color-gray_background {
+	background: rgba(240, 239, 237, 1);
+}
+.block-color-brown_background {
+	background: rgba(245, 237, 233, 1);
+}
+.block-color-orange_background {
+	background: rgba(251, 235, 222, 1);
+}
+.block-color-yellow_background {
+	background: rgba(249, 243, 220, 1);
+}
+.block-color-teal_background {
+	background: rgba(232, 241, 236, 1);
+}
+.block-color-blue_background {
+	background: rgba(229, 242, 252, 1);
+}
+.block-color-purple_background {
+	background: rgba(243, 235, 249, 1);
+}
+.block-color-pink_background {
+	background: rgba(250, 233, 241, 1);
+}
+.block-color-red_background {
+	background: rgba(252, 233, 231, 1);
+}
+.select-value-color-default { background-color: rgba(42, 28, 0, 0.07); }
+.select-value-color-gray { background-color: rgba(28, 19, 1, 0.11); }
+.select-value-color-brown { background-color: rgba(127, 51, 0, 0.156); }
+.select-value-color-orange { background-color: rgba(196, 88, 0, 0.203); }
+.select-value-color-yellow { background-color: rgba(209, 156, 0, 0.282); }
+.select-value-color-green { background-color: rgba(0, 96, 38, 0.156); }
+.select-value-color-blue { background-color: rgba(0, 118, 217, 0.203); }
+.select-value-color-purple { background-color: rgba(92, 0, 163, 0.141); }
+.select-value-color-pink { background-color: rgba(183, 0, 78, 0.152); }
+.select-value-color-red { background-color: rgba(206, 24, 0, 0.164); }
+
+.checkbox {
+	display: inline-flex;
+	vertical-align: text-bottom;
+	width: 16;
+	height: 16;
+	background-size: 16px;
+	margin-left: 2px;
+	margin-right: 5px;
+}
+
+.checkbox-on {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20width%3D%2216%22%20height%3D%2216%22%20fill%3D%22%2358A9D7%22%2F%3E%0A%3Cpath%20d%3D%22M6.71429%2012.2852L14%204.9995L12.7143%203.71436L6.71429%209.71378L3.28571%206.2831L2%207.57092L6.71429%2012.2852Z%22%20fill%3D%22white%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+
+.checkbox-off {
+	background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2216%22%20height%3D%2216%22%20viewBox%3D%220%200%2016%2016%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%0A%3Crect%20x%3D%220.75%22%20y%3D%220.75%22%20width%3D%2214.5%22%20height%3D%2214.5%22%20fill%3D%22white%22%20stroke%3D%22%2336352F%22%20stroke-width%3D%221.5%22%2F%3E%0A%3C%2Fsvg%3E");
+}
+	
+</style></head><body><article id="2d976de1-f653-8058-a6d0-d0db5cd2637c" class="page sans"><header><h1 class="page-title" dir="auto">Grade 10 Extra Credit Assignment</h1><p class="page-description" dir="auto"></p></header><div class="page-body"><div style="display:contents" dir="auto"><h3 id="2de76de1-f653-80fa-99b1-fa0106036e5a" class="">Summary</h3></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80db-a43d-dad5a648c162" class="">
+</p></div><div style="display:contents" dir="auto"><p id="0078f470-0aee-495a-862a-e2ea11ade6df" class="">This extra credit assignment takes the 6 units that make up the MPM2D1 course and breaks them up into 17 individual topics. Each topic is then connected to the fields of neural economic, physics and neural networks, adding real life examples to make everything more digestible.</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8004-ad77-deb3c4ac0a03" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8003-b16f-e798a0613d03" class="">Note: Neural networks was chosen as a third topic because I have been exploring the technical and ethical aspects of AI and Neural Networks as a project outside of school. Thus,  I have a particular interest in these connections.</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8091-9156-dce0f9ca51b5" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8008-8dca-e2c122b6b59a" class="">Each of the 17 topics comes with:</p></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-802f-89cf-dcc913404ba7" class="bulleted-list"><li style="list-style-type:disc">a Infographic concept summary (on this page)</li></ul></div><div style="display:contents" dir="auto"><ul id="32a7d2ba-d4fe-4bbb-9109-ae28aa73a1d8" class="bulleted-list"><li style="list-style-type:disc">a <strong>Real Life Examples Link </strong>which covers connections to economics, physics and neural networks</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-80ef-89b8-e300fae83225" class="bulleted-list"><li style="list-style-type:disc">an Economics example</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-809b-935b-e1c7b53defc2" class="bulleted-list"><li style="list-style-type:disc">a Physics example</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8082-bce5-c88bfc443ff8" class="bulleted-list"><li style="list-style-type:disc">a Neural Networks example</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8055-9927-d443ded66ee2" class="bulleted-list"><li style="list-style-type:disc">a “Neural Networks for a 5 year old” visual and text explanation</li></ul></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80c7-9fe9-e9339ac29328" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-807c-8d92-f33db4a160f2"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-80b4-a667-d72955d899a9" class="image" style="text-align:left"><a href="image.png"><img style="width:720px" src="image.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80af-a0d6-efe8d86cd96d" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8080-8cd8-fe66a38348c0" class=""><strong>Summary: </strong>This topic is about describing lines. Think of &quot;slope&quot; as the steepness of a hill: &quot;rise over run&quot; tells you how much you go up for every step you take sideways. The &quot;y-intercept&quot; is just where the line crosses the vertical axis—it&#x27;s your starting point when x is zero. If you have the slope and that starting point, you can describe the entire line.</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80c8-9b26-fc36f7c61cb4" class="">
+</p></div><div style="display:contents" dir="auto"><p id="d6145994-7ff6-4aed-9c1c-e7fdd04d90c9" class=""><strong><a href="https://www.notion.so/Real-Life-Examples-for-Linear-Equations-Slope-2de76de1f653803faac4db2ad6448f7b?pvs=21">Real Life Examples for Linear Equations &amp; Slope</a></strong><strong> (Clickable)<br/></strong></p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-8052-b36c-df389673933b"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-80c6-ae7a-e6ba422e8406" class="image"><a href="image%201.png"><img style="width:709.984375px" src="image%201.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80a4-b1b3-e7f91416d386" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-800d-91f1-deb348280254" class=""><strong>Summary: </strong>This topic is about finding the single point (x, y) where two different lines intersect. This mathematical concept is powerfully applied in situations where you need to find a single solution that satisfies two different conditions or constraints at the same time.</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-807d-a7df-da429200b1fa" class="">
+</p></div><div style="display:contents" dir="auto"><p id="9585bf08-34e3-4d78-86a0-91f72d77cd1f" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Solving-Linear-Systems-2de76de1f65380178af1e91dfc9707a2?pvs=21">Real Life Examples for Solving Linear Systems</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-805f-96f5-d15369abf787" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-806b-a07f-f445514caeea"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-8048-975c-ec4208db1a00" class="image"><a href="image%202.png"><img style="width:709.984375px" src="image%202.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8084-b41c-e42cbe6888b5" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80b4-89ce-d1106d8f39f6" class=""><strong>Summary: </strong>This topic connects geometry with algebra. The <strong>Midpoint</strong> is simply the average of your coordinates—it&#x27;s the exact middle of a line segment. The <strong>Distance Formula</strong> is actually just the Pythagorean Theorem disguised with coordinates; it calculates how far apart two points are.</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80bf-890e-e66b4b1695f7" class="">
+</p></div><div style="display:contents" dir="auto"><p id="ff5f479e-6d47-4855-bc6b-5b915baa4196" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Midpoint-Distance-2de76de1f6538083aad7cc4842206727?pvs=21">Real Life Examples for Midpoint &amp; Distance</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8032-afe7-c3e659ff5338" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-80f0-be07-fb2936dfe22c"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-809e-af09-f68656e3ed9e" class="image"><a href="image%203.png"><img style="width:709.984375px" src="image%203.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8005-b5cc-ff8f823ea00e" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-808b-b18b-ff9e79c3a2d6" class=""><strong>Summary: </strong>A circle is defined by its center and its radius. In Grade 10, we usually look at circles centered at the origin (0,0). The equation <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><msup><mi>y</mi><mn>2</mn></msup><mo>=</mo><msup><mi>r</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">x^2 + y^2 = r^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1.0085em;vertical-align:-0.1944em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.03588em;">y</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right:0.02778em;">r</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> comes directly from the Pythagorean theorem, where <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span></span></span></span></span><span>﻿</span></span> and <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi></mrow><annotation encoding="application/x-tex">y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.03588em;">y</span></span></span></span></span><span>﻿</span></span> are the sides of a triangle and <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi></mrow><annotation encoding="application/x-tex">r</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.02778em;">r</span></span></span></span></span><span>﻿</span></span> is the hypotenuse.</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80cc-a3ec-c611d50ecbed" class="">
+</p></div><div style="display:contents" dir="auto"><p id="cb3ee104-a771-43ae-8237-58fa998c867c" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Equation-of-a-Circle-2de76de1f65380d9a408ce819ae72598?pvs=21">Real Life Examples for Equation of a Circle</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80a4-9416-ed6a8723dd8f" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-80ba-ac20-ef0e9d3f65c9"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-80be-befb-ee805770f76f" class="image"><a href="image%204.png"><img style="width:709.984375px" src="image%204.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80d5-b488-f7f8aade746b" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-806a-ac42-ef1db5a6869c" class=""><strong>Summary: </strong>Triangles have special lines that help us analyze them:</p></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-80c0-861f-f3b3e8d4ff7a" class="bulleted-list"><li style="list-style-type:disc"><strong>Median:</strong> Connects a vertex to the Midpoint of the opposite side.</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8073-ad14-d520536b6777" class="bulleted-list"><li style="list-style-type:disc"><strong>Altitude:</strong> Connects a vertex to the opposite side at a perfect 90-degree angle (the height).</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-800b-a905-f1211e60cd1a" class="bulleted-list"><li style="list-style-type:disc"><strong>Perpendicular Bisector:</strong> Cuts a side in half at 90 degrees but doesn&#x27;t necessarily pass through a vertex.</li></ul></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8026-9146-e0b00db584a2" class="">
+</p></div><div style="display:contents" dir="auto"><p id="745be67b-d460-4595-bec4-1e9aba8c6d87" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Medians-Altitudes-and-Perpendicular-Bisectors-2de76de1f65380d7829dc7a658e476f0?pvs=21">Real Life Examples for Medians, Altitudes and Perpendicular Bisectors</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8073-b60c-db4277e11a93" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-8030-977b-d93275ec3935"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-8094-b5aa-e6f4490ed72b" class="image"><a href="image%205.png"><img style="width:709.984375px" src="image%205.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8067-9f13-e16b80d6b0e5" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8066-8a88-e4725dab6882" class=""><strong>Summary: </strong>When you draw all three special lines (medians, altitudes, etc.) of a triangle, they meet at a single point called a &quot;center&quot;.</p></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-80de-98cb-ecba69d5442a" class="bulleted-list"><li style="list-style-type:disc"><strong>Centroid:</strong> Where Medians meet (center of gravity).</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-804b-b2e6-cb0b58138b2e" class="bulleted-list"><li style="list-style-type:disc"><strong>Circumcenter:</strong> Where Perpendicular Bisectors meet.</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8024-b886-f17ca44a094b" class="bulleted-list"><li style="list-style-type:disc"><strong>Orthocenter:</strong> Where Altitudes meet.<br/></li></ul></div><div style="display:contents" dir="auto"><p id="e16b82cd-a576-4c96-b323-783411a1b948" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Triangle-Centers-2de76de1f65380c0801efbec8f191892?pvs=21">Real Life Examples for Triangle Centers</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80a4-b4a3-e65381e936bb" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-80e9-abd9-de39bfef4ad4"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-80a0-ac0e-e65f786da286" class="image"><a href="image%206.png"><img style="width:709.984375px" src="image%206.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8040-9db8-d874a8a4f229" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8080-b34f-c9bfb31f02f8" class=""><strong>Summary: </strong>We use slope and distance to classify shapes purely by their coordinates.</p></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-801b-beef-f66b62a2ee88" class="bulleted-list"><li style="list-style-type:disc"><strong>Parallel slopes?</strong> It&#x27;s a parallelogram or trapezoid.</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8082-bfb5-c669ace17b8b" class="bulleted-list"><li style="list-style-type:disc"><strong>Perpendicular slopes?</strong> It has 90-degree angles (Rectangle/Square).</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-80c7-9690-ceda6e2b1458" class="bulleted-list"><li style="list-style-type:disc"><strong>Equal side lengths?</strong> Rhombus or Square.</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8040-a3ef-c61d410dc060" class="bulleted-list"><li style="list-style-type:disc"><strong>Pythagorean theorem (</strong> <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">a^2+b^2=c^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> <strong>) works on side lengths?</strong> It is a Right Triangle.</li></ul></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80a2-ac46-f8943e6412cd" class="">
+</p></div><div style="display:contents" dir="auto"><p id="358bcf5c-ff66-4722-a1ae-3a982ed9b8e6" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Classifying-Shapes-2de76de1f6538082867fd78bafa8de38?pvs=21">Real Life Examples for Classifying Shapes</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80a1-9a6a-e61426196159" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-8074-96fe-cb9bfaf7f1bd"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-8040-977c-c6bba20d6118" class="image"><a href="image%207.png"><img style="width:709.984375px" src="image%207.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8083-9e81-d28bd5f6d9a4" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8088-91cb-d2b5cacfa847" class=""><strong>Summary: Congruent</strong> means &quot;identical&quot; (same shape, same size). <strong>Similar</strong> means &quot;scaled version&quot; (same angles, different size).</p></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8018-a12c-cb5fbe84137d" class="bulleted-list"><li style="list-style-type:disc">Congruence tests: SSS (Side-Side-Side), SAS (Side-Angle-Side), ASA (Angle-Side-Angle).</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-807f-bc89-f0ecdb2dbe7e" class="bulleted-list"><li style="list-style-type:disc">Similar triangles have <strong>proportional sides</strong>. This means the ratios of each pair of sides is the same.</li></ul></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80ad-8ffb-cde13c2152f5" class="">
+</p></div><div style="display:contents" dir="auto"><p id="3d8bf119-096e-468d-8ada-ddab901cd99f" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Congruence-Similarity-2de76de1f65380b0b657cd706d0888c9?pvs=21">Real Life Examples for Congruence &amp; Similarity</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80dd-a794-ea8672256589" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-8097-90af-df35d5105246"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-803d-8663-d875501e7c9d" class="image"><a href="image%208.png"><img style="width:709.984375px" src="image%208.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-809e-83a8-f5692290e9d1" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80ae-b8e1-e3331cc6be2f" class=""><strong>Summary: </strong>rigonometry allows us to link angles to side lengths. In a right-angled triangle, we label sides as Opposite, Adjacent, and Hypotenuse relative to the angle we are looking at.</p></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-80ec-8834-f218c77f47bd" class="bulleted-list"><li style="list-style-type:disc"><strong>Sine</strong> = Opposite / Hypotenuse</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-80ec-83ec-f3828af9b12a" class="bulleted-list"><li style="list-style-type:disc"><strong>Cosine</strong> = Adjacent / Hypotenuse</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-804b-99a2-fed05c05c408" class="bulleted-list"><li style="list-style-type:disc"><strong>Tangent</strong> = Opposite / Adjacent</li></ul></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80dc-bef3-ce406c1195d6" class="">
+</p></div><div style="display:contents" dir="auto"><p id="03e31c77-cb98-4834-8ff1-7cce3d696d21" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Right-Triangle-Ratios-SOHCAHTOA-2de76de1f65380fcaf17e39e77355e28?pvs=21">Real Life Examples for Right Triangle Ratios (SOHCAHTOA)</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-803a-868b-ed3bd3810100" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-80a3-ab21-fc555e15b521"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-8032-a80b-d397b761de87" class="image"><a href="image%209.png"><img style="width:709.984375px" src="image%209.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8012-92c3-e3c33282bc0f" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80fb-b727-eff1ef3a8ccd" class=""><strong>Summary: </strong>If a triangle doesn&#x27;t have a 90-degree angle, SOHCAHTOA doesn&#x27;t work.</p></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-80e5-8fb4-f8131667230e" class="bulleted-list"><li style="list-style-type:disc"><strong>Sine Law:</strong> Use when you have a &quot;matching pair&quot; (an angle and the side opposite to it).</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8052-bcc1-dad9255194b0" class="bulleted-list"><li style="list-style-type:disc"><strong>Cosine Law:</strong> Use when you have two sides and the contained angle (SAS) or all three sides (SSS).</li></ul></div><div style="display:contents" dir="auto"><h3 id="2de76de1-f653-8078-9617-e4017efe1f91" class=""><strong>Key Formulas</strong></h3></div><div style="display:contents" dir="auto"><ul id="df33c790-3aa0-4189-8bdf-6affab57585a" class="bulleted-list"><li style="list-style-type:disc"><strong>Sine Law:</strong> <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mi>a</mi><mrow><mi>sin</mi><mo>⁡</mo><mi>A</mi></mrow></mfrac><mo>=</mo><mfrac><mi>b</mi><mrow><mi>sin</mi><mo>⁡</mo><mi>B</mi></mrow></mfrac><mo>=</mo><mfrac><mi>c</mi><mrow><mi>sin</mi><mo>⁡</mo><mi>C</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\frac{a}{\sin A} = \frac{b}{\sin B} = \frac{c}{\sin C}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1.0404em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6954em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mtight">s</span><span class="mtight">i</span><span class="mtight">n</span></span><span class="mspace mtight" style="margin-right:0.1952em;"></span><span class="mord mathnormal mtight">A</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">a</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.2251em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.8801em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mtight">s</span><span class="mtight">i</span><span class="mtight">n</span></span><span class="mspace mtight" style="margin-right:0.1952em;"></span><span class="mord mathnormal mtight" style="margin-right:0.05017em;">B</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">b</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.0404em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.6954em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mop mtight"><span class="mtight">s</span><span class="mtight">i</span><span class="mtight">n</span></span><span class="mspace mtight" style="margin-right:0.1952em;"></span><span class="mord mathnormal mtight" style="margin-right:0.07153em;">C</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">c</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span><span>﻿</span></span> (you can flip all the fractions when solving for angles)</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8051-b668-c40250edee3e" class="bulleted-list"><li style="list-style-type:disc"><strong>Cosine Law:</strong> <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>c</mi><mn>2</mn></msup><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mo>+</mo><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>a</mi><mi>b</mi><mi>cos</mi><mo>⁡</mo><mo stretchy="false">(</mo><mi>C</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">c^2 = a^2 + b^2 - 2ab \cos(C)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">c</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord">2</span><span class="mord mathnormal">ab</span><span class="mspace" style="margin-right:0.1667em;"></span><span class="mop">cos</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right:0.07153em;">C</span><span class="mclose">)</span></span></span></span></span><span>﻿</span></span></li></ul></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-802d-9bc9-edd620916ed5" class="">
+</p></div><div style="display:contents" dir="auto"><p id="6c6ee200-388b-4ae1-83c1-1a1c9a82b914" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Non-Right-Angle-Trigonometry-2de76de1f65380a3af9ce334bfa26041?pvs=21">Real Life Examples for Non-Right Angle Trigonometry</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-807a-9545-e0c2942d2463" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-8055-8853-e1982523e9b8"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-8086-957d-fca28c244b5f" class="image"><a href="image%2010.png"><img style="width:709.984375px" src="image%2010.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8020-b8cc-eed09a400868" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8073-b5d6-e9e321f0a66f" class=""><strong>Summary: </strong>Exponents are shorthand for repeated multiplication. The laws tell us shortcuts:</p></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-80a9-a710-ce1dd8c9144c" class="bulleted-list"><li style="list-style-type:disc"><strong>Multiplying</strong> with same base? ADD exponents.</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8008-a991-e91690e0ad00" class="bulleted-list"><li style="list-style-type:disc"><strong>Dividing</strong> with same base? SUBTRACT exponents.</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-80d1-a2bd-d5e69d7fdc24" class="bulleted-list"><li style="list-style-type:disc"><strong>Power of a power?</strong> MULTIPLY exponents.</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-806b-8e8e-f1e12bcf3272" class="bulleted-list"><li style="list-style-type:disc"><strong>Negative exponent?</strong> FLIP the fraction.</li></ul></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8097-8a63-e2d9323610c6" class="">
+</p></div><div style="display:contents" dir="auto"><p id="76103c8d-8a81-4129-878a-748083ab6ead" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Exponent-Laws-2de76de1f65380b3bde8f56437fce33a?pvs=21">Real Life Examples for Exponent Laws</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80d6-b5b3-f37df8015f5f" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-80b9-bbd5-d89844dbaf6b"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-802a-9327-cdbfcbd2b77f" class="image"><a href="image%2011.png"><img style="width:709.984375px" src="image%2011.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80f0-a7f2-f7ed8d47cb3c" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-809b-9948-c0f87901fc0c" class=""><strong>Summary: </strong>Expanding is multiplying terms together (making things bigger). Factoring is the reverse: splitting an expression into things being multiplied (breaking things down). Always look for a <strong>Common Factor (GCF)</strong> first—the biggest number or variable that divides into every term.</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8018-bcae-d0ff114f4fcc" class="">
+</p></div><div style="display:contents" dir="auto"><p id="3ead6712-1358-45d1-9521-9ae852802e12" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Expanding-and-Common-Factoring-2de76de1f65380b4b4b2d12e6c09ea61?pvs=21">Real Life Examples for Expanding and Common Factoring</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8021-b247-dd5556759c9b" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-8058-bfd8-dea5818b1f3c"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-80ac-b0b1-dc7d4ccbab06" class="image"><a href="image%2012.png"><img style="width:709.984375px" src="image%2012.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-802e-a338-f19b027502c1" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-807e-99e1-ddb184df78e8" class=""><strong>Summary: </strong>Trinomials have 3 terms ( <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">ax^2 + bx + c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span></span><span>﻿</span></span> ). To factor a &quot;Simple&quot; trinomial (where <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">1</span></span></span></span></span><span>﻿</span></span> ), you find two numbers that multiply to the last number ( <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi></mrow><annotation encoding="application/x-tex">c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span></span><span>﻿</span></span> ) and add to the middle number ( <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">b</span></span></span></span></span><span>﻿</span></span> ).</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80e5-9725-dd21ae93c689" class="">
+</p></div><div style="display:contents" dir="auto"><p id="87c617c9-304f-4bf1-8173-fd249a989e95" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Factoring-Trinomials-2de76de1f653802ba95dcba8025cfccc?pvs=21">Real Life Examples for Factoring Trinomials</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80fa-83b0-f66810a23430" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-800c-abe7-c21e97097ad7"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-80c3-9e87-ccf841b58ad8" class="image"><a href="image%2013.png"><img style="width:709.984375px" src="image%2013.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8086-9277-c8369b005955" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80b2-84b7-f4d7ff1d649e" class=""><strong>Summary: </strong>This is a special shortcut. If you have two perfect squares separated by a minus sign (like <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>a</mi><mn>2</mn></msup><mo>−</mo><msup><mi>b</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">a^2 - b^2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">a</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.8141em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span></span></span></span></span><span>﻿</span></span> ), they always factor into conjugates: (a+b)(a-b). The middle terms cancel out.</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80d4-94a5-cdb8d35f0589" class="">
+</p></div><div style="display:contents" dir="auto"><p id="05ba21af-1d14-4b1e-86c9-ae37add338e6" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Difference-of-Squares-2de76de1f653804f8b91c2242b72b9d2?pvs=21">Real Life Examples for Difference of Squares</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80b0-aba8-ca50e16429e2" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-80df-a116-c221c5c01d8f"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-800a-a89e-f2c68c3c46be" class="image"><a href="image%2014.png"><img style="width:709.984375px" src="image%2014.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80b6-b037-faed35948bbd" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80a3-87c2-eabcdf2499d4" class=""><strong>Summary: </strong>A quadratic graph is a U-shape called a parabola.</p></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-808f-8719-d1586a05ccd2" class="bulleted-list"><li style="list-style-type:disc"><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">a</span></span></span></span></span><span>﻿</span></span> tells you the direction (up/down) and stretch.</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8041-893a-de87231079c9" class="bulleted-list"><li style="list-style-type:disc"><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi></mrow><annotation encoding="application/x-tex">h</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal">h</span></span></span></span></span><span>﻿</span></span> shifts the graph Left/Right (remember: opposite sign!).</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8091-b285-f555422752e5" class="bulleted-list"><li style="list-style-type:disc"><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.03148em;">k</span></span></span></span></span><span>﻿</span></span> shifts the graph Up/Down.</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-80ed-b94c-dffc86218e4d" class="bulleted-list"><li style="list-style-type:disc">The vertex is the turning point at (h, k).</li></ul></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-807b-a841-e9c29f19be71" class="">
+</p></div><div style="display:contents" dir="auto"><p id="bcde0a79-8fcd-45c3-90c5-88ed1b0004ef" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Quadratics-Vertex-Form-2de76de1f65380b9ad89c4b1f2220899?pvs=21">Real Life Examples for Quadratics - Vertex Form</a>  (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8040-ab5d-d01df8200090" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-8019-82f0-ed3bbefdfd29"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-80f3-814b-ece965b62567" class="image"><a href="image%2015.png"><img style="width:709.984375px" src="image%2015.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8009-ac72-ef7be0c18446" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80a3-bdec-ca89d0d0f854" class=""><strong>Summary: </strong>This is an algebraic method to change a quadratic from Standard Form ( <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><msup><mi>x</mi><mn>2</mn></msup><mo>+</mo><mi>b</mi><mi>x</mi><mo>+</mo><mi>c</mi></mrow><annotation encoding="application/x-tex">ax^2+bx+c</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">a</span><span class="mord"><span class="mord mathnormal">x</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.7778em;vertical-align:-0.0833em;"></span><span class="mord mathnormal">b</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">c</span></span></span></span></span><span>﻿</span></span> ) into Vertex Form. It helps you find the maximum or minimum value without graphing.</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-806f-995a-e870379a6ec3" class="">
+</p></div><div style="display:contents" dir="auto"><p id="6e8d02d6-226a-4fb0-993d-c6277877cccd" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Completing-the-Square-2de76de1f65380dab6b7c36ed87c6292?pvs=21">Real Life Examples for Completing the Square</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-802b-857a-d9a9d5acc0d0" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-804f-8443-e00afddc22ce"/></div><div style="display:contents" dir="ltr"><figure id="2de76de1-f653-80f8-9d2e-fcce8119fd95" class="image"><a href="image%2016.png"><img style="width:709.984375px" src="image%2016.png"/></a></figure></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8075-bc00-e23037341167" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8017-869d-f7a97252fae8" class=""><strong>Summary: </strong></p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80d9-9e0b-db1445ffcbc9" class="">To find where a parabola crosses the x-axis (the roots/zeros), we set y=0. If we can&#x27;t factor it, we use the Quadratic Formula. The <strong>Discriminant</strong> (the part under the square root) tells us how many solutions there are:</p></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-801f-bfa3-d019ac883c13" class="bulleted-list"><li style="list-style-type:disc">Positive? 2 solutions.</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-80c1-afa6-ca247f5f852d" class="bulleted-list"><li style="list-style-type:disc">Zero? 1 solution.</li></ul></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-8062-a3e8-f7f48fb00578" class="bulleted-list"><li style="list-style-type:disc">Negative? No real solutions.</li></ul></div><div style="display:contents" dir="auto"><h3 id="2de76de1-f653-80b9-85e5-fa8f46507511" class=""><strong>Key Formulas</strong></h3></div><div style="display:contents" dir="auto"><ul id="2de76de1-f653-80a2-adf3-cf27011445a0" class="bulleted-list"><li style="list-style-type:disc"><style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mfrac><mrow><mo>−</mo><mi>b</mi><mo>±</mo><msqrt><mrow><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></mrow></msqrt></mrow><mrow><mn>2</mn><mi>a</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.4306em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right:0.2778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2778em;"></span></span><span class="base"><span class="strut" style="height:1.3845em;vertical-align:-0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:1.0395em;"><span style="top:-2.655em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span><span class="mord mathnormal mtight">a</span></span></span></span><span style="top:-3.23em;"><span class="pstrut" style="height:3em;"></span><span class="frac-line" style="border-bottom-width:0.04em;"></span></span><span style="top:-3.394em;"><span class="pstrut" style="height:3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathnormal mtight">b</span><span class="mbin mtight">±</span><span class="mord sqrt mtight"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height:0.9221em;"><span class="svg-align" style="top:-3em;"><span class="pstrut" style="height:3em;"></span><span class="mord mtight" style="padding-left:0.833em;"><span class="mord mtight"><span class="mord mathnormal mtight">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.7463em;"><span style="top:-2.786em;margin-right:0.0714em;"><span class="pstrut" style="height:2.5em;"></span><span class="sizing reset-size3 size1 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mbin mtight">−</span><span class="mord mtight">4</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight">c</span></span></span><span style="top:-2.8821em;"><span class="pstrut" style="height:3em;"></span><span class="hide-tail mtight" style="min-width:0.853em;height:1.08em;"><svg xmlns="http://www.w3.org/2000/svg" width="400em" height="1.08em" viewBox="0 0 400000 1080" preserveAspectRatio="xMinYMin slice"><path d="M95,702
+c-2.7,0,-7.17,-2.7,-13.5,-8c-5.8,-5.3,-9.5,-10,-9.5,-14
+c0,-2,0.3,-3.3,1,-4c1.3,-2.7,23.83,-20.7,67.5,-54
+c44.2,-33.3,65.8,-50.3,66.5,-51c1.3,-1.3,3,-2,5,-2c4.7,0,8.7,3.3,12,10
+s173,378,173,378c0.7,0,35.3,-71,104,-213c68.7,-142,137.5,-285,206.5,-429
+c69,-144,104.5,-217.7,106.5,-221
+l0 -0
+c5.3,-9.3,12,-14,20,-14
+H400000v40H845.2724
+s-225.272,467,-225.272,467s-235,486,-235,486c-2.7,4.7,-9,7,-19,7
+c-6,0,-10,-1,-12,-3s-194,-422,-194,-422s-65,47,-65,47z
+M834 80h400000v40h-400000z"/></svg></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.1179em;"><span></span></span></span></span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height:0.345em;"><span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span><span>﻿</span></span> —&gt; the Discrimant is <style>@import url('https://cdn.jsdelivr.net/npm/katex@0.16.25/dist/katex-swap.min.css')</style><span data-token-index="0" contenteditable="false" class="notion-text-equation-token" style="user-select:all;-webkit-user-select:all;-moz-user-select:all"><span></span><span><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>b</mi><mn>2</mn></msup><mo>−</mo><mn>4</mn><mi>a</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">b^2 - 4ac</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8974em;vertical-align:-0.0833em;"></span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height:0.8141em;"><span style="top:-3.063em;margin-right:0.05em;"><span class="pstrut" style="height:2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="base"><span class="strut" style="height:0.6444em;"></span><span class="mord">4</span><span class="mord mathnormal">a</span><span class="mord mathnormal">c</span></span></span></span></span><span>﻿</span></span></li></ul></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80ea-a845-e9bb46d0cbb4" class="">
+</p></div><div style="display:contents" dir="auto"><p id="912ce33b-5009-422f-9838-606c41d8e9ce" class=""><a href="https://www.notion.so/Real-Life-Examples-for-Using-the-Quadratic-Formula-2de76de1f6538072ac5bd7ba01e4ff8f?pvs=21">Real Life Examples for Using the Quadratic Formula</a> (Clickable)</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8081-9731-eabeab03572a" class="">
+</p></div><div style="display:contents" dir="auto"><hr id="2de76de1-f653-800a-b5a1-dafcc0cbfa46"/></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80fd-9d24-cebe3fdfa985" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80f6-b181-d0dc0c14a83f" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-805d-9530-d39b2d3f4337" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80e3-b6d9-d36a4170f1ab" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-808f-a685-c7ff96833fe3" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8099-80e4-f51da4463bf1" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8084-92ac-cb8366abc3b4" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80b6-b79a-ffff2a21cdd9" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80b0-a720-d9c551e5e334" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8007-a04d-c4f6fe64a396" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-80d8-b82a-cfc4adf844a6" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-801e-a31c-f288d8cfeaa0" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8069-8f7b-fb1fa7db6ce9" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8092-90a0-fbb7ad7c5885" class="">
+</p></div><div style="display:contents" dir="auto"><p id="2de76de1-f653-8002-843d-d411651a8f7a" class="">
+</p></div></div></article><span class="sans" style="font-size:14px;padding-top:2em"></span></body></html>

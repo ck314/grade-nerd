@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Nerd Survey - Help Us Build the Math App YOU Actually Need</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: #f8fafc;
+            min-height: 100vh;
+            color: #1e293b;
+            line-height: 1.6;
+        }
+
+        /* Grid background like main site */
+        .grid-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image:
+                linear-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 1rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: #1e293b;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .logo-text {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Main content */
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 640px;
+            margin: 0 auto;
+            padding: 2rem 1rem 4rem;
+        }
+
+        /* Form card */
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+            padding: 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .form-header h1 {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+
+        .form-header p {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .time-badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #2563eb;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 0.75rem;
+        }
+
+        /* Form elements */
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-group:last-of-type {
+            margin-bottom: 0;
+        }
+
+        label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+
+        .required::after {
+            content: ' *';
+            color: #ef4444;
+        }
+
+        .optional {
+            font-weight: 400;
+            color: #64748b;
+            font-size: 0.875rem;
+        }
+
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus {
+            outline: none;
+            border-color: #2563eb;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Radio buttons */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.625rem;
+        }
+
+        .radio-option {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+
+        .radio-option:hover {
+            border-color: #cbd5e1;
+            background: white;
+        }
+
+        .radio-option.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .radio-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.75rem;
+            accent-color: #2563eb;
+        }
+
+        /* Checkbox options */
+        .checkbox-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.625rem;
+        }
+
+        .checkbox-option {
+            display: flex;
+            align-items: center;
+            padding: 0.875rem 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+
+        .checkbox-option:hover {
+            border-color: #cbd5e1;
+            background: white;
+        }
+
+        .checkbox-option.selected {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .checkbox-option input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.75rem;
+            accent-color: #2563eb;
+            border-radius: 4px;
+        }
+
+        .checkbox-hint {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-bottom: 0.75rem;
+        }
+
+        /* Submit button */
+        .submit-btn {
+            width: 100%;
+            background: #2563eb;
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+
+        .submit-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .submit-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .submit-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Error state */
+        .error-message {
+            color: #ef4444;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .form-group.error .error-message {
+            display: block;
+        }
+
+        .form-group.error input[type="text"],
+        .form-group.error input[type="email"] {
+            border-color: #ef4444;
+        }
+
+        /* Success state */
+        .success-card {
+            display: none;
+            text-align: center;
+            padding: 3rem 2rem;
+        }
+
+        .success-card.show {
+            display: block;
+        }
+
+        .form-content.hide {
+            display: none;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: #dcfce7;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+        }
+
+        .success-icon svg {
+            width: 40px;
+            height: 40px;
+            color: #22c55e;
+        }
+
+        .success-card h2 {
+            font-size: 1.5rem;
+            margin-bottom: 0.75rem;
+            color: #0f172a;
+        }
+
+        .success-card p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 1rem;
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 640px) {
+            .form-card {
+                padding: 1.5rem;
+                border-radius: 12px;
+            }
+
+            .form-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="grid-bg"></div>
+
+    <header>
+        <a href="/grade-nerd" class="logo">
+            <div class="logo-icon">gn</div>
+            <span class="logo-text">Grade Nerd</span>
+        </a>
+    </header>
+
+    <main>
+        <div class="form-card">
+            <!-- Success State -->
+            <div class="success-card" id="successCard">
+                <div class="success-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                </div>
+                <h2>Thanks for your input!</h2>
+                <p>Your responses will help us build the math app students actually need.</p>
+                <a href="/grade-nerd" class="back-link">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                    Back to Grade Nerd
+                </a>
+            </div>
+
+            <!-- Form Content -->
+            <div class="form-content" id="formContent">
+                <div class="form-header">
+                    <h1>Help Us Build the Math App YOU Actually Need</h1>
+                    <p>We're building an app that explains math using the things you actually care about — gaming, sports, music, whatever.</p>
+                    <span class="time-badge">Takes 1 minute</span>
+                </div>
+
+                <form id="surveyForm">
+                    <!-- Q1: Interest -->
+                    <div class="form-group" id="q1Group">
+                        <label for="interest" class="required">What's your #1 interest or passion right now?</label>
+                        <input type="text" id="interest" name="entry.179715797" placeholder="e.g., Gaming, F1, Music Production, Cooking..." required>
+                        <div class="error-message">Please tell us your interest</div>
+                    </div>
+
+                    <!-- Q2: Would you try -->
+                    <div class="form-group" id="q2Group">
+                        <label class="required">Would you try an app that explains math concepts using THAT interest?</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="entry.442779230" value="Yes, definitely" required>
+                                <span>Yes, definitely</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="entry.442779230" value="Maybe, depends on how it works">
+                                <span>Maybe, depends on how it works</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="entry.442779230" value="Probably not">
+                                <span>Probably not</span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="entry.442779230" value="I don't need help with math">
+                                <span>I don't need help with math</span>
+                            </label>
+                        </div>
+                        <div class="error-message">Please select an option</div>
+                    </div>
+
+                    <!-- Q3: What would help most -->
+                    <div class="form-group" id="q3Group">
+                        <label class="required">What would help you learn math the most?</label>
+                        <p class="checkbox-hint">Pick up to 2</p>
+                        <div class="checkbox-group" id="helpMostGroup">
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="entry.245487262" value="A simple analogy that makes the concept click">
+                                <span>A simple analogy that makes the concept click</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="entry.245487262" value="A visual diagram or infographic">
+                                <span>A visual diagram or infographic</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="entry.245487262" value="A worked example using my interest">
+                                <span>A worked example using my interest</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="entry.245487262" value="A short comic or story">
+                                <span>A short comic or story</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="entry.245487262" value="Practice problems themed around my interest">
+                                <span>Practice problems themed around my interest</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="entry.245487262" value="A quick video explanation">
+                                <span>A quick video explanation</span>
+                            </label>
+                        </div>
+                        <div class="error-message">Please select at least one option</div>
+                    </div>
+
+                    <!-- Q4: Want to help shape (Optional) -->
+                    <div class="form-group">
+                        <label>Want to help shape Grade Nerd? <span class="optional">(Optional)</span></label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="entry.309128170" value="Be one of the first to try it when it's ready">
+                                <span>Be one of the first to try it when it's ready</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="entry.309128170" value="Give feedback on early designs">
+                                <span>Give feedback on early designs</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="entry.309128170" value="Take a deeper survey to help us build it right">
+                                <span>Take a deeper survey to help us build it right</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Q5: Email (Optional) -->
+                    <div class="form-group">
+                        <label for="email">Your email <span class="optional">(if you checked anything above)</span></label>
+                        <input type="email" id="email" name="entry.242598101" placeholder="your@email.com">
+                    </div>
+
+                    <button type="submit" class="submit-btn" id="submitBtn">
+                        <span>Submit</span>
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path>
+                        </svg>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <footer>
+            <p>Q.E.D. — © 2024 Grade Nerd Inc.</p>
+        </footer>
+    </main>
+
+    <script>
+        // Handle checkbox/radio visual selection
+        document.querySelectorAll('.radio-option, .checkbox-option').forEach(option => {
+            const input = option.querySelector('input');
+
+            input.addEventListener('change', () => {
+                if (input.type === 'radio') {
+                    // For radio buttons, remove selected from siblings
+                    option.closest('.radio-group').querySelectorAll('.radio-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                }
+
+                if (input.checked) {
+                    option.classList.add('selected');
+                } else {
+                    option.classList.remove('selected');
+                }
+            });
+        });
+
+        // Limit Q3 to 2 selections
+        const helpMostGroup = document.getElementById('helpMostGroup');
+        helpMostGroup.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                const checked = helpMostGroup.querySelectorAll('input[type="checkbox"]:checked');
+                if (checked.length > 2) {
+                    checkbox.checked = false;
+                    checkbox.closest('.checkbox-option').classList.remove('selected');
+                }
+            });
+        });
+
+        // Form submission
+        const form = document.getElementById('surveyForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formContent = document.getElementById('formContent');
+        const successCard = document.getElementById('successCard');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Clear previous errors
+            document.querySelectorAll('.form-group').forEach(g => g.classList.remove('error'));
+
+            // Validate
+            let hasError = false;
+
+            // Q1: Interest required
+            const interest = document.getElementById('interest');
+            if (!interest.value.trim()) {
+                document.getElementById('q1Group').classList.add('error');
+                hasError = true;
+            }
+
+            // Q2: Radio required
+            const wouldTry = form.querySelector('input[name="entry.442779230"]:checked');
+            if (!wouldTry) {
+                document.getElementById('q2Group').classList.add('error');
+                hasError = true;
+            }
+
+            // Q3: At least one checkbox required
+            const helpMost = form.querySelectorAll('input[name="entry.245487262"]:checked');
+            if (helpMost.length === 0) {
+                document.getElementById('q3Group').classList.add('error');
+                hasError = true;
+            }
+
+            if (hasError) {
+                // Scroll to first error
+                const firstError = document.querySelector('.form-group.error');
+                firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.querySelector('span').textContent = 'Submitting...';
+
+            // Build form data
+            const formData = new FormData(form);
+
+            // Submit to Google Forms
+            const googleFormUrl = 'https://docs.google.com/forms/d/e/1FAIpQLSdcNPnA9X0IgEaT82busPBwkMYI0FKzaA2OiFk9QbTlV3MBag/formResponse';
+
+            try {
+                // Use fetch with no-cors mode (Google Forms doesn't allow CORS)
+                await fetch(googleFormUrl, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: formData
+                });
+
+                // Show success (we can't actually check if it succeeded with no-cors, but it usually does)
+                formContent.classList.add('hide');
+                successCard.classList.add('show');
+
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                // Still show success since no-cors doesn't give us response info
+                formContent.classList.add('hide');
+                successCard.classList.add('show');
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+</html>
