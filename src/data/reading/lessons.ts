@@ -111,11 +111,15 @@ export function normalizeWord(word: string): string {
   return word.replace(/^[^a-zA-Z]+/, '').replace(/[^a-zA-Z]+$/, '').toLowerCase();
 }
 
+function stripDisplayPunctuation(display: string): string {
+  return display.replace(/[^a-zA-Z?]/g, '');
+}
+
 export function getWordTokens(lesson: ReadingLesson, versionIndex: number): WordToken[] {
   const text = lesson.versions[versionIndex] ?? lesson.versions[0];
-  return text.split(/\s+/).filter(Boolean).map(display => ({
-    display,
-    normalized: normalizeWord(display),
+  return text.split(/\s+/).filter(Boolean).map(raw => ({
+    display: lesson.lesson <= 40 ? stripDisplayPunctuation(raw) : raw,
+    normalized: normalizeWord(raw),
   }));
 }
 

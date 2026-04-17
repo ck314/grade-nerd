@@ -7,6 +7,7 @@ import { ProgressCounter } from './components/ProgressCounter';
 import { LessonNav } from './components/LessonNav';
 import { LessonPicker } from './components/LessonPicker';
 import { LessonDisplay } from './components/LessonDisplay';
+import { DecorativeAvatar } from './components/DecorativeAvatar';
 
 function ReadingContent() {
   const { progress, setCurrentLesson, completeLesson, getMasteryStats, getCurrentMilestone } = useReadingProgress();
@@ -112,6 +113,7 @@ function ReadingContent() {
           transition={{ duration: 0.15 }}
           className="min-h-screen"
         >
+          <DecorativeAvatar key={`avatar-${isTraversing}`} avoidCenter={!isTraversing} />
           {lesson && (
             <LessonDisplay
               lessonNumber={progress.currentLesson}
