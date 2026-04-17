@@ -9,7 +9,7 @@ import { LessonPicker } from './components/LessonPicker';
 import { LessonDisplay } from './components/LessonDisplay';
 
 function ReadingContent() {
-  const { progress, setCurrentLesson, completeLesson, getMinReadCount, getCurrentMilestone } = useReadingProgress();
+  const { progress, setCurrentLesson, completeLesson, getMaxReadWord, getCurrentMilestone } = useReadingProgress();
   const [pickerOpen, setPickerOpen] = useState(false);
   const [isTraversing, setIsTraversing] = useState(true);
   const [lessonKey, setLessonKey] = useState(0);
@@ -55,7 +55,7 @@ function ReadingContent() {
   }, [goToLesson, progress.currentLesson, progress.highestLesson]);
 
   const milestone = getCurrentMilestone();
-  const minCount = getMinReadCount();
+  const maxReadWord = getMaxReadWord();
 
   return (
     <div className="min-h-screen bg-graph-paper relative">
@@ -77,7 +77,7 @@ function ReadingContent() {
       </button>
 
       {/* Progress counter — bottom left */}
-      <ProgressCounter count={minCount} level={milestone.level} />
+      <ProgressCounter count={maxReadWord.count} word={maxReadWord.word} level={milestone.level} />
 
       {/* Lesson navigation arrows — bottom right */}
       <LessonNav
