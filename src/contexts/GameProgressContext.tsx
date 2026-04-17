@@ -3,6 +3,8 @@ import { GameProgress, TopicProgress, TopicStatus, QuizCompletionResult } from '
 import { gameTopics } from '../data/game/gameTopics';
 import { gameUnits } from '../data/game/gameUnits';
 import { getItemById } from '../data/game/avatarItems';
+import { useUser } from '../contexts/UserContext';
+import { getUserKey } from '../lib/userStorage';
 
 // Equipment restriction rules
 const HEAD_ITEMS = ['pencil-ear', 'headband', 'graduation-cap', 'einstein-hair', 'propeller-beanie', 'wizard-hat'];
@@ -64,7 +66,6 @@ function getConflictingItems(itemId: string, currentlyEquipped: string[]): strin
   return conflicts;
 }
 
-const STORAGE_KEY = 'gradenerd-formula-forge';
 const PASS_THRESHOLD = 1.0; // 100% to pass
 
 function createInitialProgress(): GameProgress {
@@ -114,6 +115,31 @@ function migrateProgress(stored: Partial<GameProgress>): GameProgress {
   };
 }
 
+function loadFromLocalStorage(key: string): GameProgress {
+  try {
+    const stored = localStorage.getItem(key);
+    if (stored) {
+      const parsed = JSON.parse(stored) as Partial<GameProgress>;
+      const updated = migrateProgress(parsed);
+      // Ensure all topics exist
+      gameTopics.forEach((topic, index) => {
+        if (!updated.topics[topic.id]) {
+          updated.topics[topic.id] = {
+            status: index === 0 ? 'available' : 'locked',
+            formulaUnlocked: false,
+            exampleUnlocked: false,
+            quizAttempts: 0,
+          };
+        }
+      });
+      return updated;
+    }
+    return createInitialProgress();
+  } catch {
+    return createInitialProgress();
+  }
+}
+
 interface GameProgressContextType {
   progress: GameProgress;
   getTopicProgress: (topicId: string) => TopicProgress | undefined;
@@ -153,38 +179,15 @@ interface GameProgressContextType {
 const GameProgressContext = createContext<GameProgressContextType | null>(null);
 
 export function GameProgressProvider({ children }: { children: ReactNode }) {
-  const [progress, setProgress] = useState<GameProgress>(createInitialProgress);
+  const { activeUser } = useUser();
+  const storageKey = getUserKey(activeUser!, 'formula-forge');
 
-  // Load from localStorage on mount
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = JSON.parse(stored) as Partial<GameProgress>;
-        // Migrate to ensure points and avatar exist
-        const updated = migrateProgress(parsed);
-        // Also ensure all topics exist
-        gameTopics.forEach((topic, index) => {
-          if (!updated.topics[topic.id]) {
-            updated.topics[topic.id] = {
-              status: index === 0 ? 'available' : 'locked',
-              formulaUnlocked: false,
-              exampleUnlocked: false,
-              quizAttempts: 0,
-            };
-          }
-        });
-        setProgress(updated);
-      }
-    } catch {
-      setProgress(createInitialProgress());
-    }
-  }, []);
+  const [progress, setProgress] = useState<GameProgress>(() => loadFromLocalStorage(storageKey));
 
   // Save to localStorage whenever progress changes
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
-  }, [progress]);
+    localStorage.setItem(storageKey, JSON.stringify(progress));
+  }, [progress, storageKey]);
 
   const getTopicProgress = useCallback((topicId: string): TopicProgress | undefined => {
     return progress.topics[topicId];
@@ -362,8 +365,8 @@ export function GameProgressProvider({ children }: { children: ReactNode }) {
   const resetProgress = useCallback(() => {
     const initial = createInitialProgress();
     setProgress(initial);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(initial));
-  }, []);
+    localStorage.setItem(storageKey, JSON.stringify(initial));
+  }, [storageKey]);
 
   // Points functions
   const getAvailablePoints = useCallback((): number => {
