@@ -59,7 +59,11 @@ export function ReadingProgressProvider({ children }: { children: ReactNode }) {
   }, [progress]);
 
   const setCurrentLesson = useCallback((n: number) => {
-    setProgress(prev => ({ ...prev, currentLesson: n }));
+    setProgress(prev => ({
+      ...prev,
+      currentLesson: n,
+      highestLesson: Math.max(prev.highestLesson, n),
+    }));
   }, []);
 
   const completeLesson = useCallback((lessonNumber: number, wordsRead: string[]) => {

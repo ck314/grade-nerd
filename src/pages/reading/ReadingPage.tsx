@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useMemo } from 'react';
 import { Menu } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ReadingProgressProvider, useReadingProgress } from '../../contexts/ReadingProgressContext';
@@ -15,9 +15,14 @@ function ReadingContent() {
   const [lessonKey, setLessonKey] = useState(0);
 
   const lesson = getLesson(progress.currentLesson);
-  const versionIndex = lesson
-    ? (lesson.versions.length > 1 ? selectVersion(lesson, progress.wordCounts) : 0)
-    : 0;
+
+  // Lock version selection when lesson loads — prevent text change on completion
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const versionIndex = useMemo(() => {
+    if (!lesson) return 0;
+    return lesson.versions.length > 1 ? selectVersion(lesson, progress.wordCounts) : 0;
+  }, [progress.currentLesson, lessonKey]);
+
   const tokens = lesson ? getWordTokens(lesson, versionIndex) : [];
 
   const handleLessonComplete = useCallback((normalizedWords: string[]) => {
