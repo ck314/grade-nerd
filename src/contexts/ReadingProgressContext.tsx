@@ -8,6 +8,7 @@ interface ReadingProgress {
   highestLesson: number;
   completedLessons: number[];
   wordCounts: Record<string, number>;
+  lastVersions: Record<number, number>;
 }
 
 function createInitialProgress(): ReadingProgress {
@@ -16,6 +17,7 @@ function createInitialProgress(): ReadingProgress {
     highestLesson: 1,
     completedLessons: [],
     wordCounts: {},
+    lastVersions: {},
   };
 }
 
@@ -32,7 +34,7 @@ function loadFromLocalStorage(key: string): ReadingProgress {
         Array.isArray(parsed.completedLessons) &&
         typeof parsed.wordCounts === 'object'
       ) {
-        return parsed as ReadingProgress;
+        return { ...parsed, lastVersions: parsed.lastVersions ?? {} } as ReadingProgress;
       }
     }
   } catch {
@@ -44,7 +46,7 @@ function loadFromLocalStorage(key: string): ReadingProgress {
 interface ReadingProgressContextType {
   progress: ReadingProgress;
   setCurrentLesson: (n: number) => void;
-  completeLesson: (lessonNumber: number, wordsRead: string[]) => void;
+  completeLesson: (lessonNumber: number, wordsRead: string[], versionIndex: number) => void;
   getMasteryStats: () => { masteredCount: number; nextWord: string; nextCount: number };
   getCurrentMilestone: () => { level: number; threshold: number };
   resetProgress: () => void;
@@ -70,7 +72,7 @@ export function ReadingProgressProvider({ children }: { children: ReactNode }) {
     }));
   }, []);
 
-  const completeLesson = useCallback((lessonNumber: number, wordsRead: string[]) => {
+  const completeLesson = useCallback((lessonNumber: number, wordsRead: string[], versionIndex: number) => {
     setProgress(prev => {
       const newWordCounts = { ...prev.wordCounts };
       for (const word of wordsRead) {
@@ -84,6 +86,7 @@ export function ReadingProgressProvider({ children }: { children: ReactNode }) {
         wordCounts: newWordCounts,
         completedLessons: newCompleted,
         highestLesson: Math.max(prev.highestLesson, lessonNumber),
+        lastVersions: { ...prev.lastVersions, [lessonNumber]: versionIndex },
       };
     });
   }, []);

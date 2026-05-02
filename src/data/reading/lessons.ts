@@ -123,19 +123,9 @@ export function getWordTokens(lesson: ReadingLesson, versionIndex: number): Word
   }));
 }
 
-export function selectVersion(lesson: ReadingLesson, wordCounts: Record<string, number>): number {
-  if (lesson.versions.length === 1) return 0;
-
-  const scores = lesson.versions.map((_, i) => {
-    const tokens = getWordTokens(lesson, i);
-    return tokens.reduce((sum, t) => sum + (wordCounts[t.normalized] ?? 0), 0);
-  });
-
-  const minScore = Math.min(...scores);
-  const tied = scores.reduce<number[]>((acc, s, i) => {
-    if (s === minScore) acc.push(i);
-    return acc;
-  }, []);
-
-  return tied[Math.floor(Math.random() * tied.length)];
+export function selectVersion(lesson: ReadingLesson, lastVersion: number | undefined): number {
+  if (lesson.versions.length <= 1) return 0;
+  const candidates = Array.from({ length: lesson.versions.length }, (_, i) => i)
+    .filter(i => i !== lastVersion);
+  return candidates[Math.floor(Math.random() * candidates.length)];
 }

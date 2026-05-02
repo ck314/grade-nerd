@@ -21,15 +21,17 @@ function ReadingContent() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const versionIndex = useMemo(() => {
     if (!lesson) return 0;
-    return lesson.versions.length > 1 ? selectVersion(lesson, progress.wordCounts) : 0;
+    return lesson.versions.length > 1
+      ? selectVersion(lesson, progress.lastVersions[progress.currentLesson])
+      : 0;
   }, [progress.currentLesson, lessonKey]);
 
   const tokens = lesson ? getWordTokens(lesson, versionIndex) : [];
 
   const handleLessonComplete = useCallback((normalizedWords: string[]) => {
-    completeLesson(progress.currentLesson, normalizedWords);
+    completeLesson(progress.currentLesson, normalizedWords, versionIndex);
     setIsTraversing(false);
-  }, [completeLesson, progress.currentLesson]);
+  }, [completeLesson, progress.currentLesson, versionIndex]);
 
   const goToLesson = useCallback((n: number) => {
     setCurrentLesson(n);
