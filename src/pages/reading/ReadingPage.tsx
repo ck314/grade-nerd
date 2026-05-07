@@ -2,7 +2,7 @@ import { useState, useCallback, useMemo } from 'react';
 import { Menu } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ReadingProgressProvider, useReadingProgress } from '../../contexts/ReadingProgressContext';
-import { getLesson, getWordTokens, selectVersion } from '../../data/reading';
+import { getLesson, getWordTokens, selectVersion, readingLessons } from '../../data/reading';
 import { ProgressCounter } from './components/ProgressCounter';
 import { LessonNav } from './components/LessonNav';
 import { LessonPicker } from './components/LessonPicker';
@@ -40,7 +40,7 @@ function ReadingContent() {
   }, [setCurrentLesson]);
 
   const handleNextLesson = useCallback(() => {
-    if (progress.currentLesson < 100) {
+    if (progress.currentLesson < readingLessons.length) {
       goToLesson(progress.currentLesson + 1);
     }
   }, [goToLesson, progress.currentLesson]);
@@ -120,7 +120,7 @@ function ReadingContent() {
             <LessonDisplay
               lessonNumber={progress.currentLesson}
               tokens={tokens}
-              isLastLesson={progress.currentLesson === 100}
+              isLastLesson={progress.currentLesson === readingLessons.length}
               onComplete={handleLessonComplete}
               onNextLesson={handleNextLesson}
             />

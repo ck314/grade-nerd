@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { WordToken } from '../../../data/reading';
+import { WordToken, readingLessons } from '../../../data/reading';
 
 const IGNORED_KEYS = new Set(['Escape', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Shift', 'Control', 'Alt', 'Meta']);
 
@@ -102,7 +102,7 @@ export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, 
         <div className="mt-8 flex flex-col items-center gap-4">
           {isLastLesson ? (
             <div className="text-2xl font-bold text-[#0066FF] text-center">
-              You finished all 100 lessons!
+              You finished all {readingLessons.length} lessons!
             </div>
           ) : (
             <button
