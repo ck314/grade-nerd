@@ -11,14 +11,18 @@ import { LessonDisplay } from './components/LessonDisplay';
 import { DecorativeAvatar } from './components/DecorativeAvatar';
 import { WordCelebration } from './components/WordCelebration';
 import { InlineWordBadge } from './components/InlineWordBadge';
+import { StoryInvitation } from './components/StoryInvitation';
 
 function ReadingContent() {
-  const { progress, setCurrentLesson, completeLesson, getMasteryStats, getCurrentMilestone } = useReadingProgress();
+  const { progress, setCurrentLesson, completeLesson, getMasteryStats, getCurrentMilestone, updateStoryProgress } = useReadingProgress();
   const [pickerOpen, setPickerOpen] = useState(false);
   const [isTraversing, setIsTraversing] = useState(true);
   const [lessonKey, setLessonKey] = useState(0);
   const [pendingCelebration, setPendingCelebration] = useState<{ word: ContentWord; isGold: boolean } | null>(null);
-  const [showStoryInvitation, setShowStoryInvitation] = useState(false);
+
+  const storyUnlocked = isStoryUnlocked(progress.completedLessons);
+  const invitationSeen = progress.storyProgress?.storyInvitationSeen ?? false;
+  const [showStoryInvitation, setShowStoryInvitation] = useState(() => storyUnlocked && !invitationSeen);
 
   const lesson = getLesson(progress.currentLesson);
 
@@ -79,6 +83,17 @@ function ReadingContent() {
       handleNextLesson();
     }
   }, [pendingCelebration, handleNextLesson]);
+
+  const handleInvitationDismiss = useCallback(() => {
+    setShowStoryInvitation(false);
+    updateStoryProgress({ storyInvitationSeen: true });
+  }, [updateStoryProgress]);
+
+  const handleStartReading = useCallback(() => {
+    setShowStoryInvitation(false);
+    updateStoryProgress({ storyInvitationSeen: true });
+    window.location.href = '/grade-nerd/reading/story';
+  }, [updateStoryProgress]);
 
   const revisitContentWord = !pendingCelebration ? getContentWord(progress.currentLesson) : undefined;
   const showInlineBadge = revisitContentWord && progress.completedLessons.includes(progress.currentLesson) && !pendingCelebration;
@@ -180,6 +195,13 @@ function ReadingContent() {
           isGold={pendingCelebration.isGold}
           lessonNumber={progress.currentLesson}
           onDismiss={handleCelebrationDismiss}
+        />
+      )}
+
+      {showStoryInvitation && !pendingCelebration && (
+        <StoryInvitation
+          onStartReading={handleStartReading}
+          onDismiss={handleInvitationDismiss}
         />
       )}
     </div>

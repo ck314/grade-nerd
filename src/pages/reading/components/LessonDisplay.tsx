@@ -1,7 +1,6 @@
 import { useState, useEffect, useCallback, ReactNode } from 'react';
 import { WordToken, readingLessons } from '../../../data/reading';
-
-const IGNORED_KEYS = new Set(['Escape', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Shift', 'Control', 'Alt', 'Meta']);
+import { WordHighlightDisplay } from './WordHighlightDisplay';
 
 interface LessonDisplayProps {
   lessonNumber: number;
@@ -14,11 +13,9 @@ interface LessonDisplayProps {
 }
 
 export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, onNextLesson, suppressCompletion, completionExtra }: LessonDisplayProps) {
-  const [highlightIndex, setHighlightIndex] = useState(0);
   const [lessonComplete, setLessonComplete] = useState(false);
 
   useEffect(() => {
-    setHighlightIndex(0);
     setLessonComplete(false);
   }, [lessonNumber]);
 
@@ -27,16 +24,10 @@ export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, 
     : wordCount <= 5 ? 'clamp(36px, 7vw, 48px)'
     : 'clamp(28px, 5vw, 36px)';
 
-  const advance = useCallback(() => {
-    if (lessonComplete) return;
-    const nextIndex = highlightIndex + 1;
-    if (nextIndex > tokens.length - 1) {
-      setLessonComplete(true);
-      onComplete(tokens.map(t => t.normalized));
-    } else {
-      setHighlightIndex(nextIndex);
-    }
-  }, [highlightIndex, tokens, lessonComplete, onComplete]);
+  const handleHighlightComplete = useCallback(() => {
+    setLessonComplete(true);
+    onComplete(tokens.map(t => t.normalized));
+  }, [onComplete, tokens]);
 
   const handleNextOrDismiss = useCallback(() => {
     if (!isLastLesson) {
@@ -47,37 +38,29 @@ export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, 
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.repeat) return;
-      if (IGNORED_KEYS.has(e.key)) return;
+      if (!lessonComplete) return;
+      if (suppressCompletion) return;
 
       const target = e.target as HTMLElement;
       if (target.closest('button, a, [role="button"]')) return;
 
-      if (lessonComplete) {
-        if (suppressCompletion) return;
-        if (e.key === ' ' || e.key === 'Enter') {
-          e.preventDefault();
-          handleNextOrDismiss();
-        }
-        return;
+      if (e.key === ' ' || e.key === 'Enter') {
+        e.preventDefault();
+        handleNextOrDismiss();
       }
-
-      if (e.key === ' ') e.preventDefault();
-      advance();
     }
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [advance, lessonComplete, suppressCompletion, handleNextOrDismiss]);
+  }, [lessonComplete, suppressCompletion, handleNextOrDismiss]);
 
   const handleContainerClick = useCallback((e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     if (target.closest('button, a, [role="button"]')) return;
 
-    if (lessonComplete) {
-      if (!suppressCompletion) handleNextOrDismiss();
-    } else {
-      advance();
+    if (lessonComplete && !suppressCompletion) {
+      handleNextOrDismiss();
     }
-  }, [advance, lessonComplete, suppressCompletion, handleNextOrDismiss]);
+  }, [lessonComplete, suppressCompletion, handleNextOrDismiss]);
 
   return (
     <div
@@ -85,21 +68,11 @@ export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, 
       style={{ paddingTop: '60px', paddingBottom: '80px', paddingLeft: '16px', paddingRight: '16px' }}
       onClick={handleContainerClick}
     >
-      <div className="flex flex-wrap items-center justify-center gap-x-[0.4em] gap-y-[0.2em]" style={{ fontSize }}>
-        {tokens.map((token, i) => (
-          <span
-            key={i}
-            className="inline-block py-1 transition-all duration-150"
-            style={{
-              borderBottom: i === highlightIndex ? '4px solid #0066FF' : '4px solid transparent',
-              fontWeight: 700,
-              fontFamily: 'Inter, system-ui, sans-serif',
-            }}
-          >
-            {token.display}
-          </span>
-        ))}
-      </div>
+      <WordHighlightDisplay
+        tokens={tokens}
+        fontSize={fontSize}
+        onComplete={handleHighlightComplete}
+      />
 
       {lessonComplete && !suppressCompletion && (
         <div className="mt-8 flex flex-col items-center gap-4">
