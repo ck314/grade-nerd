@@ -43,13 +43,13 @@ function ReadingContent() {
     const contentWord = getContentWord(progress.currentLesson);
 
     if (isFirstCompletion && contentWord) {
-      const isGold = contentWord.word === 'gold';
-      setPendingCelebration({ word: contentWord, isGold });
+      const willUnlockStory = !storyUnlocked && isStoryUnlocked([...progress.completedLessons, progress.currentLesson]);
+      setPendingCelebration({ word: contentWord, isGold: willUnlockStory });
     }
 
     completeLesson(progress.currentLesson, normalizedWords, versionIndex);
     setIsTraversing(false);
-  }, [completeLesson, progress.currentLesson, progress.completedLessons, versionIndex]);
+  }, [completeLesson, progress.currentLesson, progress.completedLessons, versionIndex, storyUnlocked]);
 
   const goToLesson = useCallback((n: number) => {
     setCurrentLesson(n);

@@ -8,6 +8,7 @@ import { cn } from '../../lib/utils';
 import { getChapterTokens } from '../../data/reading/tokenization';
 import { WordHighlightDisplay } from './components/WordHighlightDisplay';
 import { StoryNav } from './components/StoryNav';
+import { StoryPanels } from './components/StoryPanels';
 
 function StoryContent() {
   const { progress, advanceStoryChapter, updateStoryProgress } = useReadingProgress();
@@ -49,6 +50,13 @@ function StoryContent() {
     const pageStart = (currentPage - 1) * CHAPTERS_PER_PAGE;
     return Array.from({ length: CHAPTERS_PER_PAGE }, (_, i) => i).every(i => storyProgress.chaptersRead[pageStart + i]);
   }, [currentPage, storyProgress.chaptersRead]);
+
+  const chaptersRevealed = useMemo(() => {
+    const pageStart = (currentPage - 1) * CHAPTERS_PER_PAGE;
+    return Array.from({ length: CHAPTERS_PER_PAGE }, (_, i) =>
+      i <= currentChapterInPage || storyProgress.chaptersRead[pageStart + i] === true
+    );
+  }, [currentPage, currentChapterInPage, storyProgress.chaptersRead]);
 
   const completeCurrentChapter = useCallback(() => {
     if (chapterComplete) return;
@@ -242,12 +250,10 @@ function StoryContent() {
 
       {/* Main content: side-by-side on md+, stacked on mobile */}
       <div className="flex-1 flex flex-col md:flex-row max-w-4xl mx-auto w-full">
-        {/* Panel image placeholder (Unit 12) */}
+        {/* Story panels with blur-to-sharp reveal */}
         <div className="w-full md:w-1/2 flex items-center justify-center p-4">
-          <div className="w-full aspect-[3/4] max-h-[500px] bg-gray-200 rounded-xl border-2 border-dashed border-gray-400 flex items-center justify-center">
-            <span className="text-gray-400 text-sm font-bold text-center px-4">
-              Story panels coming in Unit 12
-            </span>
+          <div className="w-full max-h-[500px]">
+            <StoryPanels pageNumber={currentPage} chaptersRevealed={chaptersRevealed} />
           </div>
         </div>
 

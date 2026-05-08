@@ -1,7 +1,7 @@
 ---
 title: "feat: Add Big Content Words rewards and Blue Fox Red Whale story mode"
 type: feat
-status: active
+status: completed
 date: 2026-05-08
 origin: docs/brainstorms/blue-fox-story-requirements.md
 ---
@@ -128,7 +128,7 @@ graph TD
 
 ### Phase 1: Data Foundation & Image Pipeline
 
-- [ ] **Unit 1: Image generation pipeline and prompt development**
+- [x] **Unit 1: Image generation pipeline and prompt development**
 
 **Goal:** Generate all 86 images (61 word images + 25 story panels) via Nano Banana 2 with consistent watercolor style.
 
@@ -159,7 +159,7 @@ graph TD
 
 ---
 
-- [ ] **Unit 2: Big Content Words data module**
+- [x] **Unit 2: Big Content Words data module**
 
 **Goal:** Create the data mapping from lesson numbers to Big Content Words, extracted from the Excel sheet.
 
@@ -195,7 +195,7 @@ graph TD
 
 ---
 
-- [ ] **Unit 3: Story chapters data module**
+- [x] **Unit 3: Story chapters data module**
 
 **Goal:** Extract 100 story chapters into a TypeScript data file with page groupings and chapter metadata.
 
@@ -236,7 +236,7 @@ graph TD
 
 ### Phase 2: Progress System Extension
 
-- [ ] **Unit 4: Extend ReadingProgressContext for story progress**
+- [x] **Unit 4: Extend ReadingProgressContext for story progress**
 
 **Goal:** Add story progress tracking to the existing reading progress system, with backward-compatible schema extension.
 
@@ -279,7 +279,7 @@ graph TD
 
 ---
 
-- [ ] **Unit 5: Add first-time content-word detection to lesson completion flow**
+- [x] **Unit 5: Add first-time content-word detection to lesson completion flow**
 
 **Goal:** Enable the lesson completion flow to detect whether a Big Content Word celebration should fire, using caller-side detection (not a return value from `completeLesson`).
 
@@ -321,7 +321,7 @@ graph TD
 
 ### Phase 3: Lesson Completion UX
 
-- [ ] **Unit 6: Full-screen word celebration overlay**
+- [x] **Unit 6: Full-screen word celebration overlay**
 
 **Goal:** Show a celebratory full-screen reveal when earning a Big Content Word for the first time.
 
@@ -361,7 +361,7 @@ graph TD
 
 ---
 
-- [ ] **Unit 7: Inline word badge on revisit**
+- [x] **Unit 7: Inline word badge on revisit**
 
 **Goal:** Show a small reinforcement card on the lesson completion screen when revisiting a content-word lesson.
 
@@ -396,7 +396,7 @@ graph TD
 
 ### Phase 4: Collection Gallery & Navigation
 
-- [ ] **Unit 8: Collection gallery page**
+- [x] **Unit 8: Collection gallery page**
 
 **Goal:** Build the word collection gallery at `/reading/collection` showing all 61 Big Content Words with earned/locked states.
 
@@ -437,7 +437,7 @@ graph TD
 
 ---
 
-- [ ] **Unit 9: Reading page header — collection icon**
+- [x] **Unit 9: Reading page header — collection icon**
 
 **Goal:** Add the collection gallery icon to the reading page header. Story icon deferred to Unit 9b (Phase 5) to preserve phased delivery.
 
@@ -476,7 +476,7 @@ graph TD
 
 ### Phase 5: Story Mode
 
-- [ ] **Unit 9b: Reading page header — story icon**
+- [x] **Unit 9b: Reading page header — story icon**
 
 **Goal:** Add the story mode icon to the reading page header alongside the collection icon from Unit 9.
 
@@ -504,7 +504,7 @@ graph TD
 
 ---
 
-- [ ] **Unit 10: Story invitation/unlock screen**
+- [x] **Unit 10: Story invitation/unlock screen**
 
 **Goal:** Show a celebratory invitation screen when the user earns "gold" (lesson 100), and provide persistent story access after unlock.
 
@@ -541,7 +541,7 @@ graph TD
 
 ---
 
-- [ ] **Unit 11: Story reader page — core reading flow**
+- [x] **Unit 11: Story reader page — core reading flow**
 
 **Goal:** Build the story reading experience at `/reading/story` with chapter text display, page navigation, and reading mode toggle.
 
@@ -600,7 +600,7 @@ graph TD
 
 ---
 
-- [ ] **Unit 12: Story panel images with blur-to-sharp reveal**
+- [x] **Unit 12: Story panel images with blur-to-sharp reveal**
 
 **Goal:** Display the 4-panel story illustration with blur-to-sharp reveal as each chapter's text appears.
 
