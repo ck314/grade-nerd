@@ -1,5 +1,5 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Menu, LayoutGrid } from 'lucide-react';
+import { Menu, LayoutGrid, BookOpen } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ReadingProgressProvider, useReadingProgress, getEarnedWords, isStoryUnlocked } from '../../contexts/ReadingProgressContext';
@@ -123,6 +123,17 @@ function ReadingContent() {
         onClick={(e) => e.stopPropagation()}
       >
         <LayoutGrid size={20} />
+      </Link>
+
+      {/* Story icon — top left after collection icon */}
+      <Link
+        to="/reading/story"
+        className="fixed top-4 left-28 z-40 w-10 h-10 flex items-center justify-center rounded-lg bg-white border-2 border-black hover:bg-gray-100 transition-all shadow-md"
+        style={{ opacity: storyUnlocked ? 1 : 0, pointerEvents: storyUnlocked ? 'auto' : 'none' }}
+        aria-label="Read story"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <BookOpen size={20} />
       </Link>
 
       {/* Hamburger — top right */}
