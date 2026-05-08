@@ -1,7 +1,25 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { getLesson } from '../data/reading';
+import { bigContentWords, TOTAL_CONTENT_WORDS, TOTAL_CHAPTERS, CHAPTERS_PER_PAGE } from '../data/reading';
 import { useUser } from '../contexts/UserContext';
 import { getUserKey } from '../lib/userStorage';
+
+export interface StoryProgress {
+  currentPage: number;
+  currentChapter: number;
+  chaptersRead: boolean[];
+  storyInvitationSeen: boolean;
+  readingMode: 'advance' | 'word-tap';
+}
+
+export function createInitialStoryProgress(): StoryProgress {
+  return {
+    currentPage: 1,
+    currentChapter: 0,
+    chaptersRead: Array(TOTAL_CHAPTERS).fill(false),
+    storyInvitationSeen: false,
+    readingMode: 'advance',
+  };
+}
 
 interface ReadingProgress {
   currentLesson: number;
@@ -9,6 +27,7 @@ interface ReadingProgress {
   completedLessons: number[];
   wordCounts: Record<string, number>;
   lastVersions: Record<number, number>;
+  storyProgress?: StoryProgress;
 }
 
 function createInitialProgress(): ReadingProgress {
@@ -18,6 +37,7 @@ function createInitialProgress(): ReadingProgress {
     completedLessons: [],
     wordCounts: {},
     lastVersions: {},
+    storyProgress: createInitialStoryProgress(),
   };
 }
 
@@ -34,13 +54,32 @@ function loadFromLocalStorage(key: string): ReadingProgress {
         Array.isArray(parsed.completedLessons) &&
         typeof parsed.wordCounts === 'object'
       ) {
-        return { ...parsed, lastVersions: parsed.lastVersions ?? {} } as ReadingProgress;
+        const storyProgress = parsed.storyProgress && typeof parsed.storyProgress === 'object'
+          ? {
+              currentPage: typeof parsed.storyProgress.currentPage === 'number' ? parsed.storyProgress.currentPage : 1,
+              currentChapter: typeof parsed.storyProgress.currentChapter === 'number' ? parsed.storyProgress.currentChapter : 0,
+              chaptersRead: Array.isArray(parsed.storyProgress.chaptersRead) && parsed.storyProgress.chaptersRead.length === TOTAL_CHAPTERS
+                ? parsed.storyProgress.chaptersRead
+                : Array(TOTAL_CHAPTERS).fill(false),
+              storyInvitationSeen: parsed.storyProgress.storyInvitationSeen === true,
+              readingMode: parsed.storyProgress.readingMode === 'word-tap' ? 'word-tap' as const : 'advance' as const,
+            }
+          : createInitialStoryProgress();
+        return { ...parsed, lastVersions: parsed.lastVersions ?? {}, storyProgress } as ReadingProgress;
       }
     }
   } catch {
     // corrupt localStorage — fall through
   }
   return createInitialProgress();
+}
+
+export function getEarnedWords(completedLessons: number[]) {
+  return bigContentWords.filter(w => completedLessons.includes(w.lessonNumber));
+}
+
+export function isStoryUnlocked(completedLessons: number[]): boolean {
+  return getEarnedWords(completedLessons).length >= TOTAL_CONTENT_WORDS;
 }
 
 interface ReadingProgressContextType {
@@ -50,6 +89,8 @@ interface ReadingProgressContextType {
   getMasteryStats: () => { masteredCount: number; nextWord: string; nextCount: number };
   getCurrentMilestone: () => { level: number; threshold: number };
   resetProgress: () => void;
+  advanceStoryChapter: (chapterIndex: number) => void;
+  updateStoryProgress: (updates: Partial<StoryProgress>) => void;
 }
 
 const ReadingProgressContext = createContext<ReadingProgressContextType | null>(null);
@@ -113,6 +154,27 @@ export function ReadingProgressProvider({ children }: { children: ReactNode }) {
     return { level, threshold };
   }, [getMasteryStats]);
 
+  const advanceStoryChapter = useCallback((chapterIndex: number) => {
+    setProgress(prev => {
+      const sp = prev.storyProgress ?? createInitialStoryProgress();
+      if (sp.chaptersRead[chapterIndex]) return prev;
+      const newChaptersRead = [...sp.chaptersRead];
+      newChaptersRead[chapterIndex] = true;
+      const page = Math.floor(chapterIndex / CHAPTERS_PER_PAGE) + 1;
+      return {
+        ...prev,
+        storyProgress: { ...sp, chaptersRead: newChaptersRead, currentPage: page, currentChapter: chapterIndex },
+      };
+    });
+  }, []);
+
+  const updateStoryProgress = useCallback((updates: Partial<StoryProgress>) => {
+    setProgress(prev => ({
+      ...prev,
+      storyProgress: { ...(prev.storyProgress ?? createInitialStoryProgress()), ...updates },
+    }));
+  }, []);
+
   const resetProgress = useCallback(() => {
     const initial = createInitialProgress();
     setProgress(initial);
@@ -127,6 +189,8 @@ export function ReadingProgressProvider({ children }: { children: ReactNode }) {
       getMasteryStats,
       getCurrentMilestone,
       resetProgress,
+      advanceStoryChapter,
+      updateStoryProgress,
     }}>
       {children}
     </ReadingProgressContext.Provider>

@@ -1,19 +1,29 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, LayoutGrid, BookOpen } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ReadingProgressProvider, useReadingProgress } from '../../contexts/ReadingProgressContext';
-import { getLesson, getWordTokens, selectVersion, readingLessons } from '../../data/reading';
+import { ReadingProgressProvider, useReadingProgress, getEarnedWords, isStoryUnlocked } from '../../contexts/ReadingProgressContext';
+import { getLesson, getWordTokens, selectVersion, readingLessons, getContentWord, ContentWord } from '../../data/reading';
 import { ProgressCounter } from './components/ProgressCounter';
 import { LessonNav } from './components/LessonNav';
 import { LessonPicker } from './components/LessonPicker';
 import { LessonDisplay } from './components/LessonDisplay';
 import { DecorativeAvatar } from './components/DecorativeAvatar';
+import { WordCelebration } from './components/WordCelebration';
+import { InlineWordBadge } from './components/InlineWordBadge';
+import { StoryInvitation } from './components/StoryInvitation';
 
 function ReadingContent() {
-  const { progress, setCurrentLesson, completeLesson, getMasteryStats, getCurrentMilestone } = useReadingProgress();
+  const { progress, setCurrentLesson, completeLesson, getMasteryStats, getCurrentMilestone, updateStoryProgress } = useReadingProgress();
+  const navigate = useNavigate();
   const [pickerOpen, setPickerOpen] = useState(false);
   const [isTraversing, setIsTraversing] = useState(true);
   const [lessonKey, setLessonKey] = useState(0);
+  const [pendingCelebration, setPendingCelebration] = useState<{ word: ContentWord; isGold: boolean } | null>(null);
+
+  const storyUnlocked = isStoryUnlocked(progress.completedLessons);
+  const invitationSeen = progress.storyProgress?.storyInvitationSeen ?? false;
+  const [showStoryInvitation, setShowStoryInvitation] = useState(() => storyUnlocked && !invitationSeen);
 
   const lesson = getLesson(progress.currentLesson);
 
@@ -26,12 +36,20 @@ function ReadingContent() {
       : 0;
   }, [progress.currentLesson, lessonKey]);
 
-  const tokens = lesson ? getWordTokens(lesson, versionIndex) : [];
+  const tokens = useMemo(() => lesson ? getWordTokens(lesson, versionIndex) : [], [lesson, versionIndex]);
 
   const handleLessonComplete = useCallback((normalizedWords: string[]) => {
+    const isFirstCompletion = !progress.completedLessons.includes(progress.currentLesson);
+    const contentWord = getContentWord(progress.currentLesson);
+
+    if (isFirstCompletion && contentWord) {
+      const isGold = contentWord.word === 'gold';
+      setPendingCelebration({ word: contentWord, isGold });
+    }
+
     completeLesson(progress.currentLesson, normalizedWords, versionIndex);
     setIsTraversing(false);
-  }, [completeLesson, progress.currentLesson, versionIndex]);
+  }, [completeLesson, progress.currentLesson, progress.completedLessons, versionIndex]);
 
   const goToLesson = useCallback((n: number) => {
     setCurrentLesson(n);
@@ -57,6 +75,33 @@ function ReadingContent() {
     }
   }, [goToLesson, progress.currentLesson, progress.highestLesson]);
 
+  const handleCelebrationDismiss = useCallback(() => {
+    const wasGold = pendingCelebration?.isGold;
+    setPendingCelebration(null);
+    if (wasGold) {
+      setShowStoryInvitation(true);
+    } else {
+      handleNextLesson();
+    }
+  }, [pendingCelebration, handleNextLesson]);
+
+  const handleInvitationDismiss = useCallback(() => {
+    setShowStoryInvitation(false);
+    updateStoryProgress({ storyInvitationSeen: true });
+  }, [updateStoryProgress]);
+
+  const handleStartReading = useCallback(() => {
+    setShowStoryInvitation(false);
+    updateStoryProgress({ storyInvitationSeen: true });
+    navigate('/reading/story');
+  }, [updateStoryProgress, navigate]);
+
+  const revisitContentWord = !pendingCelebration ? getContentWord(progress.currentLesson) : undefined;
+  const showInlineBadge = revisitContentWord && progress.completedLessons.includes(progress.currentLesson) && !pendingCelebration;
+
+  const earnedWords = getEarnedWords(progress.completedLessons);
+  const hasEarnedWords = earnedWords.length > 0;
+
   const milestone = getCurrentMilestone();
   const mastery = getMasteryStats();
 
@@ -68,6 +113,30 @@ function ReadingContent() {
         onClick={(e) => e.stopPropagation()}
       >
         <span className="font-bold text-sm">gn</span>
+      </div>
+
+      {/* Collection + Story icons — centered top */}
+      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2">
+        <Link
+          to="/reading/collection"
+          className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border-2 border-[#0066FF] hover:bg-blue-50 transition-all shadow-md"
+          style={{ opacity: hasEarnedWords ? 1 : 0, pointerEvents: hasEarnedWords ? 'auto' : 'none' }}
+          aria-label="Word collection"
+          tabIndex={hasEarnedWords ? undefined : -1}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <LayoutGrid size={20} className="text-[#0066FF]" />
+        </Link>
+        <Link
+          to="/reading/story"
+          className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border-2 border-[#0066FF] hover:bg-blue-50 transition-all shadow-md"
+          style={{ opacity: storyUnlocked ? 1 : 0, pointerEvents: storyUnlocked ? 'auto' : 'none' }}
+          tabIndex={storyUnlocked ? undefined : -1}
+          aria-label="Read story"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <BookOpen size={20} className="text-[#0066FF]" />
+        </Link>
       </div>
 
       {/* Hamburger — top right */}
@@ -123,10 +192,31 @@ function ReadingContent() {
               isLastLesson={progress.currentLesson === readingLessons.length}
               onComplete={handleLessonComplete}
               onNextLesson={handleNextLesson}
+              suppressCompletion={!!pendingCelebration}
+              completionExtra={showInlineBadge ? (
+                <InlineWordBadge word={revisitContentWord.word} imagePath={revisitContentWord.imagePath} />
+              ) : undefined}
             />
           )}
         </motion.div>
       </AnimatePresence>
+
+      {pendingCelebration && (
+        <WordCelebration
+          key={`celebration-${progress.currentLesson}`}
+          word={pendingCelebration.word.word}
+          imagePath={pendingCelebration.word.imagePath}
+          isGold={pendingCelebration.isGold}
+          onDismiss={handleCelebrationDismiss}
+        />
+      )}
+
+      {showStoryInvitation && !pendingCelebration && (
+        <StoryInvitation
+          onStartReading={handleStartReading}
+          onDismiss={handleInvitationDismiss}
+        />
+      )}
     </div>
   );
 }
