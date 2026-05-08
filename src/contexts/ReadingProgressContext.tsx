@@ -41,7 +41,19 @@ function createInitialProgress(): ReadingProgress {
   };
 }
 
-function loadFromLocalStorage(key: string): ReadingProgress {
+function createSeededProgress(): ReadingProgress {
+  const completedLessons = bigContentWords.map(w => w.lessonNumber);
+  return {
+    currentLesson: 101,
+    highestLesson: 101,
+    completedLessons,
+    wordCounts: {},
+    lastVersions: {},
+    storyProgress: createInitialStoryProgress(),
+  };
+}
+
+function loadFromLocalStorage(key: string, username?: string): ReadingProgress {
   try {
     const stored = localStorage.getItem(key);
     if (stored) {
@@ -71,6 +83,7 @@ function loadFromLocalStorage(key: string): ReadingProgress {
   } catch {
     // corrupt localStorage — fall through
   }
+  if (username && username.startsWith('100')) return createSeededProgress();
   return createInitialProgress();
 }
 
@@ -99,7 +112,7 @@ export function ReadingProgressProvider({ children }: { children: ReactNode }) {
   const { activeUser } = useUser();
   const storageKey = getUserKey(activeUser!, 'reading');
 
-  const [progress, setProgress] = useState<ReadingProgress>(() => loadFromLocalStorage(storageKey));
+  const [progress, setProgress] = useState<ReadingProgress>(() => loadFromLocalStorage(storageKey, activeUser ?? undefined));
 
   useEffect(() => {
     localStorage.setItem(storageKey, JSON.stringify(progress));

@@ -1,13 +1,18 @@
+import { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { Lock, ArrowLeft } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { ReadingProgressProvider, useReadingProgress, getEarnedWords } from '../../contexts/ReadingProgressContext';
-import { bigContentWords, TOTAL_CONTENT_WORDS } from '../../data/reading';
+import { bigContentWords, TOTAL_CONTENT_WORDS, ContentWord } from '../../data/reading';
+import { WordCelebration } from './components/WordCelebration';
 
 function GalleryContent() {
   const { progress } = useReadingProgress();
   const earnedWords = getEarnedWords(progress.completedLessons);
   const earnedLessons = new Set(earnedWords.map(w => w.lessonNumber));
+  const [selectedWord, setSelectedWord] = useState<ContentWord | null>(null);
+
+  const handleDismiss = useCallback(() => setSelectedWord(null), []);
 
   return (
     <div className="min-h-screen bg-graph-paper">
@@ -50,15 +55,20 @@ function GalleryContent() {
             const earned = earnedLessons.has(entry.lessonNumber);
 
             return (
-              <div
+              <button
                 key={entry.lessonNumber}
-                className="flex flex-col items-center"
+                className={cn(
+                  'flex flex-col items-center',
+                  earned ? 'cursor-pointer' : 'cursor-default'
+                )}
+                onClick={() => earned && setSelectedWord(entry)}
+                disabled={!earned}
               >
                 {/* Card */}
                 <div
                   className={cn(
                     'w-full aspect-square rounded-xl border-2 overflow-hidden flex items-center justify-center',
-                    earned ? 'border-black bg-white shadow-sm' : 'border-gray-300 bg-gray-100'
+                    earned ? 'border-black bg-white shadow-sm hover:shadow-md hover:scale-105 transition-all' : 'border-gray-300 bg-gray-100'
                   )}
                 >
                   {earned ? (
@@ -81,11 +91,20 @@ function GalleryContent() {
                 >
                   {earned ? entry.word : '???'}
                 </span>
-              </div>
+              </button>
             );
           })}
         </div>
       </div>
+
+      {selectedWord && (
+        <WordCelebration
+          word={selectedWord.word}
+          imagePath={selectedWord.imagePath}
+          isGold={false}
+          onDismiss={handleDismiss}
+        />
+      )}
     </div>
   );
 }
