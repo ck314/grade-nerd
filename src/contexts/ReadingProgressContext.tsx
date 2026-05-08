@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { bigContentWords, TOTAL_CONTENT_WORDS } from '../data/reading';
+import { bigContentWords, TOTAL_CONTENT_WORDS, TOTAL_CHAPTERS, CHAPTERS_PER_PAGE } from '../data/reading';
 import { useUser } from '../contexts/UserContext';
 import { getUserKey } from '../lib/userStorage';
 
@@ -11,11 +11,11 @@ export interface StoryProgress {
   readingMode: 'advance' | 'word-tap';
 }
 
-function createInitialStoryProgress(): StoryProgress {
+export function createInitialStoryProgress(): StoryProgress {
   return {
     currentPage: 1,
     currentChapter: 0,
-    chaptersRead: Array(100).fill(false),
+    chaptersRead: Array(TOTAL_CHAPTERS).fill(false),
     storyInvitationSeen: false,
     readingMode: 'advance',
   };
@@ -58,9 +58,9 @@ function loadFromLocalStorage(key: string): ReadingProgress {
           ? {
               currentPage: typeof parsed.storyProgress.currentPage === 'number' ? parsed.storyProgress.currentPage : 1,
               currentChapter: typeof parsed.storyProgress.currentChapter === 'number' ? parsed.storyProgress.currentChapter : 0,
-              chaptersRead: Array.isArray(parsed.storyProgress.chaptersRead) && parsed.storyProgress.chaptersRead.length === 100
+              chaptersRead: Array.isArray(parsed.storyProgress.chaptersRead) && parsed.storyProgress.chaptersRead.length === TOTAL_CHAPTERS
                 ? parsed.storyProgress.chaptersRead
-                : Array(100).fill(false),
+                : Array(TOTAL_CHAPTERS).fill(false),
               storyInvitationSeen: parsed.storyProgress.storyInvitationSeen === true,
               readingMode: parsed.storyProgress.readingMode === 'word-tap' ? 'word-tap' as const : 'advance' as const,
             }
@@ -160,7 +160,7 @@ export function ReadingProgressProvider({ children }: { children: ReactNode }) {
       if (sp.chaptersRead[chapterIndex]) return prev;
       const newChaptersRead = [...sp.chaptersRead];
       newChaptersRead[chapterIndex] = true;
-      const page = Math.floor(chapterIndex / 4) + 1;
+      const page = Math.floor(chapterIndex / CHAPTERS_PER_PAGE) + 1;
       return {
         ...prev,
         storyProgress: { ...sp, chaptersRead: newChaptersRead, currentPage: page, currentChapter: chapterIndex },

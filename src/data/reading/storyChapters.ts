@@ -11,6 +11,7 @@ export interface StoryPage {
 
 export const TOTAL_PAGES = 25;
 export const TOTAL_CHAPTERS = 100;
+export const CHAPTERS_PER_PAGE = 4;
 
 export const storyPages: StoryPage[] = [
   {

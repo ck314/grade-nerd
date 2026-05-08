@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { cn } from '../../../lib/utils';
 
 interface WordCelebrationProps {
   word: string;
   imagePath: string;
   isGold: boolean;
-  lessonNumber: number;
   onDismiss: () => void;
 }
 
@@ -38,9 +38,10 @@ export function WordCelebration({ word, imagePath, isGold, onDismiss }: WordCele
             />
           )}
           <span
-            className={`text-5xl font-bold text-center ${
+            className={cn(
+              'text-5xl font-bold text-center',
               isGold ? 'text-yellow-300 drop-shadow-[0_0_12px_rgba(253,224,71,0.6)]' : 'text-white'
-            }`}
+            )}
           >
             {word}
           </span>

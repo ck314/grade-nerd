@@ -1,6 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Menu, LayoutGrid, BookOpen } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ReadingProgressProvider, useReadingProgress, getEarnedWords, isStoryUnlocked } from '../../contexts/ReadingProgressContext';
 import { getLesson, getWordTokens, selectVersion, readingLessons, getContentWord, ContentWord } from '../../data/reading';
@@ -15,6 +15,7 @@ import { StoryInvitation } from './components/StoryInvitation';
 
 function ReadingContent() {
   const { progress, setCurrentLesson, completeLesson, getMasteryStats, getCurrentMilestone, updateStoryProgress } = useReadingProgress();
+  const navigate = useNavigate();
   const [pickerOpen, setPickerOpen] = useState(false);
   const [isTraversing, setIsTraversing] = useState(true);
   const [lessonKey, setLessonKey] = useState(0);
@@ -35,7 +36,7 @@ function ReadingContent() {
       : 0;
   }, [progress.currentLesson, lessonKey]);
 
-  const tokens = lesson ? getWordTokens(lesson, versionIndex) : [];
+  const tokens = useMemo(() => lesson ? getWordTokens(lesson, versionIndex) : [], [lesson, versionIndex]);
 
   const handleLessonComplete = useCallback((normalizedWords: string[]) => {
     const isFirstCompletion = !progress.completedLessons.includes(progress.currentLesson);
@@ -92,8 +93,8 @@ function ReadingContent() {
   const handleStartReading = useCallback(() => {
     setShowStoryInvitation(false);
     updateStoryProgress({ storyInvitationSeen: true });
-    window.location.href = '/grade-nerd/reading/story';
-  }, [updateStoryProgress]);
+    navigate('/reading/story');
+  }, [updateStoryProgress, navigate]);
 
   const revisitContentWord = !pendingCelebration ? getContentWord(progress.currentLesson) : undefined;
   const showInlineBadge = revisitContentWord && progress.completedLessons.includes(progress.currentLesson) && !pendingCelebration;
@@ -120,6 +121,7 @@ function ReadingContent() {
         className="fixed top-4 left-16 z-40 w-10 h-10 flex items-center justify-center rounded-lg bg-white border-2 border-black hover:bg-gray-100 transition-all shadow-md"
         style={{ opacity: hasEarnedWords ? 1 : 0, pointerEvents: hasEarnedWords ? 'auto' : 'none' }}
         aria-label="Word collection"
+        tabIndex={hasEarnedWords ? undefined : -1}
         onClick={(e) => e.stopPropagation()}
       >
         <LayoutGrid size={20} />
@@ -130,6 +132,7 @@ function ReadingContent() {
         to="/reading/story"
         className="fixed top-4 left-28 z-40 w-10 h-10 flex items-center justify-center rounded-lg bg-white border-2 border-black hover:bg-gray-100 transition-all shadow-md"
         style={{ opacity: storyUnlocked ? 1 : 0, pointerEvents: storyUnlocked ? 'auto' : 'none' }}
+        tabIndex={storyUnlocked ? undefined : -1}
         aria-label="Read story"
         onClick={(e) => e.stopPropagation()}
       >
@@ -204,7 +207,6 @@ function ReadingContent() {
           word={pendingCelebration.word.word}
           imagePath={pendingCelebration.word.imagePath}
           isGold={pendingCelebration.isGold}
-          lessonNumber={progress.currentLesson}
           onDismiss={handleCelebrationDismiss}
         />
       )}

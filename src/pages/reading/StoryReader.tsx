@@ -2,23 +2,24 @@ import { useState, useCallback, useEffect, useMemo } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ReadingProgressProvider, useReadingProgress, isStoryUnlocked } from '../../contexts/ReadingProgressContext';
-import { getStoryPage, TOTAL_PAGES, StoryPage } from '../../data/reading/storyChapters';
+import { ReadingProgressProvider, useReadingProgress, isStoryUnlocked, createInitialStoryProgress } from '../../contexts/ReadingProgressContext';
+import { getStoryPage, TOTAL_PAGES, CHAPTERS_PER_PAGE, StoryPage } from '../../data/reading/storyChapters';
+import { cn } from '../../lib/utils';
 import { getChapterTokens } from '../../data/reading/tokenization';
 import { WordHighlightDisplay } from './components/WordHighlightDisplay';
 import { StoryNav } from './components/StoryNav';
 
 function StoryContent() {
   const { progress, advanceStoryChapter, updateStoryProgress } = useReadingProgress();
-  const storyProgress = progress.storyProgress!;
+  const storyProgress = progress.storyProgress ?? createInitialStoryProgress();
   const [currentPage, setCurrentPage] = useState(storyProgress.currentPage);
   const [currentChapterInPage, setCurrentChapterInPage] = useState(() => {
     // Derive chapter-in-page from the global chapter index
     const savedPage = storyProgress.currentPage;
     const savedGlobal = storyProgress.currentChapter;
     // If saved global chapter belongs to saved page, use its offset; otherwise start at 0
-    const pageStart = (savedPage - 1) * 4;
-    if (savedGlobal >= pageStart && savedGlobal < pageStart + 4) {
+    const pageStart = (savedPage - 1) * CHAPTERS_PER_PAGE;
+    if (savedGlobal >= pageStart && savedGlobal < pageStart + CHAPTERS_PER_PAGE) {
       return savedGlobal - pageStart;
     }
     return 0;
@@ -29,7 +30,7 @@ function StoryContent() {
 
   const page: StoryPage | undefined = useMemo(() => getStoryPage(currentPage), [currentPage]);
   const chapter = page?.chapters[currentChapterInPage];
-  const globalChapterIndex = (currentPage - 1) * 4 + currentChapterInPage;
+  const globalChapterIndex = (currentPage - 1) * CHAPTERS_PER_PAGE + currentChapterInPage;
 
   // Check if this chapter was already read
   const isAlreadyRead = storyProgress.chaptersRead[globalChapterIndex] === true;
@@ -45,16 +46,15 @@ function StoryContent() {
 
   // Check if all 4 chapters on current page are read
   const allPageChaptersRead = useMemo(() => {
-    const pageStart = (currentPage - 1) * 4;
-    return [0, 1, 2, 3].every(i => storyProgress.chaptersRead[pageStart + i]);
+    const pageStart = (currentPage - 1) * CHAPTERS_PER_PAGE;
+    return Array.from({ length: CHAPTERS_PER_PAGE }, (_, i) => i).every(i => storyProgress.chaptersRead[pageStart + i]);
   }, [currentPage, storyProgress.chaptersRead]);
 
   const completeCurrentChapter = useCallback(() => {
     if (chapterComplete) return;
     setChapterComplete(true);
     advanceStoryChapter(globalChapterIndex);
-    updateStoryProgress({ currentPage, currentChapter: globalChapterIndex });
-  }, [chapterComplete, advanceStoryChapter, globalChapterIndex, currentPage, updateStoryProgress]);
+  }, [chapterComplete, advanceStoryChapter, globalChapterIndex]);
 
   // Tap-to-advance: click handler for "Read" mode
   const handleReadModeClick = useCallback((e: React.MouseEvent) => {
@@ -63,7 +63,7 @@ function StoryContent() {
     if (readingMode !== 'advance') return;
     if (chapterComplete) {
       // If chapter done, advance to next chapter if available
-      if (currentChapterInPage < 3) {
+      if (currentChapterInPage < CHAPTERS_PER_PAGE - 1) {
         setCurrentChapterInPage(prev => prev + 1);
       }
       return;
@@ -82,7 +82,7 @@ function StoryContent() {
 
       if (!chapterComplete) {
         completeCurrentChapter();
-      } else if (currentChapterInPage < 3) {
+      } else if (currentChapterInPage < CHAPTERS_PER_PAGE - 1) {
         setCurrentChapterInPage(prev => prev + 1);
       }
     }
@@ -97,12 +97,10 @@ function StoryContent() {
 
   // Navigate to next chapter within page
   const advanceToNextChapter = useCallback(() => {
-    if (currentChapterInPage < 3) {
+    if (currentChapterInPage < CHAPTERS_PER_PAGE - 1) {
       setCurrentChapterInPage(prev => prev + 1);
-    } else if (currentPage === TOTAL_PAGES && allPageChaptersRead) {
-      setStoryFinished(true);
     }
-  }, [currentChapterInPage, currentPage, allPageChaptersRead]);
+  }, [currentChapterInPage]);
 
   // Page navigation
   const goToPrevPage = useCallback(() => {
@@ -111,7 +109,7 @@ function StoryContent() {
       setCurrentPage(newPage);
       setCurrentChapterInPage(0);
       setStoryFinished(false);
-      updateStoryProgress({ currentPage: newPage, currentChapter: (newPage - 1) * 4 });
+      updateStoryProgress({ currentPage: newPage, currentChapter: (newPage - 1) * CHAPTERS_PER_PAGE });
     }
   }, [currentPage, updateStoryProgress]);
 
@@ -121,7 +119,7 @@ function StoryContent() {
       setCurrentPage(newPage);
       setCurrentChapterInPage(0);
       setStoryFinished(false);
-      updateStoryProgress({ currentPage: newPage, currentChapter: (newPage - 1) * 4 });
+      updateStoryProgress({ currentPage: newPage, currentChapter: (newPage - 1) * CHAPTERS_PER_PAGE });
     }
   }, [currentPage, allPageChaptersRead, updateStoryProgress]);
 
@@ -201,20 +199,21 @@ function StoryContent() {
   }
 
   // Chapter indicators (dots)
-  const chapterDots = [0, 1, 2, 3].map(i => {
-    const gi = (currentPage - 1) * 4 + i;
+  const chapterDots = Array.from({ length: CHAPTERS_PER_PAGE }, (_, i) => i).map(i => {
+    const gi = (currentPage - 1) * CHAPTERS_PER_PAGE + i;
     const isRead = storyProgress.chaptersRead[gi];
     const isCurrent = i === currentChapterInPage;
     return (
       <div
         key={i}
-        className={`w-3 h-3 rounded-full border-2 transition-all ${
+        className={cn(
+          'w-3 h-3 rounded-full border-2 transition-all',
           isCurrent
             ? 'border-[#0066FF] bg-[#0066FF]'
             : isRead
               ? 'border-black bg-black'
               : 'border-gray-300 bg-white'
-        }`}
+        )}
       />
     );
   });
@@ -298,7 +297,7 @@ function StoryContent() {
             </AnimatePresence>
 
             {/* Completion / advance UI */}
-            {chapterComplete && currentChapterInPage < 3 && (
+            {chapterComplete && currentChapterInPage < CHAPTERS_PER_PAGE - 1 && (
               <button
                 onClick={(e) => { e.stopPropagation(); advanceToNextChapter(); }}
                 className="mt-6 px-6 py-3 bg-[#0066FF] text-white text-base font-bold rounded-xl border-2 border-black shadow-md hover:bg-[#0052CC] transition-colors"
@@ -307,13 +306,13 @@ function StoryContent() {
               </button>
             )}
 
-            {chapterComplete && currentChapterInPage === 3 && !allPageChaptersRead && (
+            {chapterComplete && currentChapterInPage === CHAPTERS_PER_PAGE - 1 && !allPageChaptersRead && (
               <div className="mt-6 text-sm text-gray-400 font-bold">
                 Finish all chapters to continue...
               </div>
             )}
 
-            {chapterComplete && currentChapterInPage === 3 && allPageChaptersRead && currentPage < TOTAL_PAGES && (
+            {chapterComplete && currentChapterInPage === CHAPTERS_PER_PAGE - 1 && allPageChaptersRead && currentPage < TOTAL_PAGES && (
               <button
                 onClick={(e) => { e.stopPropagation(); goToNextPage(); }}
                 className="mt-6 px-6 py-3 bg-[#0066FF] text-white text-base font-bold rounded-xl border-2 border-black shadow-md hover:bg-[#0052CC] transition-colors"
@@ -322,7 +321,7 @@ function StoryContent() {
               </button>
             )}
 
-            {chapterComplete && currentChapterInPage === 3 && allPageChaptersRead && currentPage === TOTAL_PAGES && (
+            {chapterComplete && currentChapterInPage === CHAPTERS_PER_PAGE - 1 && allPageChaptersRead && currentPage === TOTAL_PAGES && (
               <button
                 onClick={(e) => { e.stopPropagation(); setStoryFinished(true); }}
                 className="mt-6 px-6 py-3 bg-[#0066FF] text-white text-base font-bold rounded-xl border-2 border-black shadow-md hover:bg-[#0052CC] transition-colors"

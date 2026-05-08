@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Lock, ArrowLeft } from 'lucide-react';
+import { cn } from '../../lib/utils';
 import { ReadingProgressProvider, useReadingProgress, getEarnedWords } from '../../contexts/ReadingProgressContext';
 import { bigContentWords, TOTAL_CONTENT_WORDS } from '../../data/reading';
 
@@ -55,11 +56,10 @@ function GalleryContent() {
               >
                 {/* Card */}
                 <div
-                  className={`w-full aspect-square rounded-xl border-2 overflow-hidden flex items-center justify-center ${
-                    earned
-                      ? 'border-black bg-white shadow-sm'
-                      : 'border-gray-300 bg-gray-100'
-                  }`}
+                  className={cn(
+                    'w-full aspect-square rounded-xl border-2 overflow-hidden flex items-center justify-center',
+                    earned ? 'border-black bg-white shadow-sm' : 'border-gray-300 bg-gray-100'
+                  )}
                 >
                   {earned ? (
                     <img
@@ -74,9 +74,10 @@ function GalleryContent() {
                 </div>
                 {/* Label */}
                 <span
-                  className={`mt-1.5 text-xs font-bold tracking-wide text-center leading-tight ${
+                  className={cn(
+                    'mt-1.5 text-xs font-bold tracking-wide text-center leading-tight',
                     earned ? 'text-black' : 'text-gray-400'
-                  }`}
+                  )}
                 >
                   {earned ? entry.word : '???'}
                 </span>
