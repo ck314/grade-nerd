@@ -1,0 +1,75 @@
+export interface ContentWord {
+  lessonNumber: number;
+  word: string;
+  imagePath: string;
+}
+
+export const TOTAL_CONTENT_WORDS = 61;
+
+export const bigContentWords: ContentWord[] = [
+  { lessonNumber: 2, word: "blue", imagePath: "/grade-nerd/images/reading/words/blue.webp" },
+  { lessonNumber: 4, word: "fox", imagePath: "/grade-nerd/images/reading/words/fox.webp" },
+  { lessonNumber: 6, word: "red", imagePath: "/grade-nerd/images/reading/words/red.webp" },
+  { lessonNumber: 8, word: "whale", imagePath: "/grade-nerd/images/reading/words/whale.webp" },
+  { lessonNumber: 10, word: "saw", imagePath: "/grade-nerd/images/reading/words/saw.webp" },
+  { lessonNumber: 12, word: "sea", imagePath: "/grade-nerd/images/reading/words/sea.webp" },
+  { lessonNumber: 14, word: "help", imagePath: "/grade-nerd/images/reading/words/help.webp" },
+  { lessonNumber: 16, word: "lost", imagePath: "/grade-nerd/images/reading/words/lost.webp" },
+  { lessonNumber: 18, word: "boat", imagePath: "/grade-nerd/images/reading/words/boat.webp" },
+  { lessonNumber: 20, word: "sailed", imagePath: "/grade-nerd/images/reading/words/sailed.webp" },
+  { lessonNumber: 22, word: "new", imagePath: "/grade-nerd/images/reading/words/new.webp" },
+  { lessonNumber: 24, word: "pal", imagePath: "/grade-nerd/images/reading/words/pal.webp" },
+  { lessonNumber: 26, word: "whale's", imagePath: "/grade-nerd/images/reading/words/whale's.webp" },
+  { lessonNumber: 28, word: "both", imagePath: "/grade-nerd/images/reading/words/both.webp" },
+  { lessonNumber: 30, word: "pals", imagePath: "/grade-nerd/images/reading/words/pals.webp" },
+  { lessonNumber: 32, word: "happy", imagePath: "/grade-nerd/images/reading/words/happy.webp" },
+  { lessonNumber: 34, word: "next", imagePath: "/grade-nerd/images/reading/words/next.webp" },
+  { lessonNumber: 36, word: "trek", imagePath: "/grade-nerd/images/reading/words/trek.webp" },
+  { lessonNumber: 38, word: "thick", imagePath: "/grade-nerd/images/reading/words/thick.webp" },
+  { lessonNumber: 40, word: "shell", imagePath: "/grade-nerd/images/reading/words/shell.webp" },
+  { lessonNumber: 42, word: "what", imagePath: "/grade-nerd/images/reading/words/what.webp" },
+  { lessonNumber: 44, word: "asked", imagePath: "/grade-nerd/images/reading/words/asked.webp" },
+  { lessonNumber: 46, word: "could", imagePath: "/grade-nerd/images/reading/words/could.webp" },
+  { lessonNumber: 48, word: "green", imagePath: "/grade-nerd/images/reading/words/green.webp" },
+  { lessonNumber: 50, word: "shark", imagePath: "/grade-nerd/images/reading/words/shark.webp" },
+  { lessonNumber: 52, word: "all", imagePath: "/grade-nerd/images/reading/words/all.webp" },
+  { lessonNumber: 54, word: "three", imagePath: "/grade-nerd/images/reading/words/three.webp" },
+  { lessonNumber: 56, word: "flock", imagePath: "/grade-nerd/images/reading/words/flock.webp" },
+  { lessonNumber: 58, word: "camp", imagePath: "/grade-nerd/images/reading/words/camp.webp" },
+  { lessonNumber: 60, word: "by", imagePath: "/grade-nerd/images/reading/words/by.webp" },
+  { lessonNumber: 62, word: "lump", imagePath: "/grade-nerd/images/reading/words/lump.webp" },
+  { lessonNumber: 64, word: "bump", imagePath: "/grade-nerd/images/reading/words/bump.webp" },
+  { lessonNumber: 66, word: "pink", imagePath: "/grade-nerd/images/reading/words/pink.webp" },
+  { lessonNumber: 68, word: "frog", imagePath: "/grade-nerd/images/reading/words/frog.webp" },
+  { lessonNumber: 70, word: "stomp", imagePath: "/grade-nerd/images/reading/words/stomp.webp" },
+  { lessonNumber: 72, word: "set", imagePath: "/grade-nerd/images/reading/words/set.webp" },
+  { lessonNumber: 74, word: "gift", imagePath: "/grade-nerd/images/reading/words/gift.webp" },
+  { lessonNumber: 76, word: "soft", imagePath: "/grade-nerd/images/reading/words/soft.webp" },
+  { lessonNumber: 78, word: "raft", imagePath: "/grade-nerd/images/reading/words/raft.webp" },
+  { lessonNumber: 79, word: "lift", imagePath: "/grade-nerd/images/reading/words/lift.webp" },
+  { lessonNumber: 80, word: "under", imagePath: "/grade-nerd/images/reading/words/under.webp" },
+  { lessonNumber: 81, word: "chest", imagePath: "/grade-nerd/images/reading/words/chest.webp" },
+  { lessonNumber: 82, word: "great", imagePath: "/grade-nerd/images/reading/words/great.webp" },
+  { lessonNumber: 83, word: "map", imagePath: "/grade-nerd/images/reading/words/map.webp" },
+  { lessonNumber: 84, word: "felt", imagePath: "/grade-nerd/images/reading/words/felt.webp" },
+  { lessonNumber: 85, word: "their", imagePath: "/grade-nerd/images/reading/words/their.webp" },
+  { lessonNumber: 86, word: "four", imagePath: "/grade-nerd/images/reading/words/four.webp" },
+  { lessonNumber: 87, word: "use", imagePath: "/grade-nerd/images/reading/words/use.webp" },
+  { lessonNumber: 88, word: "quest", imagePath: "/grade-nerd/images/reading/words/quest.webp" },
+  { lessonNumber: 89, word: "past", imagePath: "/grade-nerd/images/reading/words/past.webp" },
+  { lessonNumber: 90, word: "steep", imagePath: "/grade-nerd/images/reading/words/steep.webp" },
+  { lessonNumber: 91, word: "rest", imagePath: "/grade-nerd/images/reading/words/rest.webp" },
+  { lessonNumber: 92, word: "stone", imagePath: "/grade-nerd/images/reading/words/stone.webp" },
+  { lessonNumber: 93, word: "first", imagePath: "/grade-nerd/images/reading/words/first.webp" },
+  { lessonNumber: 94, word: "clue", imagePath: "/grade-nerd/images/reading/words/clue.webp" },
+  { lessonNumber: 95, word: "star", imagePath: "/grade-nerd/images/reading/words/star.webp" },
+  { lessonNumber: 96, word: "post", imagePath: "/grade-nerd/images/reading/words/post.webp" },
+  { lessonNumber: 97, word: "nest", imagePath: "/grade-nerd/images/reading/words/nest.webp" },
+  { lessonNumber: 98, word: "yet", imagePath: "/grade-nerd/images/reading/words/yet.webp" },
+  { lessonNumber: 99, word: "lake", imagePath: "/grade-nerd/images/reading/words/lake.webp" },
+  { lessonNumber: 100, word: "gold", imagePath: "/grade-nerd/images/reading/words/gold.webp" },
+];
+
+export function getContentWord(lessonNumber: number): ContentWord | undefined {
+  return bigContentWords.find(w => w.lessonNumber === lessonNumber);
+}
