@@ -10,12 +10,6 @@ import { StoryNav } from './components/StoryNav';
 
 function StoryContent() {
   const { progress, advanceStoryChapter, updateStoryProgress } = useReadingProgress();
-
-  // Guard: redirect if story not unlocked
-  if (!isStoryUnlocked(progress.completedLessons)) {
-    return <Navigate to="/reading" replace />;
-  }
-
   const storyProgress = progress.storyProgress!;
   const [currentPage, setCurrentPage] = useState(storyProgress.currentPage);
   const [currentChapterInPage, setCurrentChapterInPage] = useState(() => {
@@ -249,15 +243,13 @@ function StoryContent() {
 
       {/* Main content: side-by-side on md+, stacked on mobile */}
       <div className="flex-1 flex flex-col md:flex-row max-w-4xl mx-auto w-full">
-        {/* Story panel images with blur-to-sharp reveal */}
+        {/* Panel image placeholder (Unit 12) */}
         <div className="w-full md:w-1/2 flex items-center justify-center p-4">
-          <StoryPanels
-            pageNumber={currentPage}
-            chaptersRevealed={[0, 1, 2, 3].map(i => {
-              const gi = (currentPage - 1) * 4 + i;
-              return storyProgress.chaptersRead[gi] || i <= currentChapterInPage;
-            })}
-          />
+          <div className="w-full aspect-[3/4] max-h-[500px] bg-gray-200 rounded-xl border-2 border-dashed border-gray-400 flex items-center justify-center">
+            <span className="text-gray-400 text-sm font-bold text-center px-4">
+              Story panels coming in Unit 12
+            </span>
+          </div>
         </div>
 
         {/* Text area */}
@@ -364,10 +356,18 @@ function StoryContent() {
   );
 }
 
+function StoryGuard() {
+  const { progress } = useReadingProgress();
+  if (!isStoryUnlocked(progress.completedLessons)) {
+    return <Navigate to="/reading" replace />;
+  }
+  return <StoryContent />;
+}
+
 export function StoryReader() {
   return (
     <ReadingProgressProvider>
-      <StoryContent />
+      <StoryGuard />
     </ReadingProgressProvider>
   );
 }
