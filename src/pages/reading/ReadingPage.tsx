@@ -115,29 +115,29 @@ function ReadingContent() {
         <span className="font-bold text-sm">gn</span>
       </div>
 
-      {/* Collection icon — top left after logo */}
-      <Link
-        to="/reading/collection"
-        className="fixed top-4 left-16 z-40 w-10 h-10 flex items-center justify-center rounded-lg bg-white border-2 border-black hover:bg-gray-100 transition-all shadow-md"
-        style={{ opacity: hasEarnedWords ? 1 : 0, pointerEvents: hasEarnedWords ? 'auto' : 'none' }}
-        aria-label="Word collection"
-        tabIndex={hasEarnedWords ? undefined : -1}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <LayoutGrid size={20} />
-      </Link>
-
-      {/* Story icon — top left after collection icon */}
-      <Link
-        to="/reading/story"
-        className="fixed top-4 left-28 z-40 w-10 h-10 flex items-center justify-center rounded-lg bg-white border-2 border-black hover:bg-gray-100 transition-all shadow-md"
-        style={{ opacity: storyUnlocked ? 1 : 0, pointerEvents: storyUnlocked ? 'auto' : 'none' }}
-        tabIndex={storyUnlocked ? undefined : -1}
-        aria-label="Read story"
-        onClick={(e) => e.stopPropagation()}
-      >
-        <BookOpen size={20} />
-      </Link>
+      {/* Collection + Story icons — centered top */}
+      <div className="fixed top-4 left-1/2 -translate-x-1/2 z-40 flex items-center gap-2">
+        <Link
+          to="/reading/collection"
+          className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border-2 border-[#0066FF] hover:bg-blue-50 transition-all shadow-md"
+          style={{ opacity: hasEarnedWords ? 1 : 0, pointerEvents: hasEarnedWords ? 'auto' : 'none' }}
+          aria-label="Word collection"
+          tabIndex={hasEarnedWords ? undefined : -1}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <LayoutGrid size={20} className="text-[#0066FF]" />
+        </Link>
+        <Link
+          to="/reading/story"
+          className="w-10 h-10 flex items-center justify-center rounded-lg bg-white border-2 border-[#0066FF] hover:bg-blue-50 transition-all shadow-md"
+          style={{ opacity: storyUnlocked ? 1 : 0, pointerEvents: storyUnlocked ? 'auto' : 'none' }}
+          tabIndex={storyUnlocked ? undefined : -1}
+          aria-label="Read story"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <BookOpen size={20} className="text-[#0066FF]" />
+        </Link>
+      </div>
 
       {/* Hamburger — top right */}
       <button
