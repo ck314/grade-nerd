@@ -1,5 +1,6 @@
 import { useState, useCallback, useMemo } from 'react';
-import { Menu } from 'lucide-react';
+import { Menu, LayoutGrid } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ReadingProgressProvider, useReadingProgress, getEarnedWords, isStoryUnlocked } from '../../contexts/ReadingProgressContext';
 import { getLesson, getWordTokens, selectVersion, readingLessons, getContentWord, ContentWord } from '../../data/reading';
@@ -82,6 +83,9 @@ function ReadingContent() {
   const revisitContentWord = !pendingCelebration ? getContentWord(progress.currentLesson) : undefined;
   const showInlineBadge = revisitContentWord && progress.completedLessons.includes(progress.currentLesson) && !pendingCelebration;
 
+  const earnedWords = getEarnedWords(progress.completedLessons);
+  const hasEarnedWords = earnedWords.length > 0;
+
   const milestone = getCurrentMilestone();
   const mastery = getMasteryStats();
 
@@ -94,6 +98,17 @@ function ReadingContent() {
       >
         <span className="font-bold text-sm">gn</span>
       </div>
+
+      {/* Collection icon — top left after logo */}
+      <Link
+        to="/reading/collection"
+        className="fixed top-4 left-16 z-40 w-10 h-10 flex items-center justify-center rounded-lg bg-white border-2 border-black hover:bg-gray-100 transition-all shadow-md"
+        style={{ opacity: hasEarnedWords ? 1 : 0, pointerEvents: hasEarnedWords ? 'auto' : 'none' }}
+        aria-label="Word collection"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <LayoutGrid size={20} />
+      </Link>
 
       {/* Hamburger — top right */}
       <button
