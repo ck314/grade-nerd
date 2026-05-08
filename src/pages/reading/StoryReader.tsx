@@ -3,7 +3,7 @@ import { Link, Navigate } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { ReadingProgressProvider, useReadingProgress, isStoryUnlocked, createInitialStoryProgress } from '../../contexts/ReadingProgressContext';
-import { getChapterByPage, TOTAL_CHAPTERS, CHAPTERS_PER_PAGE } from '../../data/reading/storyChapters';
+import { getChapterByPage, getStoryPart, TOTAL_CHAPTERS, CHAPTERS_PER_PAGE } from '../../data/reading/storyChapters';
 import { cn } from '../../lib/utils';
 import { getChapterTokens } from '../../data/reading/tokenization';
 import { WordHighlightDisplay } from './components/WordHighlightDisplay';
@@ -23,6 +23,7 @@ function StoryContent() {
   const chapterGroupNumber = Math.floor(chapterIndex / CHAPTERS_PER_PAGE) + 1;
   const pageInChapter = chapterIndex % CHAPTERS_PER_PAGE;
   const chapterGroupStart = (chapterGroupNumber - 1) * CHAPTERS_PER_PAGE;
+  const storyPart = useMemo(() => getStoryPart(currentPage), [currentPage]);
 
   const isAlreadyRead = storyProgress.chaptersRead[chapterIndex] === true;
 
@@ -179,6 +180,15 @@ function StoryContent() {
           </div>
         </div>
       </div>
+
+      {/* Part label */}
+      {storyPart && (
+        <div className="max-w-4xl mx-auto w-full px-4 pt-3">
+          <div className="text-2xl font-bold text-[#0066FF]/70 tracking-wide">
+            Part {storyPart.part}: {storyPart.name}
+          </div>
+        </div>
+      )}
 
       {/* Main content */}
       <div className="flex-1 flex flex-col md:flex-row max-w-4xl mx-auto w-full">

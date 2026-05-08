@@ -241,6 +241,30 @@ export const storyPages: StoryPage[] = [
   },
 ];
 
+export interface StoryPart {
+  part: number;
+  name: string;
+  startPage: number;
+  endPage: number;
+}
+
+export const storyParts: StoryPart[] = [
+  { part: 1, name: "The Gold Map", startPage: 1, endPage: 8 },
+  { part: 2, name: "The Kitten", startPage: 9, endPage: 12 },
+  { part: 3, name: "New Friends", startPage: 13, endPage: 20 },
+  { part: 4, name: "The Wishing Shell", startPage: 21, endPage: 28 },
+  { part: 5, name: "Bugs & Fishing", startPage: 29, endPage: 36 },
+  { part: 6, name: "The Gold Dime", startPage: 37, endPage: 48 },
+  { part: 7, name: "The Chest", startPage: 49, endPage: 60 },
+  { part: 8, name: "The Horse", startPage: 61, endPage: 72 },
+  { part: 9, name: "The Race to Gold", startPage: 73, endPage: 84 },
+  { part: 10, name: "Gold at Last!", startPage: 85, endPage: 100 },
+];
+
+export function getStoryPart(page: number): StoryPart | undefined {
+  return storyParts.find(p => page >= p.startPage && page <= p.endPage);
+}
+
 export function getStoryPage(pageNumber: number): StoryPage | undefined {
   return storyPages.find(p => p.page === pageNumber);
 }
