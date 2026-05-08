@@ -11,6 +11,7 @@ import { Study } from './pages/Study';
 import { Demo, TopicView, InterestView, ContentView } from './pages/demo';
 import { Game, TopicLearn, TopicQuiz, TopicComplete, FormulaSheet, GameLayout } from './pages/game';
 import { ReadingPage } from './pages/reading';
+import { CollectionGallery } from './pages/reading/CollectionGallery';
 import { useUser } from './contexts/UserContext';
 import { UserSelect } from './pages/UserSelect';
 import { UserMenu } from './components/UserMenu';
@@ -554,6 +555,7 @@ export function App() {
           <Route path="/demo/topic/:topicId/:interestId" element={<ContentView />} />
           <Route path="/demo/interest/:interestId" element={<InterestView />} />
           <Route path="/reading" element={<ReadingPage />} />
+          <Route path="/reading/collection" element={<CollectionGallery />} />
           <Route path="/game" element={<GameLayout />}>
             <Route index element={<Game />} />
             <Route path="topic/:topicId" element={<TopicLearn />} />

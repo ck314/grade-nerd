@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, ReactNode } from 'react';
 import { WordToken, readingLessons } from '../../../data/reading';
 
 const IGNORED_KEYS = new Set(['Escape', 'Tab', 'ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'Shift', 'Control', 'Alt', 'Meta']);
@@ -10,9 +10,10 @@ interface LessonDisplayProps {
   onComplete: (normalizedWords: string[]) => void;
   onNextLesson: () => void;
   suppressCompletion?: boolean;
+  completionExtra?: ReactNode;
 }
 
-export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, onNextLesson, suppressCompletion }: LessonDisplayProps) {
+export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, onNextLesson, suppressCompletion, completionExtra }: LessonDisplayProps) {
   const [highlightIndex, setHighlightIndex] = useState(0);
   const [lessonComplete, setLessonComplete] = useState(false);
 
@@ -102,6 +103,7 @@ export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, 
 
       {lessonComplete && !suppressCompletion && (
         <div className="mt-8 flex flex-col items-center gap-4">
+          {completionExtra}
           {isLastLesson ? (
             <div className="text-2xl font-bold text-[#0066FF] text-center">
               You finished all {readingLessons.length} lessons!

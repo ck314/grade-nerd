@@ -8,6 +8,8 @@ import { LessonNav } from './components/LessonNav';
 import { LessonPicker } from './components/LessonPicker';
 import { LessonDisplay } from './components/LessonDisplay';
 import { DecorativeAvatar } from './components/DecorativeAvatar';
+import { WordCelebration } from './components/WordCelebration';
+import { InlineWordBadge } from './components/InlineWordBadge';
 
 function ReadingContent() {
   const { progress, setCurrentLesson, completeLesson, getMasteryStats, getCurrentMilestone } = useReadingProgress();
@@ -66,6 +68,19 @@ function ReadingContent() {
       goToLesson(progress.currentLesson + 1);
     }
   }, [goToLesson, progress.currentLesson, progress.highestLesson]);
+
+  const handleCelebrationDismiss = useCallback(() => {
+    const wasGold = pendingCelebration?.isGold;
+    setPendingCelebration(null);
+    if (wasGold) {
+      setShowStoryInvitation(true);
+    } else {
+      handleNextLesson();
+    }
+  }, [pendingCelebration, handleNextLesson]);
+
+  const revisitContentWord = !pendingCelebration ? getContentWord(progress.currentLesson) : undefined;
+  const showInlineBadge = revisitContentWord && progress.completedLessons.includes(progress.currentLesson) && !pendingCelebration;
 
   const milestone = getCurrentMilestone();
   const mastery = getMasteryStats();
@@ -134,10 +149,24 @@ function ReadingContent() {
               onComplete={handleLessonComplete}
               onNextLesson={handleNextLesson}
               suppressCompletion={!!pendingCelebration}
+              completionExtra={showInlineBadge ? (
+                <InlineWordBadge word={revisitContentWord.word} imagePath={revisitContentWord.imagePath} />
+              ) : undefined}
             />
           )}
         </motion.div>
       </AnimatePresence>
+
+      {pendingCelebration && (
+        <WordCelebration
+          key={`celebration-${progress.currentLesson}`}
+          word={pendingCelebration.word.word}
+          imagePath={pendingCelebration.word.imagePath}
+          isGold={pendingCelebration.isGold}
+          lessonNumber={progress.currentLesson}
+          onDismiss={handleCelebrationDismiss}
+        />
+      )}
     </div>
   );
 }
