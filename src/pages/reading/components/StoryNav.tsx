@@ -20,7 +20,7 @@ export function StoryNav({ currentPage, totalPages, canGoNext, onPrev, onNext }:
         <ChevronLeft size={24} />
       </button>
       <span className="text-sm font-bold tracking-tight min-w-[80px] text-center">
-        Page {currentPage} / {totalPages}
+        Page {currentPage}
       </span>
       <button
         onClick={(e) => { e.stopPropagation(); onNext(); }}

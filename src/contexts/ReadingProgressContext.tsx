@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback, ReactNode } from 'react';
-import { bigContentWords, TOTAL_CONTENT_WORDS, TOTAL_CHAPTERS, CHAPTERS_PER_PAGE } from '../data/reading';
+import { bigContentWords, TOTAL_CONTENT_WORDS, TOTAL_CHAPTERS } from '../data/reading';
 import { useUser } from '../contexts/UserContext';
 import { getUserKey } from '../lib/userStorage';
 
@@ -173,7 +173,7 @@ export function ReadingProgressProvider({ children }: { children: ReactNode }) {
       if (sp.chaptersRead[chapterIndex]) return prev;
       const newChaptersRead = [...sp.chaptersRead];
       newChaptersRead[chapterIndex] = true;
-      const page = Math.floor(chapterIndex / CHAPTERS_PER_PAGE) + 1;
+      const page = chapterIndex + 1;
       return {
         ...prev,
         storyProgress: { ...sp, chaptersRead: newChaptersRead, currentPage: page, currentChapter: chapterIndex },

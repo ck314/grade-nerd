@@ -244,3 +244,10 @@ export const storyPages: StoryPage[] = [
 export function getStoryPage(pageNumber: number): StoryPage | undefined {
   return storyPages.find(p => p.page === pageNumber);
 }
+
+export function getChapterByPage(storyPage: number): StoryChapter | undefined {
+  if (storyPage < 1 || storyPage > TOTAL_CHAPTERS) return undefined;
+  const groupIndex = Math.floor((storyPage - 1) / CHAPTERS_PER_PAGE);
+  const offset = (storyPage - 1) % CHAPTERS_PER_PAGE;
+  return storyPages[groupIndex]?.chapters[offset];
+}
