@@ -36,7 +36,7 @@ export function WordCelebration({ word, imagePath, isGold, onDismiss }: WordCele
               src={imagePath}
               alt={word}
               loading="lazy"
-              className="w-[200px] h-[200px] object-contain rounded-2xl"
+              className="w-[400px] h-[400px] object-contain rounded-2xl"
               onError={() => setImageError(true)}
             />
           )}

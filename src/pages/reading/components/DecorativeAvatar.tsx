@@ -47,10 +47,10 @@ function computePosition(vw: number, fw: number, lessonNumber: number, isTravers
   const lessonInCycle = ((lessonNumber - 1) % 10);
   const step = lessonInCycle * 2 + (isTraversing ? 0 : 1);
 
-  // 5% margin on each side
-  const margin = vw * 0.05;
-  const xMin = margin;
-  const xMax = vw - margin - fw;
+  const rightMargin = vw * 0.05;
+  const leftMargin = vw >= 640 ? 320 : vw * 0.05;
+  const xMin = leftMargin;
+  const xMax = vw - rightMargin - fw;
   const t = xMax > xMin ? step / 19 : 0;
   const x = xMin + t * (xMax - xMin);
 

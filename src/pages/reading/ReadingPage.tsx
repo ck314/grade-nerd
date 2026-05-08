@@ -12,6 +12,7 @@ import { DecorativeAvatar } from './components/DecorativeAvatar';
 import { WordCelebration } from './components/WordCelebration';
 import { InlineWordBadge } from './components/InlineWordBadge';
 import { StoryInvitation } from './components/StoryInvitation';
+import { RewardStrip } from './components/RewardStrip';
 
 function ReadingContent() {
   const { progress, setCurrentLesson, completeLesson, getMasteryStats, getCurrentMilestone, updateStoryProgress } = useReadingProgress();
@@ -148,6 +149,9 @@ function ReadingContent() {
         <Menu size={20} />
       </button>
 
+      {/* Reward strip — left side */}
+      <RewardStrip completedLessons={progress.completedLessons} pendingLessonNumber={pendingCelebration?.word.lessonNumber} />
+
       {/* Progress counter — bottom left */}
       <ProgressCounter
         masteredCount={mastery.masteredCount}
@@ -160,6 +164,7 @@ function ReadingContent() {
       <LessonNav
         currentLesson={progress.currentLesson}
         highestLesson={progress.highestLesson}
+        totalLessons={readingLessons.length}
         visible={!isTraversing}
         onBack={handleBack}
         onForward={handleForward}

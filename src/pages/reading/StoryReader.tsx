@@ -183,12 +183,12 @@ function StoryContent() {
       {/* Main content */}
       <div className="flex-1 flex flex-col md:flex-row max-w-4xl mx-auto w-full">
         {/* Full-size story image */}
-        <div className="w-full md:w-1/2 flex items-center justify-center p-4">
+        <div className="w-full md:w-3/5 flex items-center justify-center p-4">
           <StoryPanels pageNumber={currentPage} />
         </div>
 
         {/* Text area */}
-        <div className="w-full md:w-1/2 flex flex-col p-4">
+        <div className="w-full md:w-2/5 flex flex-col p-4">
           <div className="flex-1 flex flex-col items-center justify-center">
             <AnimatePresence mode="wait">
               <motion.div
