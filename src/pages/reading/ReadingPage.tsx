@@ -1,8 +1,8 @@
 import { useState, useCallback, useMemo } from 'react';
 import { Menu } from 'lucide-react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ReadingProgressProvider, useReadingProgress } from '../../contexts/ReadingProgressContext';
-import { getLesson, getWordTokens, selectVersion, readingLessons } from '../../data/reading';
+import { ReadingProgressProvider, useReadingProgress, getEarnedWords, isStoryUnlocked } from '../../contexts/ReadingProgressContext';
+import { getLesson, getWordTokens, selectVersion, readingLessons, getContentWord, ContentWord } from '../../data/reading';
 import { ProgressCounter } from './components/ProgressCounter';
 import { LessonNav } from './components/LessonNav';
 import { LessonPicker } from './components/LessonPicker';
@@ -14,6 +14,8 @@ function ReadingContent() {
   const [pickerOpen, setPickerOpen] = useState(false);
   const [isTraversing, setIsTraversing] = useState(true);
   const [lessonKey, setLessonKey] = useState(0);
+  const [pendingCelebration, setPendingCelebration] = useState<{ word: ContentWord; isGold: boolean } | null>(null);
+  const [showStoryInvitation, setShowStoryInvitation] = useState(false);
 
   const lesson = getLesson(progress.currentLesson);
 
@@ -29,9 +31,17 @@ function ReadingContent() {
   const tokens = lesson ? getWordTokens(lesson, versionIndex) : [];
 
   const handleLessonComplete = useCallback((normalizedWords: string[]) => {
+    const isFirstCompletion = !progress.completedLessons.includes(progress.currentLesson);
+    const contentWord = getContentWord(progress.currentLesson);
+
+    if (isFirstCompletion && contentWord) {
+      const isGold = contentWord.word === 'gold';
+      setPendingCelebration({ word: contentWord, isGold });
+    }
+
     completeLesson(progress.currentLesson, normalizedWords, versionIndex);
     setIsTraversing(false);
-  }, [completeLesson, progress.currentLesson, versionIndex]);
+  }, [completeLesson, progress.currentLesson, progress.completedLessons, versionIndex]);
 
   const goToLesson = useCallback((n: number) => {
     setCurrentLesson(n);
@@ -123,6 +133,7 @@ function ReadingContent() {
               isLastLesson={progress.currentLesson === readingLessons.length}
               onComplete={handleLessonComplete}
               onNextLesson={handleNextLesson}
+              suppressCompletion={!!pendingCelebration}
             />
           )}
         </motion.div>

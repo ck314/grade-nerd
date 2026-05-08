@@ -9,9 +9,10 @@ interface LessonDisplayProps {
   isLastLesson: boolean;
   onComplete: (normalizedWords: string[]) => void;
   onNextLesson: () => void;
+  suppressCompletion?: boolean;
 }
 
-export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, onNextLesson }: LessonDisplayProps) {
+export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, onNextLesson, suppressCompletion }: LessonDisplayProps) {
   const [highlightIndex, setHighlightIndex] = useState(0);
   const [lessonComplete, setLessonComplete] = useState(false);
 
@@ -51,6 +52,7 @@ export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, 
       if (target.closest('button, a, [role="button"]')) return;
 
       if (lessonComplete) {
+        if (suppressCompletion) return;
         if (e.key === ' ' || e.key === 'Enter') {
           e.preventDefault();
           handleNextOrDismiss();
@@ -63,18 +65,18 @@ export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, 
     }
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [advance, lessonComplete, handleNextOrDismiss]);
+  }, [advance, lessonComplete, suppressCompletion, handleNextOrDismiss]);
 
   const handleContainerClick = useCallback((e: React.MouseEvent) => {
     const target = e.target as HTMLElement;
     if (target.closest('button, a, [role="button"]')) return;
 
     if (lessonComplete) {
-      handleNextOrDismiss();
+      if (!suppressCompletion) handleNextOrDismiss();
     } else {
       advance();
     }
-  }, [advance, lessonComplete, handleNextOrDismiss]);
+  }, [advance, lessonComplete, suppressCompletion, handleNextOrDismiss]);
 
   return (
     <div
@@ -98,7 +100,7 @@ export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, 
         ))}
       </div>
 
-      {lessonComplete && (
+      {lessonComplete && !suppressCompletion && (
         <div className="mt-8 flex flex-col items-center gap-4">
           {isLastLesson ? (
             <div className="text-2xl font-bold text-[#0066FF] text-center">
