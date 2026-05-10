@@ -7,9 +7,10 @@ interface WordHighlightDisplayProps {
   tokens: WordToken[];
   fontSize: string;
   onComplete: () => void;
+  advanceRef?: React.MutableRefObject<(() => void) | undefined>;
 }
 
-export function WordHighlightDisplay({ tokens, fontSize, onComplete }: WordHighlightDisplayProps) {
+export function WordHighlightDisplay({ tokens, fontSize, onComplete, advanceRef }: WordHighlightDisplayProps) {
   const [highlightIndex, setHighlightIndex] = useState(0);
   const [complete, setComplete] = useState(false);
 
@@ -31,6 +32,10 @@ export function WordHighlightDisplay({ tokens, fontSize, onComplete }: WordHighl
   }, [highlightIndex, tokens, complete, onComplete]);
 
   useEffect(() => {
+    if (advanceRef) advanceRef.current = advance;
+  }, [advance, advanceRef]);
+
+  useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if (e.repeat) return;
       if (IGNORED_KEYS.has(e.key)) return;
@@ -48,6 +53,7 @@ export function WordHighlightDisplay({ tokens, fontSize, onComplete }: WordHighl
   }, [advance, complete]);
 
   const handleClick = useCallback((e: React.MouseEvent) => {
+    e.stopPropagation();
     const target = e.target as HTMLElement;
     if (target.closest('button, a, [role="button"]')) return;
     if (!complete) {

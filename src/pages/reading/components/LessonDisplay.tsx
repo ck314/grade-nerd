@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, ReactNode } from 'react';
+import { useState, useEffect, useCallback, useRef, ReactNode } from 'react';
 import { WordToken, readingLessons } from '../../../data/reading';
 import { WordHighlightDisplay } from './WordHighlightDisplay';
 
@@ -14,6 +14,7 @@ interface LessonDisplayProps {
 
 export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, onNextLesson, suppressCompletion, completionExtra }: LessonDisplayProps) {
   const [lessonComplete, setLessonComplete] = useState(false);
+  const advanceRef = useRef<() => void>();
 
   useEffect(() => {
     setLessonComplete(false);
@@ -59,6 +60,8 @@ export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, 
 
     if (lessonComplete && !suppressCompletion) {
       handleNextOrDismiss();
+    } else if (!lessonComplete) {
+      advanceRef.current?.();
     }
   }, [lessonComplete, suppressCompletion, handleNextOrDismiss]);
 
@@ -72,6 +75,7 @@ export function LessonDisplay({ lessonNumber, tokens, isLastLesson, onComplete, 
         tokens={tokens}
         fontSize={fontSize}
         onComplete={handleHighlightComplete}
+        advanceRef={advanceRef}
       />
 
       {lessonComplete && !suppressCompletion && (
