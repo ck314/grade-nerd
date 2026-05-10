@@ -209,7 +209,7 @@ function StoryContent() {
                 transition={{ duration: 0.15 }}
                 className="w-full flex flex-col items-center"
               >
-                {readingMode === 'word-tap' && !isAlreadyRead ? (
+                {readingMode === 'word-tap' ? (
                   <WordHighlightDisplay
                     tokens={tokens}
                     fontSize={fontSize}
